@@ -61,6 +61,7 @@ jobs:
 
     steps:
       - name: debug
-        run: echo "${{ github.event.head_commit.modified }}"
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^post_service/'
 
 
