@@ -62,6 +62,6 @@ jobs:
     steps:
       - name: debug
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^post_service/')
-
-
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^post_service/'; then
+            echo "Changes detected in post_service directory"
+          fi
