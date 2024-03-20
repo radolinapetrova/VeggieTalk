@@ -5,9 +5,10 @@ on:
     branches: [ "main" ]
     paths:
       - 'account_service/**'
+      - 'account_service.yml'
 jobs:
 
-  build_auth_service:
+  build_account_service:
     runs-on: windows-latest
 
     steps:
@@ -21,7 +22,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file account_service/pom.xml
 
-  test_auth_service:
+  test_account_service:
     needs: build_auth_service
     runs-on: windows-latest
 
