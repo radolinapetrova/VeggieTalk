@@ -66,4 +66,6 @@ jobs:
       - name: ev_name2
         run: echo "${{ contains(github.event.head_commit.modified, 'post_service/.' }}"
       - name: ev_name3
-        run: echo "${{ github.event.head_commit.message }}"
+        run: echo "${{ github.path }}"
+      - name: ev_name4
+        run: echo "${{ github.env }}"
