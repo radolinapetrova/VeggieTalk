@@ -53,7 +53,7 @@ jobs:
       working-directory: ./authentication_service
 
   test_auth_service:
-    needs: build_post_service
+    needs: build_auth_service
     runs-on: ubuntu-latest
         
     steps:
