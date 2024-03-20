@@ -56,4 +56,8 @@ jobs:
       - name: Test with Maven
         run: mvn test --file authentication_service/pom.xml
 
-
+  debug:
+    runs-on: windows-latest
+    steps:
+      - name: debug
+        run: echo "${{ git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^post_service/' }}"
