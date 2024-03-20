@@ -1,12 +1,13 @@
-name: Post_service CI with Maven
+name: Auth_service CI with Maven
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'post_service/**'
+      - 'authentication_service/**'
 jobs:
-  build_post_service:
+
+  build_auth_service:
     runs-on: windows-latest
 
     steps:
@@ -18,10 +19,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file post_service/pom.xml
+        run: mvn -B package --file authentication_service/pom.xml
 
-  test_post_service:
-    needs: build_post_service
+  test_auth_service:
+    needs: build_auth_service
     runs-on: windows-latest
 
     steps:
@@ -33,5 +34,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: mvn test --file post_service/pom.xml
-
+        run: mvn test --file authentication_service/pom.xml
