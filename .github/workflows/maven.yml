@@ -3,9 +3,6 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'post_service/**'
-      - 'authentication_service/**'
 jobs:
   build_post_service:
     if: github.event_name == 'push' && github.event.head_commit.modified contains 'post_service/'
@@ -22,7 +19,7 @@ jobs:
 
   test_post_service:
     needs: build_post_service
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +45,7 @@ jobs:
 
   test_auth_service:
     needs: build_auth_service
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
