@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'authentication_service/**'
+      - 'account_service/**'
 jobs:
 
   build_auth_service:
@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file authentication_service/pom.xml
+        run: mvn -B package --file account_service/pom.xml
 
   test_auth_service:
     needs: build_auth_service
@@ -34,4 +34,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: mvn test --file authentication_service/pom.xml
+        run: mvn test --file account_service/pom.xml
