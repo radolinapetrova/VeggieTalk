@@ -23,7 +23,7 @@ jobs:
         run: mvn -B package --file account_service/pom.xml
 
   test_account_service:
-    needs: build_auth_service
+    needs: build_account_service
     runs-on: windows-latest
 
     steps:
