@@ -60,7 +60,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: debug
-        run: echo "${{ github.event.head_commit }}"
+        run: echo "${{ job.container.id }}"
       - name: ev_name
         run: echo "${{ github.event_name }}"
       - name: ev_name3
