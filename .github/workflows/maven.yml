@@ -8,6 +8,7 @@ on:
 
 jobs:
   build_post_service:
+    if: ${{ github.event_name == 'push' && contains(github.event.commits.*.added, 'post_service/') || contains(github.event.commits.*.modified, 'post_service/') }}
     runs-on: windows-latest
 
     steps:
@@ -21,7 +22,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       working-directory: ./post_service
-  build_suth_service:
+  build_auth_service:
+    if: ${{ github.event_name == 'push' && contains(github.event.commits.*.added, 'authentication_service/') || contains(github.event.commits.*.modified, 'authentication_service/') }}
     runs-on: windows-latest
 
     steps:
