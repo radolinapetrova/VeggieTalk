@@ -8,7 +8,7 @@ on:
       - '**/post_service.yml'
 jobs:
   build_post_service:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
 
   test_post_service:
     needs: build_post_service
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
