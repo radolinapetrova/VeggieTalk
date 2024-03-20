@@ -60,4 +60,4 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: debug
-        run: echo "${{ github.event.head_commit.modified }}"
+        run: echo "${{ github.event }}"
