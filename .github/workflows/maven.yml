@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 jobs:
   build_post_service:
-    if: github.event_name == 'push' && github.event.head_commit.modified contains 'post_service/'
+    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'post_service/')
     runs-on: windows-latest
 
     steps:
@@ -31,7 +31,7 @@ jobs:
         run: mvn test --file post_service/pom.xml
 
   build_auth_service:
-    if: github.event_name == 'push' && github.event.head_commit.modified contains 'authentication_service/'
+    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'authentication_service/')
     runs-on: windows-latest
 
     steps:
