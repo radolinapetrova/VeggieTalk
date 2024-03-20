@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
 jobs:
   build_post_service:
+    if: contains(github.event.head_commit.modified, 'post_service/')
     runs-on: windows-latest
 
     steps:
@@ -30,6 +31,7 @@ jobs:
         run: mvn test --file post_service/pom.xml
 
   build_auth_service:
+    if: contains(github.event.head_commit.modified, 'authentication_service/')
     runs-on: windows-latest
 
     steps:
@@ -53,3 +55,5 @@ jobs:
           java-version: '21'
       - name: Test with Maven
         run: mvn test --file authentication_service/pom.xml
+
+
