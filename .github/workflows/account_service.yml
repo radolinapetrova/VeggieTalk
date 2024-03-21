@@ -3,12 +3,13 @@ name: Auth_service CI with Maven
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'account_service/**'
-      - '**/account_service.yml'
+#    paths:
+#      - 'account_service/**'
+#      - '**/account_service.yml'
 
 jobs:
   build_account_service:
+    if: contains(github.event.paths, 'account_service/**')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,6 +19,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+          path: 'account_service/**'
       - name: Build with Maven
         run: mvn -B package --file account_service/pom.xml
 
