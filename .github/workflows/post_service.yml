@@ -10,7 +10,6 @@ on:
 jobs:
   build_post_service:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -25,7 +24,6 @@ jobs:
   test_post_service:
     needs: build_post_service
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21

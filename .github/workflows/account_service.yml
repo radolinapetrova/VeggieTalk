@@ -10,7 +10,6 @@ on:
 jobs:
   build_account_service:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -25,7 +24,6 @@ jobs:
   test_account_service:
     needs: build_account_service
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
