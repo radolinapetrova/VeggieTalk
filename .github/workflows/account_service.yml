@@ -21,8 +21,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
           path: 'account_service/**'
+      - name: Debug affected paths
+        run: |
+          echo "Affected paths:"
+          echo "${{ toJson(github.event.paths) }}"
       - name: Build with Maven
         run: mvn -B package --file account_service/pom.xml
+
 
   test_account_service:
     needs: build_account_service
@@ -37,11 +42,3 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn test --file account_service/pom.xml
-
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: debug
-        run: |
-          echo "Affected paths:"
-          echo "${{ toJson(github.event.paths) }}" 
