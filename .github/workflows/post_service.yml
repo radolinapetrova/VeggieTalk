@@ -6,6 +6,7 @@ on:
     paths:
       - 'post_service/**'
       - '**/post_service.yml'
+
 jobs:
   build_post_service:
     runs-on: ubuntu-latest

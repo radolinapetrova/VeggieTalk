@@ -6,8 +6,8 @@ on:
     paths:
       - 'account_service/**'
       - '**/account_service.yml'
-jobs:
 
+jobs:
   build_account_service:
     runs-on: ubuntu-latest
 
