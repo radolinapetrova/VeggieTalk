@@ -9,7 +9,7 @@ on:
 
 jobs:
   build_account_service:
-    if: contains(github.event.paths, 'account_service/**')
+    if: contains(github.event.paths, 'account_service/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,3 +36,11 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn test --file account_service/pom.xml
+
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug
+        run: |
+          echo "Affected paths:"
+          echo "${{ toJson(github.event.paths) }}" 
