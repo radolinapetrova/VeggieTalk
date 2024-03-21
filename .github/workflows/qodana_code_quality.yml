@@ -10,9 +10,9 @@ jobs:
   qodana:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./account_service.yml
-      - uses: ./post_service.yml
+      - uses: actions/checkout@v4
+      - uses: .github/workflows/account_service.yml
+      - uses: .github/workflows/post_service.yml
         with:
           fetch-depth: 0
       - name: 'Qodana Scan'

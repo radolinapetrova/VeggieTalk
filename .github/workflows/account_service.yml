@@ -36,4 +36,3 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn test --file account_service/pom.xml
-        
