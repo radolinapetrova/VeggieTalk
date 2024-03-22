@@ -30,13 +30,21 @@ jobs:
         run: |
           for service_dir in "${{ matrix.dir }}"; do
             echo "Checking for changes in ${service_dir}"
-            if ! git diff --quiet HEAD^..HEAD -- "${service_dir}"; then
-              echo "Changes detected in ${service_dir}"
+            if [[ -z $(git log --oneline -- "${service_dir}") ]]; then
+              echo "No commits found in ${service_dir}, proceeding with build and test"
               cd "${service_dir}" || exit 1
               mvn clean install
               mvn test
               cd ..
             else
-              echo "No changes in ${service_dir}"
+              if ! git diff --quiet HEAD^..HEAD -- "${service_dir}"; then
+                echo "Changes detected in ${service_dir}"
+                cd "${service_dir}" || exit 1
+                mvn clean install
+                mvn test
+                cd ..
+              else
+                echo "No changes in ${service_dir}"
+              fi
             fi
-          done
+          done  
