@@ -2,7 +2,7 @@ on:
   push:
     paths:
       - "account_service/**"
-      - ".github/workflows/account_service.yaml"
+      - ".github/workflows/account_service.yml"
 
 
 jobs:

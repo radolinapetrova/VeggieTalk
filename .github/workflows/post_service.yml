@@ -2,7 +2,7 @@ on:
   push:
     paths:
       - "post_service/**"
-      - ".github/workflows/post_service.yaml"
+      - ".github/workflows/post_service.yml"
 
 
 jobs:
