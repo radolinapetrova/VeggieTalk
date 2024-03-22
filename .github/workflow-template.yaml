@@ -1,12 +1,12 @@
 on:
   push:
     paths:
-      - "account_service/**"
-      - ".github/workflows/account_service.yaml"
+      - "{{SERVICE_NAME}}/**"
+      - ".github/workflows/{{SERVICE_NAME}}.yaml"
 
 
 jobs:
-  build_account_service:
+  build_{{SERVICE_NAME}}:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,10 +17,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file account_service/pom.xml
+        run: mvn -B package --file {{SERVICE_NAME}}/pom.xml
 
-  test_account_service:
-    needs: build_account_service
+  test_{{SERVICE_NAME}}:
+    needs: build_{{SERVICE_NAME}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,5 +31,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: mvn test --file account_service/pom.xml
-
+        run: mvn test --file {{SERVICE_NAME}}/pom.xml

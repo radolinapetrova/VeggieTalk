@@ -1,11 +1,9 @@
-name: Post_service CI with Maven
-
 on:
   push:
-    branches: [ "main" ]
     paths:
-      - 'post_service/**'
-      - '**/post_service.yml'
+      - "post_service/**"
+      - ".github/workflows/post_service.yaml"
+
 
 jobs:
   build_post_service:
