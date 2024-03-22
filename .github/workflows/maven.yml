@@ -30,14 +30,14 @@ jobs:
         run: |
           for service_dir in "${{ matrix.dir }}"; do
             echo "Checking for changes in ${service_dir}"
-            if git log --oneline -- "${service_dir}" &> /dev/null && git diff --quiet HEAD^..HEAD -- "${service_dir}"; then
+            if ! git log -- "${service_dir}" &> /dev/null; then
               echo "No changes in ${service_dir}, pipeline run canceled"
-              exit 78 
+              exit 78
             else
-              echo "Changes detected in ${service_dir}, proceeding with build and test"
+              echo "Changes detected in ${service_dir}"
               cd "${service_dir}" || exit 1
               mvn clean install
               mvn test
               cd ..
             fi
-          done 
+          done
