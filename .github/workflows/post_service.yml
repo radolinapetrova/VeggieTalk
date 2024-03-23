@@ -60,8 +60,5 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: cd post_service && mvn verify sonar:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=radolinapetrova \
-          -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service
