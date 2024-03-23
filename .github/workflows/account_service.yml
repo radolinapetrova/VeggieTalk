@@ -62,8 +62,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: cd account/service \
-          mvn verify sonar:sonar \
+        run: cd account/service && mvn verify sonar:sonar \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.organization=radolinapetrova \
           -Dsonar.projectKey=radolinapetrova_VeggieTalk_account_service
