@@ -34,6 +34,7 @@ jobs:
         run: mvn test --file post_service/pom.xml
 
   sonarcloud_post_service:
+    needs: test_post_service
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
