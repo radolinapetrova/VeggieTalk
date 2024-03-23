@@ -37,12 +37,22 @@ jobs:
     needs: test_{{SERVICE_NAME}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
         with:
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('{{SERVICE_NAME}}/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: {{SERVICE_NAME}}/
+        run: mvn verify sonar:sonar \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.organization=radolinapetrova \
+          -Dsonar.projectKey=<your project key>
