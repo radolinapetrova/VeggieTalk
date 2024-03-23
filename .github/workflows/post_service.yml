@@ -62,6 +62,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: cd post_service && mvn verify sonar:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=radolinapetrova \
-          -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service
+          -D sonar.host.url=https://sonarcloud.io \
+          -D sonar.organization=radolinapetrova \
+          -D sonar.projectKey=radolinapetrova_VeggieTalk_post_service
