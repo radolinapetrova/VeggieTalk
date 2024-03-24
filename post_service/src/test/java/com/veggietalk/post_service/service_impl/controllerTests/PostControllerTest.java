@@ -1,4 +1,4 @@
-package com.veggietalk.post_service.service_impl;
+package com.veggietalk.post_service.service_impl.controllerTests;
 
 import com.veggietalk.post_service.controller.PostController;
 import com.veggietalk.post_service.controller.converters.RequestConverters;

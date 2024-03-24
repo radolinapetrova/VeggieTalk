@@ -1,4 +1,4 @@
-package com.veggietalk.post_service.service_impl;
+package com.veggietalk.post_service.service_impl.serviceTests;
 
 import com.veggietalk.post_service.domain.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
