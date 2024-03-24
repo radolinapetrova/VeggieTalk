@@ -22,12 +22,15 @@ public class PostControllerTest {
 
     @MockBean
     private PostService postService;
-    
+
     //HAPPY FLOW
     @Test
     public void testPostRequestConverter_shouldReturnPostObject(){
         //ARRANGE
-        CreatePostRequest request = new CreatePostRequest("24-03-2024", 1L, "descr");
+        CreatePostRequest request = new CreatePostRequest();
+        request.setDate("24-04-2024");
+        request.setDescription("Descr");
+        request.setUser_id(1L);
 
         //ACT
         Post post = RequestConverters.RequestConverter(request);
