@@ -61,4 +61,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_{{SERVICE_NAME_UPPER}} }}
-        run: cd {{SERVICE_NAME}} && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_{{SERVICE_NAME}}
+        run: |
+          cd {{SERVICE_NAME}} \
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_{{SERVICE_NAME}} \
+          mvn sonar:sonar -Pcoverage
