@@ -31,7 +31,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: mvn test --file account_service/pom.xml
+        run: mvn -B clean test
 
   sonarcloud_account_service:
     needs: test_account_service

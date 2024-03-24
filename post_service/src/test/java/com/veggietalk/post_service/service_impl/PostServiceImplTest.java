@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PostServiceImplTest {
+class PostServiceImplTest {
     @Mock
     private PostRepo postRepo;
 
@@ -23,7 +23,7 @@ public class PostServiceImplTest {
     private PostServiceImpl service;
 
     @Test
-    public void testCreatePost_shouldReturnCreatedPostDetails(){
+    void testCreatePost_shouldReturnCreatedPostDetails(){
         //ARRANGE
         Post post = new Post();
 
