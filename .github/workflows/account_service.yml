@@ -33,7 +33,6 @@ jobs:
       - name: Test with Maven
         run: mvn test --file account_service/pom.xml
 
-
   sonarcloud_account_service:
     needs: test_account_service
     name: Build and analyze
@@ -61,5 +60,5 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ACCOUNT }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ACCOUNT_SERVICE }}
         run: cd account_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_account_service

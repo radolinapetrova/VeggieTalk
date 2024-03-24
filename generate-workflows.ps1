@@ -24,7 +24,8 @@ if (-not (Test-Path $workflowDirectory)) {
 # Loop through each service
 foreach ($service in $services) {
     $serviceName = $service.Name
-    $workflowContent = $workflowTemplate -replace "{{SERVICE_NAME}}", $serviceName
+    $serviceNameUpper =$serviceName.ToUpper()
+    $workflowContent = $workflowTemplate -replace "{{SERVICE_NAME}}", $serviceName -replace "{{SERVICE_NAME_UPPER}}", $serviceNameUpper
     $workflowFilePath = Join-Path -Path $workflowDirectory -ChildPath "$serviceName.yml"
     
     # Write the workflow content to a file

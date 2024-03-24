@@ -35,8 +35,17 @@ jobs:
 
   sonarcloud_{{SERVICE_NAME}}:
     needs: test_{{SERVICE_NAME}}
+    name: Build and analyze
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'temurin'
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
@@ -47,12 +56,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('{{SERVICE_NAME}}/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn verify sonar:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=radolinapetrova \
-          -Dsonar.projectKey=<your project key>
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_{{SERVICE_NAME_UPPER}} }}
+        run: cd {{SERVICE_NAME}} && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_{{SERVICE_NAME}}
