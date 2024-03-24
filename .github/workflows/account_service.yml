@@ -31,11 +31,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: cd account_service && mvn test
+        run: mvn test --file account_service/pom.xml
 
   sonarcloud_account_service:
     needs: test_account_service
-    name: Build and analyze
+    name: Sonarcloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

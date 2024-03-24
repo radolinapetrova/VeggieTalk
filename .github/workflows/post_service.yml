@@ -31,11 +31,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Test with Maven
-        run: cd post_service && mvn test
+        run: mvn test --file post_service/pom.xml
 
   sonarcloud_post_service:
     needs: test_post_service
-    name: Build and analyze
+    name: Sonarcloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -62,4 +62,3 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
         run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service
-

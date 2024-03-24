@@ -35,7 +35,7 @@ jobs:
 
   sonarcloud_{{SERVICE_NAME}}:
     needs: test_{{SERVICE_NAME}}
-    name: Build and analyze
+    name: Sonarcloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
