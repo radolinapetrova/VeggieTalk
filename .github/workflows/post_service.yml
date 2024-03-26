@@ -72,6 +72,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker images with Docker Compose
-        run: docker-compose -f post_service/docker-compose.yml build
+        run: docker compose -f post_service/docker-compose.yml up
 
 
