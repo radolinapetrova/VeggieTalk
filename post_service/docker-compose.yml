@@ -4,11 +4,11 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: ${PG_PASS}
-      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${{secrets.PB_PASS}}
+      POSTGRES_USER: ${{secrets.PG_USERNAME}}
       POSTGRES_DB: post_info
     volumes:
-      - postgres_container_data:/var/lib/postgresql/data
+      - C:\postgres_container_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -23,5 +23,3 @@ services:
     depends_on:
       - db
 
-volumes:
-  postgres_container_data:
