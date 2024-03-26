@@ -61,5 +61,17 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
-        run: |
-          cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
+        run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
+
+  docker-compose_post_service:
+    needs: sonarcloud_post_service
+    name: docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker images with Docker Compose
+        run: docker-compose -f post_service/docker-compose.yml build
+
+

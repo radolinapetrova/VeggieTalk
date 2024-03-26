@@ -62,3 +62,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_{{SERVICE_NAME_UPPER}} }}
         run: cd {{SERVICE_NAME}} && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_{{SERVICE_NAME}} && mvn sonar:sonar -Pcoverage
+
+  docker-compose_{{SERVICE_NAME}}:
+    needs: sonarcloud_{{SERVICE_NAME}}
+    name: docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker images with Docker Compose
+        run: docker-compose -f {{SERVICE_NAME}}/docker-compose.yml build
+

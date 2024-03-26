@@ -62,3 +62,16 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ACCOUNT_SERVICE }}
         run: cd account_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_account_service && mvn sonar:sonar -Pcoverage
+
+  docker-compose_account_service:
+    needs: sonarcloud_account_service
+    name: docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker images with Docker Compose
+        run: docker-compose -f account_service/docker-compose.yml build
+
+
