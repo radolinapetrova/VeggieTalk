@@ -24,10 +24,7 @@ COPY ./pom.xml .
 COPY ./src ./src
 
 # Build the Maven project
-RUN mvn clean install -DskipTests
-
-# Debug: List contents of target directory
-RUN ls -la ./target
+RUN mvn clean install #-DskipTests
 
 # Use another lightweight image as a base image
 FROM openjdk:21-jdk-slim AS runtime
