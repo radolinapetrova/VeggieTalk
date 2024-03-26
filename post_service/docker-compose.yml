@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_DB: post_info
     volumes:
-      - C:\postgres_container_data:/var/lib/postgresql/data
+      - postgres_container_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -22,3 +22,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://172.17.0.2:5432/post_info
     depends_on:
       - db
+
+volumes:
+  postgres_container_data:
