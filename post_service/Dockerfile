@@ -10,30 +10,45 @@
 ##ENV DB_PASS=mypassword
 #
 #ENTRYPOINT ["java", "-jar", "post_service.jar"]
+#
+## Use an official Maven image as a parent image
+#FROM maven:3.9.6 AS build
+#
+## Set the working directory in the container
+#WORKDIR /app
+#
+## Copy the pom.xml file to the working directory
+#COPY ./pom.xml .
+#
+## Copy the rest of the application code
+#COPY ./src ./src
+#
+## Build the Maven project
+#RUN mvn clean install #-DskipTests
+#
+## Use another lightweight image as a base image
+#FROM openjdk:21-jdk-slim AS runtime
+#
+## Set the working directory in the container
+#WORKDIR /app
+#
+## Copy the built artifact from the build stage to the runtime stage
+#COPY --from=build /app/target/*.jar ./app.jar
+#
+## Specify the command to run your application
+#CMD ["java", "-jar", "app.jar"]
 
-# Use an official Maven image as a parent image
-FROM maven:3.9.6 AS build
+FROM openjdk:21-jdk-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the pom.xml file to the working directory
-COPY ./pom.xml .
+# Copy the built JAR file into the container
+COPY target/*.jar post_service.jar
 
-# Copy the rest of the application code
-COPY ./src ./src
+# Expose port 8080 (assuming your application listens on port 8080)
+EXPOSE 8080
 
-# Build the Maven project
-RUN mvn clean install #-DskipTests
+# Set the entrypoint to run the JAR file
+ENTRYPOINT ["java", "-jar", "post_service.jar"]
 
-# Use another lightweight image as a base image
-FROM openjdk:21-jdk-slim AS runtime
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the built artifact from the build stage to the runtime stage
-COPY --from=build /app/target/*.jar ./app.jar
-
-# Specify the command to run your application
-CMD ["java", "-jar", "app.jar"]
