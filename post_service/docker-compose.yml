@@ -13,7 +13,7 @@ services:
       - "5432:5432"
 
   backend:
-    image: post_service_img:latest
+    image: radolina/post_service_img:latest
     container_name: post_service_container
 #    restart: always
     ports:
