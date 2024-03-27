@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: post_info
     volumes:
-      - C:\postgres_container_data:/var/lib/postgresql/data
+      - //c/postgres_container_data:/var/lib/postgresql/data
     restart: always
 
   backend:
