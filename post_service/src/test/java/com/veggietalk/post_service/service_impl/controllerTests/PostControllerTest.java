@@ -17,5 +17,5 @@ public class PostControllerTest {
     @MockBean
     private PostService service;
 
-    
+
 }

@@ -16,6 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
+@ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
     @Mock
     private PostRepo postRepo;
