@@ -63,50 +63,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
         run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
 
-#  docker-compose_post_service:
-#    needs: sonarcloud_post_service
-#    name: docker-compose
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Build Docker images with Docker Compose
-#        run: docker compose -f post_service/docker-compose.yml up
-
-
-  docker:
+  docker-compose_post_service:
     needs: sonarcloud_post_service
-    name: Docker
+    name: docker-compose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: false
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest
-      - name: Login to Dockerhub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Push to Docker hub
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-
+      - name: Build Docker images with Docker Compose
+        run: docker-compose -f post_service/docker-compose.yml build
 
 
