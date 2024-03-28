@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class CreatePostRequest {
-    private String date;
     private Long user_id;
     private String description;
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+
 class PostServiceImplTest {
     @Mock
     private PostRepo postRepo;
@@ -50,5 +50,9 @@ class PostServiceImplTest {
         });
         verify(postRepo, times(1)).save(any(Post.class));
     }
+
+
+
+
 
 }
