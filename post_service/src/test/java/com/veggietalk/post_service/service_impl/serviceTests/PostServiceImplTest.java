@@ -14,8 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -48,9 +50,47 @@ class PostServiceImplTest {
         verify(postRepo, times(1)).save(any(PostEntity.class));
     }
 
+    //UNHAPPY FLOW
+    @Test
+    void testCreatePost_shouldThrowException_whenNoDescriptionIsProvided(){
+        //ARRANGE
+        Post post = Post.builder().userId(1L).build();
+        Post post2 = Post.builder().description("").userId(1L).build();
 
+        //ACT
+        assertThrows(IllegalArgumentException.class, () -> service.createPost(post));
+        assertThrows(IllegalArgumentException.class, () -> service.createPost(post2));
 
+        //ASSERT
+        verify(postRepo, never()).save(any(PostEntity.class));
+    }
 
+    //HAPPY FLOW
+    @Test
+    void testDeletePost_shouldSuccessfullyDeletePost(){
+        //ARRANGE
+        PostEntity entity = PostEntity.builder().build();
+        when(postRepo.findById(any(Long.class))).thenReturn(Optional.ofNullable(entity));
+
+        //ACT
+        service.deletePost(1L, 1L);
+
+        //ASSERT
+        verify(postRepo, times(1)).deletePost(any(Long.class));
+
+    }
+    //UNHAPPY FLOW
+    @Test
+    void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
+        //ARRANGE
+        when(postRepo.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        //ACT
+        assertThrows(IllegalArgumentException.class, () -> service.deletePost(1L, 1L));
+
+        //ASSERT
+        verify(postRepo, never()).deletePost(any(Long.class));
+    }
 
 
 }

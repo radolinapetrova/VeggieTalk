@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,10 @@ public class PostServiceImpl implements PostService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Override
-    public Post createPost(Post post) {
+    public Post createPost(Post post) throws IllegalArgumentException{
+        if (post.getDescription() == null || post.getDescription().isEmpty()){
+            throw new IllegalArgumentException("There must be a description given for the post!");
+        }
         post.setDate(currentDate.format(formatter));
         return PostConverters.PostEntityConverter(postRepo.save(PostConverters.PostConverter(post)));
     }
