@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,8 +46,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAllPosts() {
-        return postRepo.getAllPosts().stream().map(PostConverters::PostEntityConverter).toList();
+    public List<Post> getAllPosts() throws NoSuchElementException {
+        List<PostEntity> posts = postRepo.getAllPosts();
+        if(!posts.isEmpty()){
+            return posts.stream().map(PostConverters::PostEntityConverter).toList();
+        }
+        throw new NoSuchElementException("There are no available posts");
     }
 
 

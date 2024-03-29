@@ -14,10 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -92,5 +94,39 @@ class PostServiceImplTest {
         verify(postRepo, never()).deletePost(any(Long.class));
     }
 
+    //HAPPY FLOW
+    @Test
+    void testGetAllPosts_shouldReturnAllExistingPosts(){
+        //ARRANGE
+        List<PostEntity> posts = List.of(
+                PostEntity.builder().id(1L).date(currentDate.format(formatter)).description("Descr").user_id(1L).build(),
+                PostEntity.builder().id(2L).date(currentDate.format(formatter)).description("Descr2").user_id(2L).build(),
+                PostEntity.builder().id(3L).date(currentDate.format(formatter)).description("Descr3").user_id(3L).build()
+        );
+        when(postRepo.getAllPosts()).thenReturn(posts);
+
+        //ACT
+        List<Post> result = service.getAllPosts();
+
+        //ASSERT
+        verify(postRepo, times(1)).getAllPosts();
+        assertEquals(1L, result.getFirst().getId());
+        assertEquals("Descr2", result.get(1).getDescription());
+        assertEquals(3L, result.get(2).getUserId());
+    }
+
+    //UNHAPPY FLOW
+    @Test
+    void testGetAllPosts_shouldThrowException_whenNoPostsExist(){
+        //ARRANGE
+        List<PostEntity>posts = new ArrayList<>();
+        when(postRepo.getAllPosts()).thenReturn(posts);
+
+        //ACT
+        assertThrows(NoSuchElementException.class, () -> service.getAllPosts());
+
+        //ASSERT
+        verify(postRepo, times(1)).getAllPosts();
+    }
 
 }
