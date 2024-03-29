@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -20,4 +23,8 @@ public class PostEntity {
     private String date;
     private Long user_id;
     private String description;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<MediaFileEntity> media_files;
 }

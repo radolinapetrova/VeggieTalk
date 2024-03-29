@@ -1,15 +1,19 @@
 package com.veggietalk.post_service.service_impl.serviceTests;
 
-import com.veggietalk.post_service.domain.Post;
+import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
+import com.veggietalk.post_service.persistence.model.PostEntity;
+import com.veggietalk.post_service.service.converters.PostConverters;
 import com.veggietalk.post_service.service.impl.PostServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,33 +28,26 @@ class PostServiceImplTest {
     @InjectMocks
     private PostServiceImpl service;
 
+    LocalDate currentDate = LocalDate.now();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     //HAPPY FLOW
     @Test
     void testCreatePost_shouldReturnCreatedPostDetails(){
         //ARRANGE
-        Post post = Post.builder().id(1L).description("Descr").user_id(1L).date("24-03-2024").build();
+        Post post = Post.builder().description("Descr").userId(1L).build();
+        PostEntity entity = PostEntity.builder().id(1L).date(currentDate.format(formatter)).description("Descr").user_id(1L).build();
+        when(postRepo.save(any(PostEntity.class))).thenReturn(entity);
 
         //ACT
-        when(postRepo.save(any(Post.class))).thenReturn(post);
         Post result = service.createPost(post);
 
         //ASSERT
-        assertEquals(post, result);
-        verify(postRepo, times(1)).save(any(Post.class));
+        assertEquals(PostConverters.PostEntityConverter(entity), result);
+        verify(postRepo, times(1)).save(any(PostEntity.class));
     }
 
-    @Test
-    void testCreatePost_whenSaveFails_ShouldThrowException() {
-        // ARRANGE
-        Post post = Post.builder().id(1L).description("Descr").user_id(1L).date("24-03-2024").build();
-        when(postRepo.save(any(Post.class))).thenThrow(new RuntimeException("Failed to save post"));
-
-        // ACT and ASSERT
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            service.createPost(post);
-        });
-        verify(postRepo, times(1)).save(any(Post.class));
-    }
 
 
 

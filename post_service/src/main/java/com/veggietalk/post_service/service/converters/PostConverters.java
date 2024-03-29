@@ -1,16 +1,16 @@
-package com.veggietalk.post_service.persistence.converters;
+package com.veggietalk.post_service.service.converters;
 
-import com.veggietalk.post_service.domain.Post;
+import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.model.PostEntity;
 
 public class PostConverters {
     public static Post PostEntityConverter(PostEntity entity){
-        return Post.builder().id(entity.getId()).user_id(entity.getUser_id()).date(entity.getDate()).
+        return Post.builder().id(entity.getId()).userId(entity.getUser_id()).date(entity.getDate()).
                 description(entity.getDescription()).build();
     }
 
     public static PostEntity PostConverter (Post post){
-        return PostEntity.builder().date(post.getDate()).user_id(post.getUser_id()).
+        return PostEntity.builder().date(post.getDate()).user_id(post.getUserId()).
                 description(post.getDescription()).build();
     }
 }

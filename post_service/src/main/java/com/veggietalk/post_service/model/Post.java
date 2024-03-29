@@ -1,4 +1,4 @@
-package com.veggietalk.post_service.domain;
+package com.veggietalk.post_service.model;
 
 import lombok.*;
 
@@ -9,6 +9,6 @@ import lombok.*;
 public class Post {
     private Long id;
     private String date;
-    private Long user_id;
+    private Long userId;
     private String description;
 }
