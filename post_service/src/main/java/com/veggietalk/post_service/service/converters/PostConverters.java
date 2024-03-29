@@ -2,8 +2,11 @@ package com.veggietalk.post_service.service.converters;
 
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.model.PostEntity;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class PostConverters {
+
     public static Post PostEntityConverter(PostEntity entity){
         return Post.builder().id(entity.getId()).userId(entity.getUser_id()).date(entity.getDate()).
                 description(entity.getDescription()).build();
