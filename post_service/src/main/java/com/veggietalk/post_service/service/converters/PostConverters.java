@@ -5,7 +5,7 @@ import com.veggietalk.post_service.persistence.model.PostEntity;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+
 @NoArgsConstructor
 public class PostConverters {
 
