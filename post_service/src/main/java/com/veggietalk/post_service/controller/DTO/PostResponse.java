@@ -1,10 +1,8 @@
 package com.veggietalk.post_service.controller.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
 @AllArgsConstructor
 public class PostResponse {

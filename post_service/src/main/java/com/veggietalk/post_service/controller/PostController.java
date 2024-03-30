@@ -26,7 +26,7 @@ public class PostController {
     public ResponseEntity<?> createPost(@RequestBody PostRequest request){
         try{
             Post created = postService.createPost(RequestConverters.RequestConverter(request));
-            return ResponseEntity.ok().body(RequestConverters.PostConverter(created));
+            return ResponseEntity.status(201).body(RequestConverters.PostConverter(created));
         }
         catch (IllegalArgumentException e){
             return ResponseEntity
@@ -45,7 +45,7 @@ public class PostController {
     public ResponseEntity<String> deletePost(@RequestBody DeletePostRequest request){
         try{
             postService.deletePost(request.getId(), request.getUserId());
-            return ResponseEntity.ok().body("Noice");
+            return ResponseEntity.status(200).body("Noice");
         }
         catch (IllegalArgumentException e){
             return ResponseEntity.status(417).body(e.getMessage());

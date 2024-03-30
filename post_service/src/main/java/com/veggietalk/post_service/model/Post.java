@@ -3,7 +3,8 @@ package com.veggietalk.post_service.model;
 import lombok.*;
 
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
