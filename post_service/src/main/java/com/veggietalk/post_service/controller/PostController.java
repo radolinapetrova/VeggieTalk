@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,17 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping()
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request){
-        return ResponseEntity.ok().body(RequestConverters.PostConverter(postService.createPost(RequestConverters.RequestConverter(request))));
+    public ResponseEntity<?> createPost(@RequestBody PostRequest request){
+        try{
+            Post created = postService.createPost(RequestConverters.RequestConverter(request));
+            return ResponseEntity.ok().body(RequestConverters.PostConverter(created));
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(Collections.singletonMap("Unsuccessful creation of post", e.getMessage()));
+        }
+
     }
 
     @GetMapping("/all")
