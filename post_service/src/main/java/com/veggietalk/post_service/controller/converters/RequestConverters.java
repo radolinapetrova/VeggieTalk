@@ -8,14 +8,13 @@ public class RequestConverters {
 
 
     public static Post RequestConverter(PostRequest request){
-        Post post = new Post();
         String description = request.getDescription();
         if (description == null || description.isEmpty()) {
             throw new IllegalArgumentException("Invalid description provided");
         }
-        post.setDescription(request.getDescription());
-        post.setUserId(request.getUserId());
-        return post;
+        return Post.builder().description(request.getDescription()).userId(request.getUserId()).build();
+
+
     }
 
     public static PostResponse PostConverter(Post post){
