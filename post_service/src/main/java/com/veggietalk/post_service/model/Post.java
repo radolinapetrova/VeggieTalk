@@ -7,6 +7,7 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
@@ -15,14 +16,4 @@ public class Post {
     private Long userId;
     private String description;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(date, post.date) &&
-                Objects.equals(userId, post.userId) &&
-                Objects.equals(description, post.description);
-    }
 }

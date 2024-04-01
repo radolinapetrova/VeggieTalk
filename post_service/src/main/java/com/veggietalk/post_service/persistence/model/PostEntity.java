@@ -15,6 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "post")
+@EqualsAndHashCode
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +28,4 @@ public class PostEntity {
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<MediaFileEntity> media_files;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostEntity post = (PostEntity) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(date, post.date) &&
-                Objects.equals(user_id, post.user_id) &&
-                Objects.equals(description, post.description);
-    }
 }
