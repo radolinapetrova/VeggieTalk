@@ -11,11 +11,11 @@ import java.util.Objects;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "post")
-@EqualsAndHashCode
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

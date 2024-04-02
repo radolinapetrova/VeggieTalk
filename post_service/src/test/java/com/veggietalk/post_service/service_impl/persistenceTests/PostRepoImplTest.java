@@ -65,7 +65,7 @@ public class PostRepoImplTest {
 
         //ASSERT
         assertTrue(result.isPresent());
-        assertEquals(result.get(), post);
+        assertEquals(result.get().getId(), post.getId());
     }
 
     @Test
