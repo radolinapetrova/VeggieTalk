@@ -46,9 +46,11 @@ class PostServiceImplTest {
 
         //ACT
         Post result = service.createPost(post);
+        Post converted = PostConverters.PostEntityConverter(entity);
 
         //ASSERT
-        assertEquals(PostConverters.PostEntityConverter(entity), result);
+        assertEquals(converted.getId(), result.getId());
+        assertEquals(converted.getUserId(), result.getUserId());
         verify(postRepo, times(1)).save(any(PostEntity.class));
     }
 

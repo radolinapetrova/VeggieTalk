@@ -1,17 +1,15 @@
 package com.veggietalk.post_service.persistence.model;
 
 
-import com.veggietalk.post_service.model.Post;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
+@Setter
 @Builder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

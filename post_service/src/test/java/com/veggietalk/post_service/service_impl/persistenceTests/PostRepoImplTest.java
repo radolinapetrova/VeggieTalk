@@ -1,13 +1,9 @@
 package com.veggietalk.post_service.service_impl.persistenceTests;
 
-import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.impl.PostRepoImpl;
 import com.veggietalk.post_service.persistence.model.PostEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -66,6 +62,9 @@ public class PostRepoImplTest {
         //ASSERT
         assertTrue(result.isPresent());
         assertEquals(result.get().getId(), post.getId());
+        assertEquals(result.get().getDate(), post.getDate());
+        assertEquals(result.get().getUser_id(), post.getUser_id());
+        assertEquals(result.get().getDescription(), post.getDescription());
     }
 
     @Test
