@@ -38,12 +38,12 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long id, Long userId) throws IllegalArgumentException{
         Optional<PostEntity> post = postRepo.findById(id);
         if(post.isPresent()){
-            if(Objects.equals(post.get().getUser_id(), userId)){
-                postRepo.deletePost(id);
-            }
-            else{
-                throw new IllegalArgumentException("The account you are logged in cannot delete the selected post");
-            }
+//            if(Objects.equals(post.get().getUser_id(), userId)){
+            postRepo.deletePost(id);
+//            }
+//            else{
+//                throw new IllegalArgumentException("The account you are logged in cannot delete the selected post");
+//            }
         }
         else{
             throw new IllegalArgumentException("The selected post does not exist :(");
