@@ -15,7 +15,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account saveAccount(Account account) {
-        return null;
+        return AccountConverters.AccountEntityConverter(accountRepo.save(AccountConverters.AccountConverter(account)));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(Long id) throws IllegalArgumentException{
+    public void deleteAccount(Long id, Long userId) throws IllegalArgumentException{
         if (accountRepo.findById(id).isPresent()){
             accountRepo.delete(id);
         }

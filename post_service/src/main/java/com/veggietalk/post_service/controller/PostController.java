@@ -36,7 +36,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<PostResponse>> getAllPosts(){
         return ResponseEntity.ok().body(postService.getAllPosts().stream().map(RequestConverters::PostConverter).toList());
     }
