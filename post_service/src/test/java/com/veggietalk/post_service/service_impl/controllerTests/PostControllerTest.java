@@ -8,19 +8,14 @@ import com.veggietalk.post_service.controller.PostController;
 import com.veggietalk.post_service.controller.converters.RequestConverters;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.service.PostService;
-import com.veggietalk.post_service.service.converters.PostConverters;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -33,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(controllers = PostController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -173,7 +167,7 @@ public class PostControllerTest {
 
         //ACT
         when(service.getAllPosts()).thenReturn(posts);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/posts/all")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/posts")
                 .contentType(MediaType.APPLICATION_JSON);
 
         //ASSERT
