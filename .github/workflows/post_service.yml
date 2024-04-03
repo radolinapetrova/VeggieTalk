@@ -63,3 +63,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
         run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
 
+  docker:
+    needs: sonarcloud_post_service
+    name: docker ig
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: docker-compose up
+

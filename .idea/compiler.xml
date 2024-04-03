@@ -14,6 +14,7 @@
         <module name="post_service" />
         <module name="api_gateway" />
         <module name="account-service" />
+        <module name="account_service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,6 +24,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-service" options="-parameters" />
+      <module name="account_service" options="-parameters" />
       <module name="api_gateway" options="-parameters" />
       <module name="discovery_server" options="-parameters" />
       <module name="post_service" options="-parameters" />
