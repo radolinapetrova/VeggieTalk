@@ -82,6 +82,7 @@ jobs:
           mvn clean package
       - name: Build Docker image
         run: |
+          cd post_service
           docker build -t radolina/post_service_img:latest .
       - name: Push Docker image to Docker Hub
         run: |
