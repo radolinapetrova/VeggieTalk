@@ -78,5 +78,5 @@ jobs:
           java-version: 21
           distribution: 'temurin'
       - name: deploy
-        run: cd post_service && docker-compose up
+        run: cd post_service && docker-compose up -d
 
