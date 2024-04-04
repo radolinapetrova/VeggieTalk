@@ -69,5 +69,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: deploy
-        run: docker-compose --file docker-compose.yml up
+        run: cd post_service && docker-compose up
 
