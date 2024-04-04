@@ -86,7 +86,7 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker login --username radolina --password R@d!025227
-          docker push your_dockerhub_username/your_image_name:latest
+          docker push radolina/post_service_img:latest
       - name: Run Docker Compose
         run: |
           cd post_service
