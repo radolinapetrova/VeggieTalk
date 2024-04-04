@@ -65,9 +65,18 @@ jobs:
 
   docker:
 #    needs: sonarcloud_post_service
+
     name: docker ig
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+         fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'temurin'
       - name: deploy
         run: cd post_service && docker-compose up
 
