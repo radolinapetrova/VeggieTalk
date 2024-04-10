@@ -1,0 +1,8 @@
+import './App.css';
+import Navigation from "./pages/Navigation";
+
+export default function App() {
+  return (
+        <Navigation/>
+  );
+}
