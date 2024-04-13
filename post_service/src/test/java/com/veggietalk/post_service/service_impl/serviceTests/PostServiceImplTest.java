@@ -3,7 +3,7 @@ package com.veggietalk.post_service.service_impl.serviceTests;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
 import com.veggietalk.post_service.persistence.model.PostEntity;
-import com.veggietalk.post_service.service.converters.PostConverters;
+import com.veggietalk.post_service.persistence.converters.PostConverters;
 import com.veggietalk.post_service.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,17 +41,16 @@ class PostServiceImplTest {
     void testCreatePost_shouldReturnCreatedPostDetails(){
         //ARRANGE
         Post post = Post.builder().description("Descr").userId(1L).build();
-        PostEntity entity = PostEntity.builder().id(1L).date(currentDate.format(formatter)).description("Descr").user_id(1L).build();
-        when(postRepo.save(any(PostEntity.class))).thenReturn(entity);
+        Post entity = Post.builder().id(1L).date(currentDate.format(formatter)).description("Descr").userId(1L).build();
+        when(postRepo.save(any(Post.class))).thenReturn(entity);
 
         //ACT
         Post result = service.createPost(post);
-        Post converted = PostConverters.PostEntityConverter(entity);
 
         //ASSERT
-        assertEquals(converted.getId(), result.getId());
-        assertEquals(converted.getUserId(), result.getUserId());
-        verify(postRepo, times(1)).save(any(PostEntity.class));
+        assertEquals(entity.getId(), result.getId());
+        assertEquals(entity.getUserId(), result.getUserId());
+        verify(postRepo, times(1)).save(any(Post.class));
     }
 
     //UNHAPPY FLOW
@@ -66,18 +65,18 @@ class PostServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> service.createPost(post2));
 
         //ASSERT
-        verify(postRepo, never()).save(any(PostEntity.class));
+        verify(postRepo, never()).save(any(Post.class));
     }
 
     //HAPPY FLOW
     @Test
     void testDeletePost_shouldSuccessfullyDeletePost(){
         //ARRANGE
-        PostEntity entity = PostEntity.builder().build();
-        when(postRepo.findById(any(Long.class))).thenReturn(Optional.ofNullable(entity));
+        Long id = 1L;
+        Long user = 1L;
 
         //ACT
-        service.deletePost(1L, 1L);
+        service.deletePost(id, user);
 
         //ASSERT
         verify(postRepo, times(1)).deletePost(any(Long.class));
@@ -87,7 +86,7 @@ class PostServiceImplTest {
     @Test
     void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
         //ARRANGE
-        when(postRepo.findById(any(Long.class))).thenReturn(Optional.empty());
+        doThrow(IllegalArgumentException.class).when(postRepo).findById(any(Long.class));
 
         //ACT
         assertThrows(IllegalArgumentException.class, () -> service.deletePost(1L, 1L));
@@ -100,10 +99,10 @@ class PostServiceImplTest {
     @Test
     void testGetAllPosts_shouldReturnAllExistingPosts(){
         //ARRANGE
-        List<PostEntity> posts = List.of(
-                PostEntity.builder().id(1L).date(currentDate.format(formatter)).description("Descr").user_id(1L).build(),
-                PostEntity.builder().id(2L).date(currentDate.format(formatter)).description("Descr2").user_id(2L).build(),
-                PostEntity.builder().id(3L).date(currentDate.format(formatter)).description("Descr3").user_id(3L).build()
+        List<Post> posts = List.of(
+                Post.builder().id(1L).date(currentDate.format(formatter)).description("Descr").userId(1L).build(),
+                Post.builder().id(2L).date(currentDate.format(formatter)).description("Descr2").userId(2L).build(),
+                Post.builder().id(3L).date(currentDate.format(formatter)).description("Descr3").userId(3L).build()
         );
         when(postRepo.getAllPosts()).thenReturn(posts);
 
@@ -121,7 +120,7 @@ class PostServiceImplTest {
     @Test
     void testGetAllPosts_shouldThrowException_whenNoPostsExist(){
         //ARRANGE
-        List<PostEntity>posts = new ArrayList<>();
+        List<Post>posts = new ArrayList<>();
         when(postRepo.getAllPosts()).thenReturn(posts);
 
         //ACT

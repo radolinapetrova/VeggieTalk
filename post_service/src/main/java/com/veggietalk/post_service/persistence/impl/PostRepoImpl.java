@@ -3,8 +3,8 @@ package com.veggietalk.post_service.persistence.impl;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.DBRepos.PostDBRepo;
 import com.veggietalk.post_service.persistence.PostRepo;
+import com.veggietalk.post_service.persistence.converters.PostConverters;
 import com.veggietalk.post_service.persistence.model.PostEntity;
-import com.veggietalk.post_service.service.converters.PostConverters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,13 +18,13 @@ public class PostRepoImpl implements PostRepo {
     private final PostDBRepo postDBRepo;
 
     @Override
-    public PostEntity save(PostEntity post) {
-        return postDBRepo.save(post);
+    public Post save(Post post) {
+        return PostConverters.PostEntityConverter(postDBRepo.save(PostConverters.PostConverter(post)));
     }
 
     @Override
-    public List<PostEntity> getAllPosts() {
-        return postDBRepo.findAll();
+    public List<Post> getAllPosts() {
+        return postDBRepo.findAll().stream().map(PostConverters::PostEntityConverter).toList();
     }
 
     @Override
@@ -33,8 +33,14 @@ public class PostRepoImpl implements PostRepo {
     }
 
     @Override
-    public Optional<PostEntity> findById(Long id){
-       return  postDBRepo.findById(id);
+    public Post findById(Long id) throws IllegalArgumentException{
+        Optional<PostEntity> entity = postDBRepo.findById(id);
+        if(entity.isPresent()){
+            return PostConverters.PostEntityConverter(entity.get());
+        }
+       else{
+           throw new IllegalArgumentException("The selected post does not exist :(");
+        }
     }
 
 }

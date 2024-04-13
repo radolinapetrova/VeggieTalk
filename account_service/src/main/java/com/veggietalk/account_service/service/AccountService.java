@@ -11,4 +11,8 @@ public interface AccountService {
     Account updateAccount (Account account);
 
     void deleteAccount(Long id, Long userId);
+
+    Account findById(Long id) throws IllegalArgumentException;
+
+    public void addFollow(Long idFollower, Long idFollowing);
 }

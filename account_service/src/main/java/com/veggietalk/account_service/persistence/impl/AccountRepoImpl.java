@@ -1,7 +1,9 @@
 package com.veggietalk.account_service.persistence.impl;
 
+import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.persistence.AccountRepo;
 import com.veggietalk.account_service.persistence.DBRepos.AccountDBRepo;
+import com.veggietalk.account_service.persistence.converters.AccountConverters;
 import com.veggietalk.account_service.persistence.model.AccountEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,8 +18,8 @@ public class AccountRepoImpl implements AccountRepo {
 
 
     @Override
-    public AccountEntity save(AccountEntity account) {
-        return repo.save(account);
+    public Account save(Account account) {
+        return AccountConverters.AccountEntityConverter(repo.save(AccountConverters.AccountConverter(account)));
     }
 
     @Override
@@ -26,8 +28,14 @@ public class AccountRepoImpl implements AccountRepo {
     }
 
     @Override
-    public Optional<AccountEntity> findById(Long id) {
-        return repo.findById(id);
+    public Account findById(Long id) throws IllegalArgumentException{
+        Optional<AccountEntity> entity = repo.findById(id);
+        if (entity.isPresent()){
+            return AccountConverters.AccountEntityConverter(entity.get());
+        }
+        else{
+            throw new IllegalArgumentException("No such account exists");
+        }
     }
 
 }

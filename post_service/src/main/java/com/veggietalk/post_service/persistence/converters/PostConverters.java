@@ -1,4 +1,4 @@
-package com.veggietalk.post_service.service.converters;
+package com.veggietalk.post_service.persistence.converters;
 
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.model.PostEntity;

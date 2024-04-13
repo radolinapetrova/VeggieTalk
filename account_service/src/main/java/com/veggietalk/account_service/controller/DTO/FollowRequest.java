@@ -7,8 +7,7 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class AccountResponse {
-    private Long id;
-    private String email;
-    private String bio;
+public class FollowRequest {
+    private Long follower;
+    private Long following;
 }

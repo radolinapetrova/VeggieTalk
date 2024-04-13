@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
 
     private final PostService postService;
@@ -37,7 +38,6 @@ public class PostController {
     }
 
     @GetMapping()
-
     public ResponseEntity<List<PostResponse>> getAllPosts(){
         return ResponseEntity.ok().body(postService.getAllPosts().stream().map(RequestConverters::PostConverter).toList());
     }

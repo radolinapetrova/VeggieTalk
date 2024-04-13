@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepo {
-    PostEntity save(PostEntity post);
+    Post save(Post post);
 
-    List<PostEntity> getAllPosts();
+    List<Post> getAllPosts();
 
     void deletePost(Long id);
     
-    Optional<PostEntity> findById(Long id) throws IllegalArgumentException;
+    Post findById(Long id) throws IllegalArgumentException;
 }
