@@ -74,6 +74,7 @@ class PostServiceImplTest {
         //ARRANGE
         Long id = 1L;
         Long user = 1L;
+        when(postRepo.findById(any(Long.class))).thenReturn(Post.builder().userId(id).build());
 
         //ACT
         service.deletePost(id, user);
