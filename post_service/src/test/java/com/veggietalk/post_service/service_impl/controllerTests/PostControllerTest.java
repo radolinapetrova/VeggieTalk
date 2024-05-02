@@ -85,7 +85,7 @@ public class PostControllerTest {
 
         // ACT
         when(service.createPost(any(Post.class))).thenReturn(new Post(1L, "28-03-2024", request.getUserId(), request.getDescription()));
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -106,7 +106,7 @@ public class PostControllerTest {
 
         // ACT
         when(service.createPost(any(Post.class))).thenThrow(IllegalArgumentException.class);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -125,7 +125,7 @@ public class PostControllerTest {
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -144,7 +144,7 @@ public class PostControllerTest {
 
         // ACT
         doThrow(IllegalArgumentException.class).when(service).deletePost(any(Long.class), any(Long.class));
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -167,7 +167,7 @@ public class PostControllerTest {
 
         //ACT
         when(service.getAllPosts()).thenReturn(posts);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON);
 
         //ASSERT
