@@ -1,11 +1,13 @@
 package com.veggietalk.account_service.service.impl;
 
+import com.veggietalk.account_service.config.Producer;
 import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.persistence.AccountRepo;
 import com.veggietalk.account_service.persistence.model.AccountEntity;
 import com.veggietalk.account_service.service.AccountService;
 import com.veggietalk.account_service.persistence.converters.AccountConverters;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,14 +17,20 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepo accountRepo;
+    @Autowired
+    private Producer producer;
 
     @Override
     public Account saveAccount(Account account) {
+        producer.verifyAccount(1L);
        return accountRepo.save(account);
     }
 
     @Override
-    public Account updateAccount(Account account) throws IllegalArgumentException{
+    public Account updateAccount(Account account, Long userId) throws IllegalArgumentException{
+        if (!account.getId().equals(userId)){
+            throw new IllegalArgumentException("You do not have the right to update the following account");
+        }
         return accountRepo.save(account);
     }
 
@@ -34,6 +42,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Long id, Long userId) throws IllegalArgumentException{
         accountRepo.findById(id);
+        if (!id.equals(userId)){
+            throw new IllegalArgumentException("Nooooo");
+        }
         accountRepo.delete(id);;
     }
 

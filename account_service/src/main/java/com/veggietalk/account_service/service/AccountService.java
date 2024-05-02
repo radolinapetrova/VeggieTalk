@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public interface AccountService {
     Account saveAccount(Account account);
 
-    Account updateAccount (Account account);
+    Account updateAccount (Account account, Long user);
 
     void deleteAccount(Long id, Long userId);
 

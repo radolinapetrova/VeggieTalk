@@ -14,12 +14,12 @@
         <module name="post_service" />
         <module name="api_gateway" />
         <module name="account-service" />
-        <module name="rabbitmq" />
         <module name="account_service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="discovery-server" target="1.8" />
+      <module name="rabbitmq" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -27,6 +27,7 @@
       <module name="account-service" options="-parameters" />
       <module name="account_service" options="-parameters" />
       <module name="api_gateway" options="-parameters" />
+      <module name="auth_service" options="-parameters" />
       <module name="discovery_server" options="-parameters" />
       <module name="post_service" options="-parameters" />
       <module name="rabbitmq" options="-parameters" />

@@ -13,12 +13,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PostServiceImpl implements PostService {
+public class    PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
 
@@ -35,7 +36,10 @@ public class PostServiceImpl implements PostService {
     }
 
     public void deletePost(Long id, Long userId) throws IllegalArgumentException{
-        postRepo.findById(id);
+        Post post = postRepo.findById(id);
+        if (!Objects.equals(post.getUserId(), userId)){
+            throw new IllegalArgumentException("You do not have the right to delete this post");
+        }
         postRepo.deletePost(id);
     }
 
