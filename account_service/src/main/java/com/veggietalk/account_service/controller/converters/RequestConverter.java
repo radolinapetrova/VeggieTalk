@@ -7,10 +7,10 @@ import com.veggietalk.account_service.model.Account;
 public class RequestConverter {
 
     public static AccountResponse accountConverter(Account account){
-        return AccountResponse.builder().email(account.getEmail()).id(account.getId()).bio(account.getBio()).build();
+        return AccountResponse.builder().email(account.getEmail()).id(account.getId()).build();
     }
 
     public static Account accountRequestConverter(AccountRequest request){
-        return Account.builder().email(request.getEmail()).bio(request.getBio()).build();
+        return Account.builder().email(request.getEmail()).build();
     }
 }

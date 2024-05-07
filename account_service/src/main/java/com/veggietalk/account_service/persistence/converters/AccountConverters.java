@@ -7,11 +7,17 @@ public class AccountConverters {
     public static AccountEntity AccountConverter(Account account){
         AccountEntity entity =  AccountEntity.builder()
                 .email(account.getEmail())
-                .bio(account.getBio())
                 .build();
 
         if (account.getId() != null){
             entity.setId(account.getId());
+        }
+
+        if (account.getBio() != null){
+            entity.setBio(account.getBio());
+        }
+        else{
+            entity.setBio("");
         }
 
         if (account.getFollowing() != null){
@@ -28,7 +34,7 @@ public class AccountConverters {
     public static Account AccountEntityConverter(AccountEntity entity){
         Account account =  Account.builder()
                 .email(entity.getEmail())
-                .bio(entity.getEmail())
+                .bio(entity.getBio())
                 .id(entity.getId())
                 .build();
 

@@ -13,6 +13,7 @@
         <module name="discovery_server" />
         <module name="post_service" />
         <module name="api_gateway" />
+        <module name="auth_service" />
         <module name="account-service" />
         <module name="account_service" />
       </profile>

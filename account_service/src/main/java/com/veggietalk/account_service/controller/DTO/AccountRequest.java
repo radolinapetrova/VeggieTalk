@@ -9,5 +9,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AccountRequest {
     private String email;
-    private String bio;
+    private String userId;
 }

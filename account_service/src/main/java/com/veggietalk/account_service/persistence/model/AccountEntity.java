@@ -21,6 +21,7 @@ public class AccountEntity {
     private Long id;
     private String email;
     private String bio;
+    private String user_id;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})

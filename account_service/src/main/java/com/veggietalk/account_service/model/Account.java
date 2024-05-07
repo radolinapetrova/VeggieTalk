@@ -14,6 +14,7 @@ public class Account {
     private Long id;
     private String email;
     private String bio;
+    private String userId;
 
     private List<Account> followers;
     private List<Account> following;
