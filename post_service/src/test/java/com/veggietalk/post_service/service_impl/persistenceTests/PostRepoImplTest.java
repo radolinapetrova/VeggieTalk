@@ -1,6 +1,9 @@
 package com.veggietalk.post_service.service_impl.persistenceTests;
 
+import com.veggietalk.post_service.model.Category;
+import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
+import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.persistence.impl.PostRepoImpl;
 import com.veggietalk.post_service.persistence.model.PostEntity;
 import org.junit.jupiter.api.Test;
@@ -13,8 +16,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,6 +40,62 @@ public class PostRepoImplTest {
         registry.add("spring.datasource.password", container::getPassword);
     }
 
+
+    List<Post> getDummyRecipes(){
+        Post entity = Post.builder()
+                .date("27-12-2002")
+                .description("Descr1")
+                .userId(1L)
+                .recipe(Recipe.recipeBuilder()
+                        .difficultyLevel(DifficultyLevel.EASY)
+                        .ingredients(new ArrayList<String>() {{
+                            add("hate");
+                            add("spite");
+                        }})
+                        .category(Category.BREAKFAST)
+                        .build())
+                .build();
+        Post entity2 = Post.builder()
+                .date("27-12-2002")
+                .description("Descr1")
+                .userId(1L)
+                .recipe(Recipe.recipeBuilder()
+                        .difficultyLevel(DifficultyLevel.EASY)
+                        .ingredients(new ArrayList<String>() {{
+                            add("cheese");
+                            add("hate");
+                            add("girl boss");
+                            add("spite");
+                        }})
+                        .category(Category.DINNER)
+                        .build())
+                .build();
+        Post entity3 = Post.builder()
+                .date("27-12-2002")
+                .description("Descr1")
+                .userId(1L)
+                .recipe(Recipe.recipeBuilder()
+                        .difficultyLevel(DifficultyLevel.HARD)
+                        .ingredients(new ArrayList<String>() {{
+                            add("gaslight");
+                            add("girl boss");
+                        }})
+                        .category(Category.LUNCH)
+                        .build())
+                .build();
+
+        Post entity4 = Post.builder().date("27-12-2002").description("Descr1").userId(1L).build();
+        Post entity5 = Post.builder().date("27-12-2002").description("Descr2").userId(2L).build();
+        Post entity6 = Post.builder().date("27-12-2002").description("Descr3").userId(3L).build();
+
+        List<Post> posts = List.of(entity, entity2, entity3, entity4, entity5, entity6);
+
+        posts.forEach(repository::save);
+
+        return posts;
+    }
+
+
     @Test
     void testCreatePost(){
         //ARRANGE
@@ -54,15 +115,15 @@ public class PostRepoImplTest {
     @Test
     void testFindPostById(){
         //ARRANGE
-        Post entity = Post.builder().date("27-12-2002").description("Descr").userId(1L).build();
+        Post post = Post.builder().date("27-12-2002").description("Descr").userId(1L).build();
 
         //ACT
-        Post post = repository.save(entity);
-        Post result = repository.findById(post.getId());
+        Post entity = repository.save(post);
+        Post result = repository.findById(entity.getId());
 
         //ASSERT
 //        assertDoesNotThrow(IllegalArgumentException.class, () -> repository.findById(post.getId()));
-        assertEquals(result.getId(), post.getId());
+        assertEquals(result.getId(), entity.getId());
         assertEquals(result.getDate(), post.getDate());
         assertEquals(result.getUserId(), post.getUserId());
         assertEquals(result.getDescription(), post.getDescription());
@@ -71,10 +132,9 @@ public class PostRepoImplTest {
     @Test
     void testDeletePost(){
         //ARRANGE
-        Post entity = Post.builder().date("27-12-2002").description("Descr").userId(1L).build();
+        Post result = Post.builder().id(1L).date("27-12-2002").description("Descr").userId(1L).build();
 
         //ACT
-        Post result = repository.save(entity);
         repository.deletePost(result.getId());
 
         //ASSERT
@@ -84,20 +144,67 @@ public class PostRepoImplTest {
     @Test
     void testGetAllPosts(){
         //ARRANGE
-        Post entity = Post.builder().date("27-12-2002").description("Descr1").userId(1L).build();
-        Post entity2 = Post.builder().date("27-12-2002").description("Descr2").userId(2L).build();
-        Post entity3 = Post.builder().date("27-12-2002").description("Descr3").userId(3L).build();
+        List<Post> posts = getDummyRecipes();
 
         //ACT
-        repository.save(entity);
-        repository.save(entity2);
-        repository.save(entity3);
-        List<Post> posts = repository.getAllPosts();
+        List<Post> results = repository.getAllPosts();
 
         //ASSERT
-        assertEquals(posts.size(), 3);
-        assertEquals(posts.getFirst().getUserId(), entity.getUserId());
-        assertEquals(posts.getLast().getDescription(), entity3.getDescription());
-        assertEquals(posts.get(1).getDescription(), entity2.getDescription());
+        assertEquals(results.size(), 12);
+        assertEquals(results.getFirst().getUserId(), posts.getFirst().getUserId());
+        assertEquals(results.getLast().getDescription(), posts.getLast().getDescription());
+        assertEquals(results.get(1).getDescription(), posts.get(1).getDescription());
     }
+
+
+    @Test
+    void testGetRecipesByDifficultyLevel(){
+        //ARRANGE
+        List<Post> posts = getDummyRecipes()
+                .stream()
+                .filter(post -> post.getRecipe() != null)
+                .toList();
+        //ACT
+        List<Post> result =repository.findAllRecipesByDifficulty(DifficultyLevel.EASY);
+
+        //ASSERT
+        assertEquals(result.size(), 6);
+        assertEquals(result.getFirst().getRecipe().getDifficultyLevel(), DifficultyLevel.EASY);
+        assertEquals(result.getLast().getRecipe().getDifficultyLevel(), DifficultyLevel.EASY);
+    }
+
+    @Test
+    void testGetRecipesByCategory(){
+        //ARRANGE
+        List<Post> posts = getDummyRecipes()
+                .stream()
+                .filter(post -> post.getRecipe() != null)
+                .toList();
+
+        //ACT
+        List<Post> result = repository.findAllRecipesByCategory(Category.DINNER);
+
+        //ASSERT
+        assertEquals(result.size(), 1);
+        assertEquals(result.getFirst().getRecipe().getCategory(), Category.DINNER);
+    }
+
+//    @Test
+//    void TestGetRecipesByIngredients(){
+//        //ARRANGE
+//        List<Post> posts = getDummyRecipes()
+//                .stream()
+//                .filter(post -> post.getRecipe() != null)
+//                .toList();
+//
+//        //ACT
+//        List<Post> result = repository.findAllByIngredientsContaining(List.of("hate", "spite"));
+//
+//        //ASSERT
+//        assertEquals(result.size(), 2);
+//        assertEquals(result.size(), posts.stream().map(post -> post.getRecipe().getIngredients().containsAll(List.of("hate", "spite"))).toList().size());
+//        assertTrue(result.getFirst().getRecipe().getIngredients().contains("hate"));
+//        assertTrue(result.getFirst().getRecipe().getIngredients().contains("spite"));
+//    }
+
 }

@@ -6,7 +6,10 @@ import com.veggietalk.post_service.controller.DTO.PostRequest;
 import com.veggietalk.post_service.controller.DTO.PostResponse;
 import com.veggietalk.post_service.controller.PostController;
 import com.veggietalk.post_service.controller.converters.RequestConverters;
+import com.veggietalk.post_service.model.Category;
+import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
+import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +47,7 @@ public class PostControllerTest {
     @Test
     void testPostRequestConverter(){
         //ARRANGE
-        PostRequest request = new PostRequest(1L, "Descr");
+        PostRequest request = new PostRequest(1L, "Descr", List.of(""), Category.DINNER, DifficultyLevel.EASY);
 
         //ACT
         Post result = RequestConverters.RequestConverter(request);
@@ -84,7 +87,7 @@ public class PostControllerTest {
         String expected = new ObjectMapper().writeValueAsString(response);
 
         // ACT
-        when(service.createPost(any(Post.class))).thenReturn(new Post(1L, "28-03-2024", request.getUserId(), request.getDescription()));
+        when(service.createPost(any(Post.class))).thenReturn(new Post(1L, "28-03-2024", request.getUserId(), request.getDescription(), Recipe.recipeBuilder().build()));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);

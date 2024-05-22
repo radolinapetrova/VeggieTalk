@@ -13,17 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "post")
+@Table(name = "posts")
 public class PostEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String date;
     private Long user_id;
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private List<MediaFileEntity> media_files;
+    @OneToMany(mappedBy = "post")
+    @Column(name = "media_file")
+    private List<MediaFileEntity> mediaFiles;
+
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn
+    private RecipeEntity recipe;
 
 }

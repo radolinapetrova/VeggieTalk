@@ -17,8 +17,8 @@ public class MediaFileEntity {
     private String file_name;
     private String file_extension;
 
-    @ManyToOne
-    @JoinColumn(name="post_id")
+    @ManyToOne()
+    @JoinColumn(name = "media_file", nullable = false)
     private PostEntity post;
 
 }

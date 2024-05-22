@@ -1,5 +1,7 @@
 package com.veggietalk.post_service.service;
 
+import com.veggietalk.post_service.model.Category;
+import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 
 import java.util.List;
@@ -11,4 +13,11 @@ public interface PostService {
     void deletePost(Long id, Long userId) throws IllegalArgumentException;
 
     List<Post> getAllPosts() throws NoSuchElementException;
+
+    public List<Post> findAllRecipes();
+
+    List<Post> findAllRecipesByDifficulty(DifficultyLevel level);
+    List<Post> findAllRecipesByCategory(Category category);
+
+    List<Post> findAllRecipesByIngredients(List<String> ingredients);
 }

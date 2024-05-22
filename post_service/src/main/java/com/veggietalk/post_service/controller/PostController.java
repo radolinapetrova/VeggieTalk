@@ -1,9 +1,12 @@
 package com.veggietalk.post_service.controller;
 
 import com.veggietalk.post_service.controller.DTO.DeletePostRequest;
+import com.veggietalk.post_service.controller.DTO.RecipeIngredientsRequest;
 import com.veggietalk.post_service.controller.converters.RequestConverters;
 import com.veggietalk.post_service.controller.DTO.PostRequest;
 import com.veggietalk.post_service.controller.DTO.PostResponse;
+import com.veggietalk.post_service.model.Category;
+import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.service.PostService;
 import lombok.AllArgsConstructor;
@@ -34,13 +37,13 @@ public class PostController {
                     .badRequest()
                     .body(Collections.singletonMap("Unsuccessful creation of post", e.getMessage()));
         }
-
     }
 
     @GetMapping()
     public ResponseEntity<List<PostResponse>> getAllPosts(){
         return ResponseEntity.ok().body(postService.getAllPosts().stream().map(RequestConverters::PostConverter).toList());
     }
+
 
     @DeleteMapping()
     public ResponseEntity<String> deletePost(@RequestBody DeletePostRequest request){
@@ -52,5 +55,26 @@ public class PostController {
             return ResponseEntity.status(417).body(e.getMessage());
         }
     }
+
+    @GetMapping("level/{level}")
+    public ResponseEntity<List<PostResponse>> getRecipeByDifficulty(@PathVariable(value = "level") DifficultyLevel level){
+        return ResponseEntity.ok().body(postService.findAllRecipesByDifficulty(level).stream().map(RequestConverters::PostConverter).toList());
+    }
+
+    @GetMapping("category/{category}")
+    public ResponseEntity<List<PostResponse>> getRecipeByCategory(@PathVariable(value = "category")Category category){
+        return ResponseEntity.ok().body(postService.findAllRecipesByCategory(category).stream().map(RequestConverters::PostConverter).toList());
+    }
+
+    @GetMapping("ingredients")
+    public ResponseEntity<List<PostResponse>> getRecipeByIngredients(@RequestBody RecipeIngredientsRequest request){
+        return ResponseEntity.ok().body(postService.findAllRecipesByIngredients(request.getIngredients()).stream().map(RequestConverters::PostConverter).toList());
+    }
+
+    @GetMapping("/recipes")
+    public ResponseEntity<List<PostResponse>> getAllRecipes(){
+        return ResponseEntity.ok().body(postService.findAllRecipes().stream().map(RequestConverters::PostConverter).toList());
+    }
+
 
 }

@@ -13,5 +13,5 @@ public class Post {
     private String date;
     private Long userId;
     private String description;
-
+    private Recipe recipe;
 }

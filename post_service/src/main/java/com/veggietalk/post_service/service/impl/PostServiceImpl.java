@@ -1,5 +1,7 @@
 package com.veggietalk.post_service.service.impl;
 
+import com.veggietalk.post_service.model.Category;
+import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
 import com.veggietalk.post_service.persistence.model.PostEntity;
@@ -52,6 +54,25 @@ public class    PostServiceImpl implements PostService {
     }
 
 
+    @Override
+    public List<Post> findAllRecipesByDifficulty(DifficultyLevel level) {
+        return postRepo.findAllRecipesByDifficulty(level);
+    }
+
+    @Override
+    public List<Post> findAllRecipesByCategory(Category category) {
+        return postRepo.findAllRecipesByCategory(category);
+    }
+
+    @Override
+    public List<Post> findAllRecipesByIngredients(List<String> ingredients) {
+        return postRepo.findAllByIngredientsContaining(ingredients);
+    }
+
+    @Override
+    public List<Post> findAllRecipes(){
+        return postRepo.findAllRecipes();
+    }
 
 
 }
