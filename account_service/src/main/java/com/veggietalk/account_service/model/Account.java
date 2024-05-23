@@ -14,23 +14,57 @@ public class Account {
     private Long id;
     private String email;
     private String bio;
-    private String userId;
+    private Long userId;
 
-    private List<Account> followers;
-    private List<Account> following;
+    private List<Account> followers = new ArrayList<>();
+    private List<Account> following = new ArrayList<>();
 
-    public void addFollower(Account account){
-        if (followers == null){
-            followers = new ArrayList<>();
+    public void addFollower(Account account) throws Exception {
+        if (account != null) {
+            if (followers == null) {
+                followers = new ArrayList<>();
+            }
+            if (this.followers.stream().noneMatch(acc -> acc.getId().equals(account.getId()))) {
+                this.followers.add(account);
+            } else {
+                throw new Exception("Already following this account");
+            }
+        } else {
+           throw new Exception("Attempted to add a null follower.");
         }
-        followers.add(account);
     }
 
-    public void addFollowing(Account account){
-        if (following == null){
-            following = new ArrayList<>();
+    public void addFollowing(Account account) throws Exception {
+        if (account != null) {
+            if (following == null) {
+                following = new ArrayList<>();
+            }
+            if (this.following.stream().noneMatch(acc -> acc.getId().equals(account.getId()))) {
+                this.following.add(account);
+            } else {
+               throw new Exception("Already following this account");
+            }
+        } else {
+            throw new Exception("Attempted to add a null following.");
         }
-        following.add(account);
+    }
+
+    public void removeFollower(Account account) throws Exception {
+        if (account != null) {
+            if (followers != null && followers.contains(account)) {
+                followers.remove(account);
+                throw new Exception("Follower removed: " + account.getEmail());
+            }
+        }
+    }
+
+    public void removeFollowing(Account account) throws Exception {
+        if (account != null) {
+            if (following != null && following.contains(account)) {
+                following.remove(account);
+                throw new Exception("Following removed: " + account.getEmail());
+            }
+        }
     }
 
 }

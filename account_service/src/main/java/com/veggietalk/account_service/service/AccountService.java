@@ -14,5 +14,5 @@ public interface AccountService {
 
     Account findById(Long id) throws IllegalArgumentException;
 
-    public void addFollow(Long idFollower, Long idFollowing);
+    public void addFollow(Long idFollower, Long idFollowing) throws Exception;
 }

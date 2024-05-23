@@ -10,4 +10,5 @@ import lombok.Getter;
 public class AccountResponse {
     private Long id;
     private String email;
+    private String bio;
 }

@@ -71,7 +71,7 @@ public class PostController {
         return ResponseEntity.ok().body(postService.findAllRecipesByIngredients(request.getIngredients()).stream().map(RequestConverters::PostConverter).toList());
     }
 
-    @GetMapping("/recipes")
+    @GetMapping("recipes")
     public ResponseEntity<List<PostResponse>> getAllRecipes(){
         return ResponseEntity.ok().body(postService.findAllRecipes().stream().map(RequestConverters::PostConverter).toList());
     }

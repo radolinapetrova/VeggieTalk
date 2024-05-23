@@ -22,9 +22,20 @@ public class AccountEntity {
     private String email;
     private String bio;
     private String user_id;
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+//    @JoinTable(
+//            name = "follower_relationship",
+//            joinColumns = @JoinColumn(name = "following_id"),
+//            inverseJoinColumns = @JoinColumn(name = "follower_id")
+//    )
+//    private List<AccountEntity> followers = new ArrayList<>();
+//
+//    @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
+//    private List<AccountEntity> following = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @JoinTable(
             name = "follower_relationship",
             joinColumns = @JoinColumn(name = "following_id"),
@@ -32,8 +43,23 @@ public class AccountEntity {
     )
     private List<AccountEntity> followers = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "follower_relationship",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id")
+    )
     private List<AccountEntity> following = new ArrayList<>();
+
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "follower_relationship",
+//            joinColumns = @JoinColumn(name = "following_id"),
+//            inverseJoinColumns = @JoinColumn(name = "follower_id")
+//    )
+//    private List<AccountEntity> followers = new ArrayList<>();
+//
+//    @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
+//    private List<AccountEntity> following = new ArrayList<>();
 
 }

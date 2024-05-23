@@ -8,6 +8,7 @@ import com.veggietalk.auth_service.persistence.model.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -28,6 +29,14 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User saveUser(User user){
         return UserConverters.UserEntityConverter(userRepo.save(UserConverters.UserConverter(user)));
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id);
+        if (userRepo.findById(id).isPresent()){
+            throw new NoSuchElementException("The deletion of the user was not successful");
+        }
     }
 
 }

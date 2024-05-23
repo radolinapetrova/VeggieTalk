@@ -40,9 +40,20 @@ public class AccountController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<String> addFollow(@RequestBody FollowRequest request){
-        accountService.addFollow(request.getFollower(), request.getFollowing());
-        return ResponseEntity.ok().body("Successfully followed");
+    public ResponseEntity<String> addFollow(@RequestBody FollowRequest request) throws Exception{
+        try{
+            accountService.addFollow(request.getFollower(), request.getFollowing());
+            return ResponseEntity.ok().body("Successfully followed");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(200).body(e.getMessage());
+        }
+
+    }
+
+    @PutMapping
+    public ResponseEntity<AccountResponse> updateAccount(@RequestBody AccountRequest request){
+        return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.updateAccount(RequestConverter.accountRequestConverter(request), request.getUserId())));
     }
 
 

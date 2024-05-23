@@ -9,4 +9,6 @@ public interface UserRepo {
 
     public User saveUser(User user);
 
+    public void deleteUser(Long id);
+
 }

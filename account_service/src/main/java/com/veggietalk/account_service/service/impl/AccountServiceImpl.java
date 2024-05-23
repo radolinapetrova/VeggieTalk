@@ -44,21 +44,17 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Long id, Long userId) throws IllegalArgumentException{
         accountRepo.findById(id);
         if (!id.equals(userId)){
-            throw new IllegalArgumentException("Nooooo");
+            throw new IllegalArgumentException("You do not have the right to delete this account");
         }
         accountRepo.delete(id);;
     }
 
     @Override
-    public void addFollow(Long idFollower, Long idFollowing){
+    public void addFollow(Long idFollower, Long idFollowing) throws Exception {
         Account follower = accountRepo.findById(idFollower);
         Account following = accountRepo.findById(idFollowing);
 
-
-        follower.getFollowing().add(Account.builder().id(following.getId()).build());
-        following.getFollowers().add(Account.builder().id(follower.getId()).build());
-
-        accountRepo.save(follower);
+        following.addFollower(Account.builder().id(follower.getId()).build());
         accountRepo.save(following);
     }
 }

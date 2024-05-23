@@ -4,13 +4,35 @@ import com.veggietalk.account_service.controller.DTO.AccountRequest;
 import com.veggietalk.account_service.controller.DTO.AccountResponse;
 import com.veggietalk.account_service.model.Account;
 
+import java.util.ArrayList;
+
 public class RequestConverter {
 
     public static AccountResponse accountConverter(Account account){
-        return AccountResponse.builder().email(account.getEmail()).id(account.getId()).build();
+        AccountResponse response = AccountResponse.builder()
+                .email(account.getEmail())
+                .id(account.getId())
+                .bio(account.getBio())
+                .build();
+
+        if (account.getFollowers() != null){
+            account.setFollowers(new ArrayList<>());
+        }
+        if (account.getFollowing() != null){
+            account.setFollowing(new ArrayList<>());
+        }
+        return response;
     }
 
     public static Account accountRequestConverter(AccountRequest request){
-        return Account.builder().email(request.getEmail()).build();
+        Account account = Account.builder()
+                .email(request.getEmail())
+                .userId(request.getUserId())
+                .bio(request.getBio())
+                .build();
+        if (request.getId() != null ){
+            account.setId(request.getId());
+        }
+        return account;
     }
 }

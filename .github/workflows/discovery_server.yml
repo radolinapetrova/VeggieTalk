@@ -1,12 +1,12 @@
 on:
   push:
     paths:
-      - "post_service/**"
-      - ".github/workflows/post_service.yml"
+      - "discovery_server/**"
+      - ".github/workflows/discovery_server.yml"
 
 
 jobs:
-  build_post_service:
+  build_discovery_server:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,24 +17,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file post_service/pom.xml
+        run: mvn -B package --file discovery_server/pom.xml
 
-  test_post_service:
-    needs: build_post_service
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-      - name: Test with Maven
-        run: mvn test --file post_service/pom.xml
 
-  sonarcloud_post_service:
-    needs: test_post_service
+
+  sonarcloud_discovery_server:
+    needs: build_discovery_server
     name: Sonarcloud
     runs-on: ubuntu-latest
     steps:
@@ -60,11 +48,11 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
-        run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DISCOVERY_SERVER }}
+        run: cd discovery_server && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_discovery_server
 
   docker:
-    needs: sonarcloud_post_service
+    needs: sonarcloud_discovery_server
     name: docker ig
     runs-on: ubuntu-latest
     steps:
@@ -78,18 +66,18 @@ jobs:
           distribution: 'temurin'
       - name: Build JAR file
         run: |
-          cd post_service
+          cd discovery_server
           mvn clean package
       - name: Build Docker image
         run: |
-          cd post_service
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest .
+          cd discovery_server
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/discovery_server_img:latest .
       - name: Push Docker image to Docker Hub
         run: |
           docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_PASSWORD }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/discovery_server_img:latest
       - name: Run Docker Compose
         run: |
-          cd post_service
+          cd discovery_server
           docker-compose up -d
           docker ps

@@ -10,12 +10,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="discovery_server" />
         <module name="post_service" />
-        <module name="api_gateway" />
         <module name="auth_service" />
-        <module name="account-service" />
+        <module name="comment_service" />
         <module name="account_service" />
+        <module name="discovery_server" />
+        <module name="api_gateway" />
+        <module name="account-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,6 +30,7 @@
       <module name="account_service" options="-parameters" />
       <module name="api_gateway" options="-parameters" />
       <module name="auth_service" options="-parameters" />
+      <module name="comment_service" options="-parameters" />
       <module name="discovery_server" options="-parameters" />
       <module name="post_service" options="-parameters" />
       <module name="rabbitmq" options="-parameters" />

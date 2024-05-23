@@ -37,4 +37,8 @@ public class UserServiceImpl implements UserService {
 
         return providedPass.equals(user.getPassword());
     }
+
+    public boolean deleteAccount(){
+        return true;
+    }
 }
