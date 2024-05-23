@@ -77,6 +77,5 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/api_gateway_img:latest
       - name: Run Docker Compose
         run: |
-          cd api_gateway
           docker-compose up -d
           docker ps

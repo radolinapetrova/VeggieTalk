@@ -90,6 +90,5 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/comment_service_img:latest
       - name: Run Docker Compose
         run: |
-          cd comment_service
           docker-compose up -d
           docker ps

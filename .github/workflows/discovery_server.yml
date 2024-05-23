@@ -78,6 +78,5 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/discovery_server_img:latest
       - name: Run Docker Compose
         run: |
-          cd discovery_server
           docker-compose up -d
           docker ps

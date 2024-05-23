@@ -90,6 +90,5 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/auth_service_img:latest
       - name: Run Docker Compose
         run: |
-          cd auth_service
           docker-compose up -d
           docker ps
