@@ -2,15 +2,10 @@ package com.veggietalk.auth_service.service.impl;
 
 import com.veggietalk.auth_service.model.User;
 import com.veggietalk.auth_service.persistence.UserRepo;
-import com.veggietalk.auth_service.persistence.impl.PasswordHasher;
+import com.veggietalk.auth_service.service.PasswordHasher;
 import com.veggietalk.auth_service.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 @Service
 @AllArgsConstructor

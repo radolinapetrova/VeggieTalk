@@ -2,8 +2,6 @@ package com.veggietalk.post_service.service_impl.serviceTests;
 
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
-import com.veggietalk.post_service.persistence.model.PostEntity;
-import com.veggietalk.post_service.persistence.converters.PostConverters;
 import com.veggietalk.post_service.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

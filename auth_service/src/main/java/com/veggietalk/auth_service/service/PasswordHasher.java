@@ -1,4 +1,4 @@
-package com.veggietalk.auth_service.persistence.impl;
+package com.veggietalk.auth_service.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
