@@ -92,4 +92,5 @@ jobs:
       - name: Run Docker Compose
         run: |
           docker-compose up -d
+          sleep 30
           docker ps
