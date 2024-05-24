@@ -3,6 +3,7 @@ on:
     paths:
       - "api_gateway/**"
       - ".github/workflows/api_gateway.yml"
+      - "docker-compose.yml"
 
 
 jobs:

@@ -3,6 +3,7 @@ on:
     paths:
       - "post_service/**"
       - ".github/workflows/post_service.yml"
+      - "docker-compose.yml"
 
 
 jobs:

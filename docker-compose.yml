@@ -1,24 +1,78 @@
 services:
-  db:
-    ports:
-      - 5432:5432
-    container_name: postgres_container
+  postgres-post:
+    container_name: postgres_post_container
     image: postgres
     environment:
       POSTGRES_PASSWORD: R@d!0252
       POSTGRES_USER: postgres
       POSTGRES_DB: post_info
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - //c/postgres_container_data:/var/lib/postgresql/data
+      - //c/postgres_post_container_data:/var/lib/postgresql/data
+    expose:
+      - "5431"
+    ports:
+      - "5431:5431"
+    command: -p 5431
     restart: always
 
-  backend:
+  postgres-account:
+    container_name: postgres_account_container
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: R@d!0252
+      POSTGRES_USER: postgres
+      POSTGRES_DB: account_info
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - //c/postgres_account_container_data:/var/lib/postgresql/data
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    command: -p 5433
+    restart: always
+
+  discovery-server:
+    image: radolina/discovery_server_img:latest
+    container_name: discovery_server_container
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVATE: docker
+
+  api-gateway:
+    image: radolina/api_gateway_img:latest
+    container_name: api_gateway_container
+    ports:
+      - "8181:8080"
+    expose:
+      - "8181"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - discovery-server
+
+  post-service:
     image: radolina/post_service_img:latest
     container_name: post_service_container
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/post_info
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-post:5431/post_info
+      SPRING_PROFILES_ACTIVATE: docker
     depends_on:
-      - db
+      - postgres-post
+
+  account_service:
+    image: radolina/account_service_img:latest
+    container_name: account_service_container
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-post:5433/account_info
+      SPRING_PROFILES_ACTIVATE: docker
+    depends_on:
+      - postgres-account
 

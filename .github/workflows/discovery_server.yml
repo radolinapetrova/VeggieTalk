@@ -3,6 +3,7 @@ on:
     paths:
       - "discovery_server/**"
       - ".github/workflows/discovery_server.yml"
+      - "docker-compose.yml"
 
 
 jobs:

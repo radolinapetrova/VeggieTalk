@@ -3,6 +3,7 @@ on:
     paths:
       - "comment_service/**"
       - ".github/workflows/comment_service.yml"
+      - "docker-compose.yml"
 
 
 jobs:

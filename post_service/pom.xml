@@ -15,10 +15,10 @@
     <description>post_service</description>
     <properties>
         <java.version>21</java.version>
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
         <sonar.organization>radolinapetrova</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>radolinapetrova_VeggieTalk_post_service</sonar.projectKey>
-        <spring-cloud.version>2023.0.1</spring-cloud.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>

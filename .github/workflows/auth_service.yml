@@ -3,6 +3,7 @@ on:
     paths:
       - "auth_service/**"
       - ".github/workflows/auth_service.yml"
+      - "docker-compose.yml"
 
 
 jobs:
