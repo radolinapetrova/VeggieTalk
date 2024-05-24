@@ -3,8 +3,10 @@ services:
     container_name: postgres_post_container
     image: postgres
     environment:
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+#      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: R@d!0252
+      POSTGRES_USER: postgres
       POSTGRES_DB: post_info
       PGDATA: /var/lib/postgresql/data
     volumes:
@@ -20,8 +22,10 @@ services:
     container_name: postgres_account_container
     image: postgres
     environment:
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: R@d!0252
+      POSTGRES_USER: postgres
       POSTGRES_DB: account_info
       PGDATA: /var/lib/postgresql/data
     volumes:
@@ -31,6 +35,41 @@ services:
     ports:
       - "5433:5433"
     command: -p 5433
+    restart: always
+
+  postgres-auth:
+    container_name: postgres_auth_container
+    image: postgres
+    environment:
+      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: R@d!0252
+      POSTGRES_USER: postgres
+      POSTGRES_DB: user_info
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - //c/postgres_auth_container_data:/var/lib/postgresql/data
+    expose:
+      - "5434"
+    ports:
+      - "5434:5434"
+    command: -p 5434
+    restart: always
+
+  postgres-comment:
+    container_name: postgres_comment_container
+    image: postgres
+    environment:
+      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: R@d!0252
+      POSTGRES_USER: postgres
+      POSTGRES_DB: comment_info
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - //c/postgres_comment_container_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     restart: always
 
   discovery-server:
@@ -71,8 +110,58 @@ services:
     ports:
       - "8083:8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-post:5433/account_info
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-account:5433/account_info
       SPRING_PROFILES_ACTIVATE: docker
     depends_on:
       - postgres-account
 
+  auth_service:
+    image: radolina/auth_service_img:latest
+    container_name: auth_service_container
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5434/user_info
+      SPRING_PROFILES_ACTIVATE: docker
+    depends_on:
+      - postgres-auth
+
+  comment_service:
+    image: radolina/comment_service_img:latest
+    container_name: comment_service_container
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-comment:5432/comment_info
+      SPRING_PROFILES_ACTIVATE: docker
+    depends_on:
+      - postgres-comment
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - post-service
+      - account_service
+      - comment_service
+      - auth_service
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password

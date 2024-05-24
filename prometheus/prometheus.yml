@@ -1,0 +1,29 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'post_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['product_service:8080']
+        labels:
+          application: 'Post Service Application'
+  - job_name: 'account_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['account_service:8080']
+        labels:
+          application: 'Account Service Application'
+  - job_name: 'comment_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['comment_service:8080']
+        labels:
+          application: 'Comment Service Application'
+  - job_name: 'auth_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['auth_service:8080']
+        labels:
+          application: 'Auth Service Application'
