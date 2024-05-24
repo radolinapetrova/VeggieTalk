@@ -119,7 +119,7 @@ services:
     image: radolina/auth_service_img:latest
     container_name: auth_service_container
     ports:
-      - "8084:8084"
+      - "8085:8084"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5434/user_info
       SPRING_PROFILES_ACTIVATE: docker
