@@ -3,9 +3,7 @@ package com.veggietalk.post_service.persistence.impl;
 import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
-import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.persistence.DBRepos.PostDBRepo;
-import com.veggietalk.post_service.persistence.DBRepos.RecipeDBRepo;
 import com.veggietalk.post_service.persistence.PostRepo;
 import com.veggietalk.post_service.persistence.converters.PostConverters;
 import com.veggietalk.post_service.persistence.converters.RecipeConverters;
@@ -22,7 +20,6 @@ import java.util.Optional;
 public class PostRepoImpl implements PostRepo {
 
     private final PostDBRepo postDBRepo;
-    private final RecipeDBRepo recipeDBRepo;
 
     @Override
     public Post save(Post post) {
@@ -34,7 +31,6 @@ public class PostRepoImpl implements PostRepo {
         if (post.getRecipe() != null) {
             RecipeEntity recipeEntity = RecipeConverters.RecipeConverter(post.getRecipe());
             recipeEntity.setPost(postEntity);
-//            recipeEntity = recipeDBRepo.save(recipeEntity);
             postEntity.setRecipe(recipeEntity);
             postEntity = postDBRepo.save(postEntity);
         }
