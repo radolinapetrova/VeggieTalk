@@ -161,9 +161,9 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
-#
-#  rabbitmq:
-#    image: rabbitmq:management
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

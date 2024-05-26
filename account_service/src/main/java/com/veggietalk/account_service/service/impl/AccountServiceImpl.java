@@ -1,6 +1,6 @@
 package com.veggietalk.account_service.service.impl;
 
-import com.veggietalk.account_service.config.Producer;
+//import com.veggietalk.account_service.config.Producer;
 import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.persistence.AccountRepo;
 import com.veggietalk.account_service.persistence.model.AccountEntity;
@@ -18,12 +18,12 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepo accountRepo;
 
-    @Autowired
-    private Producer producer;
+//    @Autowired
+//    private Producer producer;
 
     @Override
     public Account saveAccount(Account account) {
-        producer.verifyAccount(1L);
+//        producer.verifyAccount(1L);
        return accountRepo.save(account);
     }
 

@@ -83,7 +83,7 @@ public class PostControllerTest {
     void createPost_shouldSuccessfullyCreatePost() throws Exception {
         // ARRANGE
         PostRequest request = PostRequest.builder().description("Descr").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build();
-        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-08").description(request.getDescription()).userId(request.getUserId()).build();
+        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-27").description(request.getDescription()).userId(request.getUserId()).build();
         String content = new ObjectMapper().writeValueAsString(request);
         String expected = new ObjectMapper().writeValueAsString(response);
 
