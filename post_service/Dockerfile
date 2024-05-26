@@ -7,7 +7,7 @@ WORKDIR /app
 COPY target/*.jar /app/post_service.jar
 
 # Expose port 8080 (assuming your application listens on port 8080)
-EXPOSE 8080
+EXPOSE 8081
 
 # Set the entrypoint to run the JAR file
 ENTRYPOINT ["java", "-jar", "post_service.jar"]

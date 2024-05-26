@@ -12,7 +12,7 @@ services:
     expose:
       - "5431"
     ports:
-      - "5431:5431"
+      - "5431:5432"
     command: -p 5431
     restart: always
 
@@ -29,7 +29,7 @@ services:
     expose:
       - "5433"
     ports:
-      - "5433:5433"
+      - "5433:5432"
     command: -p 5433
     restart: always
 
@@ -46,7 +46,7 @@ services:
     expose:
       - "5434"
     ports:
-      - "5434:5434"
+      - "5434:5432"
     command: -p 5434
     restart: always
 
