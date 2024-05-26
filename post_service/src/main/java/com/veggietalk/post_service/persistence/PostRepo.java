@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface PostRepo {
@@ -15,8 +16,8 @@ public interface PostRepo {
 
     List<Post> getAllPosts();
 
-    void deletePost(Long id);
-    Post findById(Long id) throws IllegalArgumentException;
+    void deletePost(UUID id);
+    Post findById(UUID id) throws IllegalArgumentException;
 
 
     List<Post> findAllRecipesByDifficulty(DifficultyLevel level);

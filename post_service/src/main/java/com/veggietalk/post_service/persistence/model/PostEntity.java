@@ -4,8 +4,10 @@ package com.veggietalk.post_service.persistence.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,10 +18,16 @@ import java.util.List;
 @Table(name = "posts")
 public class PostEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+
     private String date;
-    private Long user_id;
+    private UUID user_id;
     private String description;
 
     @OneToMany(mappedBy = "post")

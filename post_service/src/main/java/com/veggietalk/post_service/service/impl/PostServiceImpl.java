@@ -13,21 +13,18 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class    PostServiceImpl implements PostService {
+public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
 
     LocalDate currentDate = LocalDate.now();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Post createPost(Post post) throws IllegalArgumentException{
         if (post.getDescription() == null || post.getDescription().isEmpty()){
@@ -37,7 +34,7 @@ public class    PostServiceImpl implements PostService {
         return postRepo.save(post);
     }
 
-    public void deletePost(Long id, Long userId) throws IllegalArgumentException{
+    public void deletePost(UUID id, UUID userId) throws IllegalArgumentException{
         Post post = postRepo.findById(id);
         if (!Objects.equals(post.getUserId(), userId)){
             throw new IllegalArgumentException("You do not have the right to delete this post");

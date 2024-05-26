@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface RecipeDBRepo extends JpaRepository<RecipeEntity, Long> {
+public interface RecipeDBRepo extends JpaRepository<RecipeEntity, UUID> {
 
 }

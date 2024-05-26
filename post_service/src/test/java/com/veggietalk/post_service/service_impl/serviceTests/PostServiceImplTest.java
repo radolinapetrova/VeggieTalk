@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,14 +32,14 @@ class PostServiceImplTest {
 
     LocalDate currentDate = LocalDate.now();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     //HAPPY FLOW
     @Test
     void testCreatePost_shouldReturnCreatedPostDetails(){
         //ARRANGE
-        Post post = Post.builder().description("Descr").userId(1L).build();
-        Post entity = Post.builder().id(1L).date(currentDate.format(formatter)).description("Descr").userId(1L).build();
+        Post post = Post.builder().description("Descr").userId(UUID.fromString("273e4567-e89b-12d3-a456-426614174000")).build();
+        Post entity = Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").userId(UUID.fromString("123e4589-e89b-12d3-a456-426614174000")).build();
         when(postRepo.save(any(Post.class))).thenReturn(entity);
 
         //ACT
@@ -54,8 +55,8 @@ class PostServiceImplTest {
     @Test
     void testCreatePost_shouldThrowException_whenNoDescriptionIsProvided(){
         //ARRANGE
-        Post post = Post.builder().userId(1L).build();
-        Post post2 = Post.builder().description("").userId(1L).build();
+        Post post = Post.builder().userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
+        Post post2 = Post.builder().description("").userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
 
         //ACT
         assertThrows(IllegalArgumentException.class, () -> service.createPost(post));
@@ -69,28 +70,28 @@ class PostServiceImplTest {
     @Test
     void testDeletePost_shouldSuccessfullyDeletePost(){
         //ARRANGE
-        Long id = 1L;
-        Long user = 1L;
-        when(postRepo.findById(any(Long.class))).thenReturn(Post.builder().userId(id).build());
+        UUID id = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+        UUID user = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().userId(id).build());
 
         //ACT
         service.deletePost(id, user);
 
         //ASSERT
-        verify(postRepo, times(1)).deletePost(any(Long.class));
+        verify(postRepo, times(1)).deletePost(any(UUID.class));
 
     }
     //UNHAPPY FLOW
     @Test
     void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
         //ARRANGE
-        doThrow(IllegalArgumentException.class).when(postRepo).findById(any(Long.class));
+        doThrow(IllegalArgumentException.class).when(postRepo).findById(any(UUID.class));
 
         //ACT
-        assertThrows(IllegalArgumentException.class, () -> service.deletePost(1L, 1L));
+        assertThrows(IllegalArgumentException.class, () -> service.deletePost(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), UUID.fromString("123e4567-e89b-12d3-a456-426614174000")));
 
         //ASSERT
-        verify(postRepo, never()).deletePost(any(Long.class));
+        verify(postRepo, never()).deletePost(any(UUID.class));
     }
 
     //HAPPY FLOW
@@ -98,9 +99,9 @@ class PostServiceImplTest {
     void testGetAllPosts_shouldReturnAllExistingPosts(){
         //ARRANGE
         List<Post> posts = List.of(
-                Post.builder().id(1L).date(currentDate.format(formatter)).description("Descr").userId(1L).build(),
-                Post.builder().id(2L).date(currentDate.format(formatter)).description("Descr2").userId(2L).build(),
-                Post.builder().id(3L).date(currentDate.format(formatter)).description("Descr3").userId(3L).build()
+                Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build(),
+                Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).date(currentDate.format(formatter)).description("Descr2").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build(),
+                Post.builder().id(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).date(currentDate.format(formatter)).description("Descr3").userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build()
         );
         when(postRepo.getAllPosts()).thenReturn(posts);
 
@@ -109,9 +110,9 @@ class PostServiceImplTest {
 
         //ASSERT
         verify(postRepo, times(1)).getAllPosts();
-        assertEquals(1L, result.getFirst().getId());
+        assertEquals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), result.getFirst().getId());
         assertEquals("Descr2", result.get(1).getDescription());
-        assertEquals(3L, result.get(2).getUserId());
+        assertEquals(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"), result.get(2).getUserId());
     }
 
     //UNHAPPY FLOW

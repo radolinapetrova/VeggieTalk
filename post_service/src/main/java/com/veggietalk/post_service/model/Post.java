@@ -2,6 +2,8 @@ package com.veggietalk.post_service.model;
 
 import lombok.*;
 
+import java.util.UUID;
+
 
 @Builder
 @Getter
@@ -9,9 +11,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    private Long id;
+    private UUID id;
     private String date;
-    private Long userId;
+    private UUID userId;
     private String description;
     private Recipe recipe;
 }

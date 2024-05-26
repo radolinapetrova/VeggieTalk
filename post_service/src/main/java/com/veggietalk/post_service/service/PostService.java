@@ -6,11 +6,12 @@ import com.veggietalk.post_service.model.Post;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 public interface PostService {
     Post createPost(Post post) throws IllegalArgumentException;
 
-    void deletePost(Long id, Long userId) throws IllegalArgumentException;
+    void deletePost(UUID id, UUID userId) throws IllegalArgumentException;
 
     List<Post> getAllPosts() throws NoSuchElementException;
 

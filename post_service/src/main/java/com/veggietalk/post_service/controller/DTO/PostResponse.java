@@ -5,14 +5,15 @@ import com.veggietalk.post_service.model.DifficultyLevel;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 public class PostResponse {
-    private Long id;
-    private Long userId;
+    private UUID id;
+    private UUID userId;
     private String description;
     private String date;
     private DifficultyLevel level;

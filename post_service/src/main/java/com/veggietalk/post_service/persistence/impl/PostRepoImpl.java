@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,12 +46,12 @@ public class PostRepoImpl implements PostRepo {
     }
 
     @Override
-    public void deletePost(Long id) {
+    public void deletePost(UUID id) {
         postDBRepo.deleteById(id);
     }
 
     @Override
-    public Post findById(Long id) throws IllegalArgumentException{
+    public Post findById(UUID id) throws IllegalArgumentException{
         Optional<PostEntity> entity = postDBRepo.findById(id);
         if(entity.isPresent()){
             return PostConverters.PostEntityConverter(entity.get());

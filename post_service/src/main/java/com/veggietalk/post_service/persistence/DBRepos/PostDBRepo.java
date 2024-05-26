@@ -9,11 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface PostDBRepo extends JpaRepository<PostEntity, Long> {
+public interface PostDBRepo extends JpaRepository<PostEntity, UUID> {
     @Query("SELECT p FROM PostEntity p WHERE NOT EXISTS (SELECT r FROM RecipeEntity r WHERE p.id = r.id)")
     List<PostEntity> findAllWithoutRecipes();
+
+    List<PostEntity> findAll();
 
     List<PostEntity> findAllByRecipeDifficultyLevel(DifficultyLevel level);
 

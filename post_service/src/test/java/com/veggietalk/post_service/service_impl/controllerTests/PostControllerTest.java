@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +48,7 @@ public class PostControllerTest {
     @Test
     void testPostRequestConverter(){
         //ARRANGE
-        PostRequest request = new PostRequest(1L, "Descr", List.of(""), Category.DINNER, DifficultyLevel.EASY);
+        PostRequest request = new PostRequest(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Descr", List.of(""), Category.DINNER, DifficultyLevel.EASY);
 
         //ACT
         Post result = RequestConverters.RequestConverter(request);
@@ -61,10 +62,10 @@ public class PostControllerTest {
     void testPostResponseConverter(){
         //ARRANGE
         Post post = new Post();
-        post.setUserId(1L);
+        post.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
         post.setDescription("Descr");
-        post.setUserId(1L);
-        post.setDate("27-12-2002");
+        post.setUserId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
+        post.setDate("2002-12-27");
 
         //ACT
         PostResponse response = RequestConverters.PostConverter(post);
@@ -81,13 +82,13 @@ public class PostControllerTest {
     @Test
     void createPost_shouldSuccessfullyCreatePost() throws Exception {
         // ARRANGE
-        PostRequest request = PostRequest.builder().description("Descr").userId(1L).build();
-        PostResponse response = PostResponse.builder().id(1L).date("28-03-2024").description(request.getDescription()).userId(request.getUserId()).build();
+        PostRequest request = PostRequest.builder().description("Descr").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build();
+        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-08").description(request.getDescription()).userId(request.getUserId()).build();
         String content = new ObjectMapper().writeValueAsString(request);
         String expected = new ObjectMapper().writeValueAsString(response);
 
         // ACT
-        when(service.createPost(any(Post.class))).thenReturn(new Post(1L, "28-03-2024", request.getUserId(), request.getDescription(), Recipe.recipeBuilder().build()));
+        when(service.createPost(any(Post.class))).thenReturn(new Post(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "2024-03-27", request.getUserId(), request.getDescription(), Recipe.recipeBuilder().build()));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
@@ -104,7 +105,7 @@ public class PostControllerTest {
     @Test
     void createPost_shouldThrowException_whenInvalidDataWasProvided() throws Exception{
         // ARRANGE
-        PostRequest request = PostRequest.builder().userId(1L).build();
+        PostRequest request = PostRequest.builder().userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -124,7 +125,7 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldSuccessfullyDeletePost() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(1L).userId(1L).build();
+        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("123e4567-e89b-12d3-a456-426494174000")).build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -142,11 +143,11 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldReturnErrorMessage_whenPostDoesNotExist() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(1L).userId(1L).build();
+        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("123e4568-e89b-12d3-a456-426614174000")).build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
-        doThrow(IllegalArgumentException.class).when(service).deletePost(any(Long.class), any(Long.class));
+        doThrow(IllegalArgumentException.class).when(service).deletePost(any(UUID.class), any(UUID.class));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
@@ -162,9 +163,9 @@ public class PostControllerTest {
     void testGetAllPosts_shouldReturnAllPosts() throws Exception{
         //ARRANGE
         List<Post> posts = new ArrayList<>();
-        posts.add(Post.builder().id(1L).description("Descr1").date("27-12-2002").userId(1L).build());
-        posts.add(Post.builder().id(2L).description("Descr2").date("27-12-2002").userId(2L).build());
-        posts.add(Post.builder().id(3L).description("Descr3").date("27-12-2002").userId(3L).build());
+        posts.add(Post.builder().id(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).description("Descr1").date("2002-12-27").userId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build());
+        posts.add(Post.builder().id(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).description("Descr2").date("2002-12-27").userId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build());
+        posts.add(Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).description("Descr3").date("2002-12-27").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build());
         List<PostResponse> result = posts.stream().map(RequestConverters::PostConverter).toList();
         String expected = (new ObjectMapper()).writeValueAsString(result);
 

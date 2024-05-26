@@ -5,12 +5,13 @@ import com.veggietalk.post_service.model.DifficultyLevel;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 public class PostRequest {
-    private Long userId;
+    private UUID userId;
     private String description;
     private List<String> ingredients;
     private Category category;

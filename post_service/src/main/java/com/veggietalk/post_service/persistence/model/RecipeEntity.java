@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class RecipeEntity{
 
     @Id
     @Column(name = "post_id")
-    private Long id;
+    private UUID id;
 
     @OneToOne
     @MapsId
