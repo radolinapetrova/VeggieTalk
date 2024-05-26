@@ -1,6 +1,6 @@
 services:
   postgres-post:
-    container_name: postgres_post_container
+    container_name: postgres-post
     image: postgres
     environment:
       POSTGRES_PASSWORD: R@d!0252
