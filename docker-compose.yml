@@ -1,6 +1,6 @@
 services:
   postgres-post:
-    container_name: postgres-post
+    container_name: postgres_post_container
     image: postgres
     environment:
       POSTGRES_PASSWORD: R@d!0252
@@ -91,7 +91,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-post:5431/post_info
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_post_container:5432/post_info
       SPRING_PROFILES_ACTIVATE: docker
     depends_on:
       - postgres-post
@@ -102,7 +102,7 @@ services:
     ports:
       - "8083:8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-account:5433/account_info
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-account:5432/account_info
       SPRING_PROFILES_ACTIVATE: docker
     depends_on:
       - postgres-account
@@ -113,7 +113,7 @@ services:
     ports:
       - "8085:8084"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5434/user_info
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/user_info
       SPRING_PROFILES_ACTIVATE: docker
     depends_on:
       - postgres-auth
