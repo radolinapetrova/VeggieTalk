@@ -27,12 +27,13 @@ public class PostEntity {
     private UUID id;
 
     private String date;
+    @Column(name = "user_id", columnDefinition = "UUID")
     private UUID user_id;
     private String description;
 
-    @OneToMany(mappedBy = "post")
-    @Column(name = "media_file")
-    private List<MediaFileEntity> mediaFiles;
+//    @OneToMany(mappedBy = "post")
+//    @Column(name = "media_file")
+//    private List<MediaFileEntity> mediaFiles;
 
     @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumn
