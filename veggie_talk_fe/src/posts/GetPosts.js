@@ -31,7 +31,7 @@ export default function GetPosts(){
 
 
     function getPosts() {
-        axios.get('http://localhost:8080/posts')
+        axios.get('http://localhost:8080/api/posts')
             .then(res => {
                 console.log('Response Data:', res.data); // Log response data structure
                 setPosts(res.data);

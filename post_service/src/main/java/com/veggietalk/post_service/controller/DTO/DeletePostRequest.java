@@ -10,4 +10,5 @@ import java.util.UUID;
 public class DeletePostRequest {
     private UUID id;
     private UUID userId;
+    private String role;
 }

@@ -80,7 +80,7 @@ jobs:
       - name: Build JAR file
         run: |
           cd comment_service
-          mvn clean package
+          mvn clean install
       - name: Build Docker image
         run: |
           cd comment_service
@@ -93,4 +93,3 @@ jobs:
         run: |
           docker-compose up -d
           docker ps
-

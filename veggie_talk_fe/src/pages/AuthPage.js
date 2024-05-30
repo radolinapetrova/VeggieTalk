@@ -1,7 +1,9 @@
+import Register from "../auth/Register";
+
 export default function AuthPage(){
     return (
         <div>
-            <p>Auth Page</p>
+            <p><Register/></p>
         </div>
     )
 }

@@ -48,7 +48,7 @@ public class PostController {
     @DeleteMapping()
     public ResponseEntity<String> deletePost(@RequestBody DeletePostRequest request){
         try{
-            postService.deletePost(request.getId(), request.getUserId());
+            postService.deletePost(request.getId(), request.getUserId(), request.getRole());
             return ResponseEntity.status(200).body("Noice");
         }
         catch (IllegalArgumentException e){

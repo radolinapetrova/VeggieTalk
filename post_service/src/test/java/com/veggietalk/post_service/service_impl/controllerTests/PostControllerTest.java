@@ -143,11 +143,11 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldReturnErrorMessage_whenPostDoesNotExist() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("123e4568-e89b-12d3-a456-426614174000")).build();
+        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).role("USER").build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
-        doThrow(IllegalArgumentException.class).when(service).deletePost(any(UUID.class), any(UUID.class));
+        doThrow(IllegalArgumentException.class).when(service).deletePost(any(UUID.class), any(UUID.class), any(String.class));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);

@@ -34,9 +34,9 @@ public class PostServiceImpl implements PostService {
         return postRepo.save(post);
     }
 
-    public void deletePost(UUID id, UUID userId) throws IllegalArgumentException{
+    public void deletePost(UUID id, UUID userId, String role) throws IllegalArgumentException{
         Post post = postRepo.findById(id);
-        if (!Objects.equals(post.getUserId(), userId)){
+        if (!Objects.equals(post.getUserId(), userId) && !Objects.equals(role, "ADMIN")){
             throw new IllegalArgumentException("You do not have the right to delete this post");
         }
         postRepo.deletePost(id);

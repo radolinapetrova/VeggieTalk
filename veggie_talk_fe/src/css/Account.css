@@ -1,0 +1,73 @@
+
+.register > label{
+    background-color: grey;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+.input > label {
+    color: white;
+    padding: 5px;
+    border-radius: 2px;
+    margin: 10px;
+}
+
+input{
+    margin: 10px;
+}
+
+form > input{
+    width: 180px;
+    margin: 10px;
+}
+
+.register{
+    height: 350px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: 200px;
+    text-align: center;
+    padding: 20px;
+    background-color: #151414;
+    margin: 20px;
+}
+
+.login{
+    height: 200px;
+    width: 200px;
+    margin-right: auto;
+    margin-left: 200px;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: #151414;
+}
+
+.account{
+    display: flex;
+}
+
+.authForm{
+    display: flex;
+    margin: auto;
+}
+
+.button{
+    color: white;
+
+}
+
+.message{
+    color: white;
+}
+
+.accountInfo{
+    color: white;
+    width: 200px;
+    margin: auto;
+    background-color:  #151414;
+    padding: 20px;
+    margin-top: 50px;
+    display: block;
+}

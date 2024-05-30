@@ -1,14 +1,20 @@
-FROM openjdk:21-jdk-slim
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the built JAR file into the container
-COPY target/*.jar /app/comment_service.jar
+COPY ./pom.xml .
 
-# Expose port 8080 (assuming your application listens on port 8080)
-EXPOSE 8080
+COPY ./src ./src
 
-# Set the entrypoint to run the JAR file
-ENTRYPOINT ["java", "-jar", "comment_service.jar"]
+RUN mvn clean install -DskipTests
+
+RUN ls -la ./target
+
+FROM openjdk:21-jdk-slim AS runtime
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar ./app.jar
+
+CMD ["java", "-jar", "app.jar"]
 

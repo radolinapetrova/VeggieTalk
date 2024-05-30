@@ -80,7 +80,7 @@ jobs:
       - name: Build JAR file
         run: |
           cd account_service
-          mvn clean package
+          mvn clean install
       - name: Build Docker image
         run: |
           cd account_service
