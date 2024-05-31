@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class PostRequest {
-    private UUID userId;
+    private UUID accountId;
     private String description;
     private List<String> ingredients;
     private Category category;

@@ -3,10 +3,8 @@ package com.veggietalk.post_service.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,8 +25,10 @@ public class PostEntity {
     private UUID id;
 
     private String date;
-    @Column(name = "user_id", columnDefinition = "UUID")
-    private UUID user_id;
+
+    @Column(name = "account_id", columnDefinition = "UUID")
+    private UUID accountId;
+
     private String description;
 
     @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

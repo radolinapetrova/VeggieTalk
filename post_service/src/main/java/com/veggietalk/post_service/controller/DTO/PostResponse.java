@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PostResponse {
     private UUID id;
-    private UUID userId;
+    private UUID accountId;
     private String description;
     private String date;
     private DifficultyLevel level;

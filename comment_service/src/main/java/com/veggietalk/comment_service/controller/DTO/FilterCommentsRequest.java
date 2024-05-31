@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class FilterCommentsRequest {
-    private UUID userId;
+    private UUID accountId;
     private UUID postId;
     private Rating rating;
 }

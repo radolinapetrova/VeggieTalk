@@ -55,7 +55,7 @@ public class PostControllerTest {
 
         //ASSERT
         assertEquals(result.getDescription(), request.getDescription());
-        assertEquals(result.getUserId(), request.getUserId());
+        assertEquals(result.getAccountId(), request.getAccountId());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class PostControllerTest {
         Post post = new Post();
         post.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
         post.setDescription("Descr");
-        post.setUserId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
+        post.setAccountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
         post.setDate("2002-12-27");
 
         //ACT
@@ -73,7 +73,7 @@ public class PostControllerTest {
         //ASSERT
         assertEquals(response.getDate(), post.getDate());
         assertEquals(response.getId(), post.getId());
-        assertEquals(response.getUserId(), post.getUserId());
+        assertEquals(response.getAccountId(), post.getAccountId());
         assertEquals(response.getDescription(), post.getDescription());
     }
 
@@ -82,13 +82,13 @@ public class PostControllerTest {
     @Test
     void createPost_shouldSuccessfullyCreatePost() throws Exception {
         // ARRANGE
-        PostRequest request = PostRequest.builder().description("Descr").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build();
-        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-27").description(request.getDescription()).userId(request.getUserId()).build();
+        PostRequest request = PostRequest.builder().description("Descr").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build();
+        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-27").description(request.getDescription()).accountId(request.getAccountId()).build();
         String content = new ObjectMapper().writeValueAsString(request);
         String expected = new ObjectMapper().writeValueAsString(response);
 
         // ACT
-        when(service.createPost(any(Post.class))).thenReturn(new Post(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "2024-03-27", request.getUserId(), request.getDescription(), Recipe.recipeBuilder().build()));
+        when(service.createPost(any(Post.class))).thenReturn(new Post(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "2024-03-27", request.getAccountId(), request.getDescription(), Recipe.recipeBuilder().build()));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
@@ -105,7 +105,7 @@ public class PostControllerTest {
     @Test
     void createPost_shouldThrowException_whenInvalidDataWasProvided() throws Exception{
         // ARRANGE
-        PostRequest request = PostRequest.builder().userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build();
+        PostRequest request = PostRequest.builder().accountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -125,7 +125,7 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldSuccessfullyDeletePost() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("123e4567-e89b-12d3-a456-426494174000")).build();
+        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).accountId(UUID.fromString("123e4567-e89b-12d3-a456-426494174000")).build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -143,7 +143,7 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldReturnErrorMessage_whenPostDoesNotExist() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).role("USER").build();
+        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).role("USER").build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -163,9 +163,9 @@ public class PostControllerTest {
     void testGetAllPosts_shouldReturnAllPosts() throws Exception{
         //ARRANGE
         List<Post> posts = new ArrayList<>();
-        posts.add(Post.builder().id(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).description("Descr1").date("2002-12-27").userId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build());
-        posts.add(Post.builder().id(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).description("Descr2").date("2002-12-27").userId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build());
-        posts.add(Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).description("Descr3").date("2002-12-27").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build());
+        posts.add(Post.builder().id(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).description("Descr1").date("2002-12-27").accountId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build());
+        posts.add(Post.builder().id(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).description("Descr2").date("2002-12-27").accountId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build());
+        posts.add(Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).description("Descr3").date("2002-12-27").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build());
         List<PostResponse> result = posts.stream().map(RequestConverters::PostConverter).toList();
         String expected = (new ObjectMapper()).writeValueAsString(result);
 

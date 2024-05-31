@@ -4,9 +4,7 @@ import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
-import com.veggietalk.post_service.persistence.model.PostEntity;
 import com.veggietalk.post_service.service.PostService;
-import com.veggietalk.post_service.persistence.converters.PostConverters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +32,9 @@ public class PostServiceImpl implements PostService {
         return postRepo.save(post);
     }
 
-    public void deletePost(UUID id, UUID userId, String role) throws IllegalArgumentException{
+    public void deletePost(UUID id, UUID accountId, String role) throws IllegalArgumentException{
         Post post = postRepo.findById(id);
-        if (!Objects.equals(post.getUserId(), userId) && !Objects.equals(role, "ADMIN")){
+        if (!Objects.equals(post.getAccountId(), accountId) && !Objects.equals(role, "ADMIN")){
             throw new IllegalArgumentException("You do not have the right to delete this post");
         }
         postRepo.deletePost(id);

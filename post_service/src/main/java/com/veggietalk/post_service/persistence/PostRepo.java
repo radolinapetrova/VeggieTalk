@@ -27,4 +27,6 @@ public interface PostRepo {
     List<Post> findAllByIngredientsContaining(List<String> ingredients);
 
     List<Post> findAllRecipes();
+
+
 }

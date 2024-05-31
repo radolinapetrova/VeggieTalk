@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Post {
     private UUID id;
     private String date;
-    private UUID userId;
+    private UUID accountId;
     private String description;
     private Recipe recipe;
 }

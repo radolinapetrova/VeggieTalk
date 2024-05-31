@@ -9,12 +9,10 @@ import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.service.PostService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class PostController {
     @DeleteMapping()
     public ResponseEntity<String> deletePost(@RequestBody DeletePostRequest request){
         try{
-            postService.deletePost(request.getId(), request.getUserId(), request.getRole());
+            postService.deletePost(request.getId(), request.getAccountId(), request.getRole());
             return ResponseEntity.status(200).body("Noice");
         }
         catch (IllegalArgumentException e){

@@ -38,8 +38,8 @@ class PostServiceImplTest {
     @Test
     void testCreatePost_shouldReturnCreatedPostDetails(){
         //ARRANGE
-        Post post = Post.builder().description("Descr").userId(UUID.fromString("273e4567-e89b-12d3-a456-426614174000")).build();
-        Post entity = Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").userId(UUID.fromString("123e4589-e89b-12d3-a456-426614174000")).build();
+        Post post = Post.builder().description("Descr").accountId(UUID.fromString("273e4567-e89b-12d3-a456-426614174000")).build();
+        Post entity = Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").accountId(UUID.fromString("123e4589-e89b-12d3-a456-426614174000")).build();
         when(postRepo.save(any(Post.class))).thenReturn(entity);
 
         //ACT
@@ -47,7 +47,7 @@ class PostServiceImplTest {
 
         //ASSERT
         assertEquals(entity.getId(), result.getId());
-        assertEquals(entity.getUserId(), result.getUserId());
+        assertEquals(entity.getAccountId(), result.getAccountId());
         verify(postRepo, times(1)).save(any(Post.class));
     }
 
@@ -55,8 +55,8 @@ class PostServiceImplTest {
     @Test
     void testCreatePost_shouldThrowException_whenNoDescriptionIsProvided(){
         //ARRANGE
-        Post post = Post.builder().userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
-        Post post2 = Post.builder().description("").userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
+        Post post = Post.builder().accountId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
+        Post post2 = Post.builder().description("").accountId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build();
 
         //ACT
         assertThrows(IllegalArgumentException.class, () -> service.createPost(post));
@@ -72,7 +72,7 @@ class PostServiceImplTest {
         //ARRANGE
         UUID id = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
         UUID user = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().userId(id).build());
+        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().accountId(id).build());
 
         //ACT
         service.deletePost(id, user, "USER");
@@ -99,9 +99,9 @@ class PostServiceImplTest {
     void testGetAllPosts_shouldReturnAllExistingPosts(){
         //ARRANGE
         List<Post> posts = List.of(
-                Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build(),
-                Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).date(currentDate.format(formatter)).description("Descr2").userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build(),
-                Post.builder().id(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).date(currentDate.format(formatter)).description("Descr3").userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build()
+                Post.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date(currentDate.format(formatter)).description("Descr").accountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).build(),
+                Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).date(currentDate.format(formatter)).description("Descr2").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build(),
+                Post.builder().id(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).date(currentDate.format(formatter)).description("Descr3").accountId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build()
         );
         when(postRepo.getAllPosts()).thenReturn(posts);
 
@@ -112,7 +112,7 @@ class PostServiceImplTest {
         verify(postRepo, times(1)).getAllPosts();
         assertEquals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), result.getFirst().getId());
         assertEquals("Descr2", result.get(1).getDescription());
-        assertEquals(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"), result.get(2).getUserId());
+        assertEquals(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"), result.get(2).getAccountId());
     }
 
     //UNHAPPY FLOW

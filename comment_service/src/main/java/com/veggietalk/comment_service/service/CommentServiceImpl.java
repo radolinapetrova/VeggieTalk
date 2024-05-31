@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(UUID commentId, UUID userId, String role) throws IllegalAccessException{
         Comment comment = commentRepo.findById(commentId);
 
-        if(Objects.equals(comment.getUserId(), userId) || Objects.equals(role, "ADMIN")){
+        if(Objects.equals(comment.getAccountId(), userId) || Objects.equals(role, "ADMIN")){
             commentRepo.deleteComment(commentId);
         }
         else throw new IllegalAccessException("You are not authorized to delete this post");
@@ -52,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment createComment(Comment comment) throws IllegalAccessException{
-        if(Objects.equals(comment.getUserId(), null)){
+        if(Objects.equals(comment.getAccountId(), null)){
             throw new IllegalAccessException("You are not authorized to create a post");
         }
         return commentRepo.createComment(comment);

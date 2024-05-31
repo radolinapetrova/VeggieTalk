@@ -10,5 +10,5 @@ import java.util.UUID;
 public class DeleteRequest {
     private UUID commentId;
     private String role;
-    private UUID userId;
+    private UUID accountId;
 }

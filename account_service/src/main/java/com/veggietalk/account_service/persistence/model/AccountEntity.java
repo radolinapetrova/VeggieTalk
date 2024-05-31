@@ -2,9 +2,7 @@ package com.veggietalk.account_service.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,9 @@ public class AccountEntity {
     private UUID id;
     private String email;
     private String bio;
-    private UUID user_id;
+
+    @Column(name = "user_id", columnDefinition = "UUID")
+    private UUID userId;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

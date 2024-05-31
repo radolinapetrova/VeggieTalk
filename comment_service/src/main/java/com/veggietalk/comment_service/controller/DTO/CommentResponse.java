@@ -13,7 +13,7 @@ import java.util.UUID;
 public class CommentResponse {
     private UUID id;
     private String text;
-    private UUID userId;
+    private UUID accountId;
     private UUID postId;
     private Rating rating;
 }

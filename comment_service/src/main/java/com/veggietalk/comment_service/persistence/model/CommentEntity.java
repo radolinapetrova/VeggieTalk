@@ -22,8 +22,10 @@ public class CommentEntity {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
-    private UUID userId;
+    @Column(name = "account_id", columnDefinition = "UUID")
+    private UUID accountId;
     private String text;
     private Rating rating;
+    @Column(name = "post_id", columnDefinition = "UUID")
     private UUID postId;
 }

@@ -10,7 +10,7 @@ public class RequestConverters {
         return Comment.builder()
                 .rating(request.getRating())
                 .text(request.getText())
-                .userId(request.getUserId())
+                .accountId(request.getAccountId())
                 .postId(request.getPostId())
                 .build();
     }
@@ -18,7 +18,7 @@ public class RequestConverters {
     public static CommentResponse CommentConverter(Comment comment){
         return CommentResponse.builder()
                 .id(comment.getId())
-                .userId(comment.getUserId())
+                .accountId(comment.getAccountId())
                 .postId(comment.getPostId())
                 .text(comment.getText())
                 .rating(comment.getRating())

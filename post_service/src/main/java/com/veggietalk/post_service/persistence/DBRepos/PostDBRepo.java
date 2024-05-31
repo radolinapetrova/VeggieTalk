@@ -16,8 +16,6 @@ public interface PostDBRepo extends JpaRepository<PostEntity, UUID> {
     @Query("SELECT p FROM PostEntity p WHERE NOT EXISTS (SELECT r FROM RecipeEntity r WHERE p.id = r.id)")
     List<PostEntity> findAllWithoutRecipes();
 
-    List<PostEntity> findAll();
-
     List<PostEntity> findAllByRecipeDifficultyLevel(DifficultyLevel level);
 
     List<PostEntity> findAllByRecipeCategory(Category category);
@@ -27,4 +25,6 @@ public interface PostDBRepo extends JpaRepository<PostEntity, UUID> {
 
     @Query("SELECT p FROM PostEntity p INNER JOIN RecipeEntity r ON p.id = r.post.id")
     List<PostEntity> findAllRecipes();
+
+    PostEntity deleteByAccountId(UUID accountId);
 }

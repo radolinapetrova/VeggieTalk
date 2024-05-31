@@ -36,7 +36,7 @@ public class CommentController {
     @DeleteMapping()
     public ResponseEntity<String> deleteComment(@RequestBody DeleteRequest request){
         try{
-            service.deleteComment(request.getCommentId(), request.getUserId(), request.getRole());
+            service.deleteComment(request.getCommentId(), request.getAccountId(), request.getRole());
             return ResponseEntity.ok().body("You have successfully deleted this account");
         }
         catch (IllegalAccessException e){
@@ -58,7 +58,7 @@ public class CommentController {
     @GetMapping("post/comment/rating")
     public ResponseEntity<Object> getPostCommentsByRating(@RequestBody FilterCommentsRequest request){
         try{
-            return ResponseEntity.ok().body(service.getPostCommentsByRating(request.getPostId(), request.getRating(), request.getUserId()).stream().map(RequestConverters::CommentConverter).toList());
+            return ResponseEntity.ok().body(service.getPostCommentsByRating(request.getPostId(), request.getRating(), request.getAccountId()).stream().map(RequestConverters::CommentConverter).toList());
         }
         catch (IllegalArgumentException e){
             return ResponseEntity.status(417).body(e.getMessage());
@@ -71,7 +71,7 @@ public class CommentController {
     @GetMapping("comment/rating")
     public ResponseEntity<Object> getCommentsByRating(@RequestBody FilterCommentsRequest request){
         try{
-            return ResponseEntity.ok().body(service.getCommentsByRating(request.getRating(), request.getUserId()).stream().map(RequestConverters::CommentConverter));
+            return ResponseEntity.ok().body(service.getCommentsByRating(request.getRating(), request.getAccountId()).stream().map(RequestConverters::CommentConverter));
         }
         catch (IllegalArgumentException e){
             return ResponseEntity.status(417).body(e.getMessage());

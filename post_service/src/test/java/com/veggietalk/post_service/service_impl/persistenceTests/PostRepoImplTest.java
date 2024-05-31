@@ -5,7 +5,6 @@ import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.persistence.impl.PostRepoImpl;
-import com.veggietalk.post_service.persistence.model.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,9 +17,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +43,7 @@ public class PostRepoImplTest {
         Post entity = Post.builder()
                 .date("2002-12-27")
                 .description("Descr1")
-                .userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .accountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
                 .recipe(Recipe.recipeBuilder()
                         .difficultyLevel(DifficultyLevel.EASY)
                         .ingredients(new ArrayList<String>() {{
@@ -59,7 +56,7 @@ public class PostRepoImplTest {
         Post entity2 = Post.builder()
                 .date("2002-12-27")
                 .description("Descr1")
-                .userId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
                 .recipe(Recipe.recipeBuilder()
                         .difficultyLevel(DifficultyLevel.EASY)
                         .ingredients(new ArrayList<String>() {{
@@ -74,7 +71,7 @@ public class PostRepoImplTest {
         Post entity3 = Post.builder()
                 .date("2002-12-27")
                 .description("Descr1")
-                .userId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"))
+                .accountId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"))
                 .recipe(Recipe.recipeBuilder()
                         .difficultyLevel(DifficultyLevel.HARD)
                         .ingredients(new ArrayList<String>() {{
@@ -85,9 +82,9 @@ public class PostRepoImplTest {
                         .build())
                 .build();
 
-        Post entity4 = Post.builder().date("2002-12-27").description("Descr1").userId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build();
-        Post entity5 = Post.builder().date("2002-12-27").description("Descr2").userId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build();
-        Post entity6 = Post.builder().date("2002-12-27").description("Descr3").userId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387368891cd")).build();
+        Post entity4 = Post.builder().date("2002-12-27").description("Descr1").accountId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build();
+        Post entity5 = Post.builder().date("2002-12-27").description("Descr2").accountId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build();
+        Post entity6 = Post.builder().date("2002-12-27").description("Descr3").accountId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387368891cd")).build();
 
         List<Post> posts = List.of(entity, entity2, entity3, entity4, entity5, entity6);
 
@@ -100,7 +97,7 @@ public class PostRepoImplTest {
     @Test
     void testCreatePost(){
         //ARRANGE
-        Post entity = Post.builder().date("2002-12-27").description("Descr").userId(UUID.fromString("123e4567-e89b-12d3-b456-426614174000")).build();
+        Post entity = Post.builder().date("2002-12-27").description("Descr").accountId(UUID.fromString("123e4567-e89b-12d3-b456-426614174000")).build();
 
         //ACT
         Post result = repository.save(entity);
@@ -109,14 +106,14 @@ public class PostRepoImplTest {
         assertNotNull(result.getId());
         assertEquals(result.getDate(), entity.getDate());
         assertEquals(result.getDescription(), entity.getDescription());
-        assertEquals(result.getUserId(), entity.getUserId());
+        assertEquals(result.getAccountId(), entity.getAccountId());
     }
 
 
     @Test
     void testFindPostById(){
         //ARRANGE
-        Post post = Post.builder().date("2002-12-27").description("Descr").userId(UUID.fromString("456e4567-e89b-12d3-a456-426614174000")).build();
+        Post post = Post.builder().date("2002-12-27").description("Descr").accountId(UUID.fromString("456e4567-e89b-12d3-a456-426614174000")).build();
 
         //ACT
         Post entity = repository.save(post);
@@ -126,14 +123,14 @@ public class PostRepoImplTest {
 //        assertDoesNotThrow(IllegalArgumentException.class, () -> repository.findById(post.getId()));
         assertEquals(result.getId(), entity.getId());
         assertEquals(result.getDate(), post.getDate());
-        assertEquals(result.getUserId(), post.getUserId());
+        assertEquals(result.getAccountId(), post.getAccountId());
         assertEquals(result.getDescription(), post.getDescription());
     }
 
     @Test
     void testDeletePost(){
         //ARRANGE
-        Post result = Post.builder().id(UUID.fromString("123e4558-e89b-12d3-a456-426614174000")).date("2002-12-27").description("Descr").userId(UUID.fromString("789e4567-e89b-12d3-a456-426614174000")).build();
+        Post result = Post.builder().id(UUID.fromString("123e4558-e89b-12d3-a456-426614174000")).date("2002-12-27").description("Descr").accountId(UUID.fromString("789e4567-e89b-12d3-a456-426614174000")).build();
 
         //ACT
         repository.deletePost(result.getId());
@@ -152,7 +149,7 @@ public class PostRepoImplTest {
 
         //ASSERT
         assertEquals(results.size(), 12);
-        assertEquals(results.getFirst().getUserId(), posts.getFirst().getUserId());
+        assertEquals(results.getFirst().getAccountId(), posts.getFirst().getAccountId());
         assertEquals(results.getLast().getDescription(), posts.getLast().getDescription());
         assertEquals(results.get(1).getDescription(), posts.get(1).getDescription());
     }

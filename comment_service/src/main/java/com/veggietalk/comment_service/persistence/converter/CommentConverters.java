@@ -8,7 +8,7 @@ public class CommentConverters {
     public static CommentEntity CommentConverter (Comment comment){
         CommentEntity entity = CommentEntity.builder()
                 .text(comment.getText())
-                .userId(comment.getUserId())
+                .accountId(comment.getAccountId())
                 .rating(comment.getRating())
                 .postId(comment.getPostId())
                 .build();
@@ -26,7 +26,7 @@ public class CommentConverters {
                 .id(entity.getId())
                 .rating(entity.getRating())
                 .text(entity.getText())
-                .userId(entity.getUserId())
+                .accountId(entity.getAccountId())
                 .postId(entity.getPostId())
                 .build();
     }

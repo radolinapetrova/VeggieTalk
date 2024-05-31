@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface PostService {
     Post createPost(Post post) throws IllegalArgumentException;
 
-    void deletePost(UUID id, UUID userId, String role) throws IllegalArgumentException;
+    void deletePost(UUID id, UUID accountId, String role) throws IllegalArgumentException;
 
     List<Post> getAllPosts() throws NoSuchElementException;
 

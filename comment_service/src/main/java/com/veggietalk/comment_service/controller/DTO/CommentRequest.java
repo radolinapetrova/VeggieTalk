@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CommentRequest {
     private String text;
-    private UUID userId;
+    private UUID accountId;
     private UUID postId;
     private Rating rating;
 }

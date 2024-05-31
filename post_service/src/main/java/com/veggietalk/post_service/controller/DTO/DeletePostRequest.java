@@ -9,6 +9,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DeletePostRequest {
     private UUID id;
-    private UUID userId;
+    private UUID accountId;
     private String role;
 }

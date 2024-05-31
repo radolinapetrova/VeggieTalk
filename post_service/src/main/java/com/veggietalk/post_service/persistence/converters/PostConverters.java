@@ -1,9 +1,7 @@
 package com.veggietalk.post_service.persistence.converters;
 
 import com.veggietalk.post_service.model.Post;
-import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.persistence.model.PostEntity;
-import com.veggietalk.post_service.persistence.model.RecipeEntity;
 import lombok.NoArgsConstructor;
 
 
@@ -12,7 +10,7 @@ public class PostConverters {
 
     public static Post PostEntityConverter(PostEntity entity){
 
-        Post post = Post.builder().id(entity.getId()).userId(entity.getUser_id()).date(entity.getDate()).
+        Post post = Post.builder().id(entity.getId()).accountId(entity.getAccountId()).date(entity.getDate()).
                 description(entity.getDescription()).build();
 
         if (entity.getRecipe() != null){
@@ -23,7 +21,7 @@ public class PostConverters {
 
 
     public static PostEntity PostConverter (Post post){
-       return PostEntity.builder().date(post.getDate()).user_id(post.getUserId()).
+       return PostEntity.builder().date(post.getDate()).accountId(post.getAccountId()).
                 description(post.getDescription()).build();
     }
 }

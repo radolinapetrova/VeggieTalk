@@ -15,7 +15,7 @@ public class RequestConverters {
         }
 
         Post post = Post.builder()
-                .userId(request.getUserId())
+                .accountId(request.getAccountId())
                 .description(request.getDescription())
                 .build();
 
@@ -34,7 +34,7 @@ public class RequestConverters {
                 .id(post.getId())
                 .date(post.getDate())
                 .description(post.getDescription())
-                .userId(post.getUserId()).build();
+                .accountId(post.getAccountId()).build();
 
         if (post.getRecipe() != null){
             Recipe recipe = post.getRecipe();
