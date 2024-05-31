@@ -1,17 +1,19 @@
-package controller.DTO;
+package com.veggietalk.comment_service.controller.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import model.Rating;
+import com.veggietalk.comment_service.model.Rating;
+
+import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
 public class CommentResponse {
-    private Long id;
+    private UUID id;
     private String text;
-    private Long userId;
-    private Long postId;
+    private UUID userId;
+    private UUID postId;
     private Rating rating;
 }

@@ -23,32 +23,53 @@
 #      - postgres_post
 
 
+#  postgres_post:
+#    ports:
+#      - 5431:5431
+#    container_name: postgres_post
+#    image: postgres
+#    environment:
+#      POSTGRES_PASSWORD: R@d!0252
+#      POSTGRES_USER: postgres
+#      POSTGRES_DB: post_info
+#    volumes:
+#      - //c/postgres_container_post_data:/var/lib/postgresql/data
+#    restart: always
+#
+#  post_service:
+#    image: radolina/post_service_img:latest
+#    container_name: post_service
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_post:5431/post_info
+#    depends_on:
+#      - postgres_post
+
+
+
+
 services:
   postgres_post:
+    ports:
+      - 5431:5431
     container_name: postgres_post
     image: postgres
     environment:
       POSTGRES_PASSWORD: R@d!0252
       POSTGRES_USER: postgres
       POSTGRES_DB: post_info
-      PGDATA: /var/lib/postgresql/data
     volumes:
-      - //c/postgres_post_container_data:/var/lib/postgresql/data
-    expose:
-      - "5431"
-    ports:
-      - "5431:5431"
-    command: -p 5431
+      - //c/postgres_container_post_data:/var/lib/postgresql/data
     restart: always
 
   post_service:
     image: radolina/post_service_img:latest
     container_name: post_service
     ports:
-      - "8081:8081"
+      - 8081:8081
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_post:5431/post_info
-      SPRING_PROFILES_ACTIVATE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_post:5432/post_info
     depends_on:
       - postgres_post
 
@@ -102,7 +123,7 @@ services:
     image: radolina/auth_service_img:latest
     container_name: auth_service
     ports:
-      - "8085:8085"
+      - "8085:8084"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_auth:5434/user_info
       SPRING_PROFILES_ACTIVATE: docker
@@ -120,14 +141,14 @@ services:
     volumes:
       - //c/postgres_comment_container_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
     restart: always
 
   comment_service:
     image: radolina/comment_service_img:latest
     container_name: comment_service
     ports:
-      - "8082:8082"
+      - 8082:8082
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_comment:5432/comment_info
       SPRING_PROFILES_ACTIVATE: docker
@@ -138,7 +159,7 @@ services:
     image: radolina/discovery_server_img:latest
     container_name: discovery_server
     ports:
-      - "8761:8761"
+      - 8761:8761
     environment:
       SPRING_PROFILES_ACTIVATE: docker
 
@@ -146,9 +167,9 @@ services:
     image: radolina/api_gateway_img:latest
     container_name: api_gateway
     ports:
-      - "8181:8080"
+      - 8181:8080
     expose:
-      - "8181"
+      - 8181
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE

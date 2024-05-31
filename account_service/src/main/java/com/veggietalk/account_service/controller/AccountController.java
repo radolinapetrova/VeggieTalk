@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable(value = "id") Long id){
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable(value = "id") UUID id){
         return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.findById(id)));
     }
 

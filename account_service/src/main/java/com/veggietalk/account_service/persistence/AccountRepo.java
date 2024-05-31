@@ -5,12 +5,13 @@ import com.veggietalk.account_service.persistence.model.AccountEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface AccountRepo {
     Account save (Account account);
 
-    void delete (Long id);
+    void delete (UUID id);
 
-    Account findById(Long id);
+    Account findById(UUID id);
 }

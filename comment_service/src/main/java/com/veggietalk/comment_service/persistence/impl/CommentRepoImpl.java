@@ -1,16 +1,17 @@
-package persistence.impl;
+package com.veggietalk.comment_service.persistence.impl;
 
+import com.veggietalk.comment_service.persistence.CommentRepo;
+import com.veggietalk.comment_service.persistence.DBRepo.CommentDBRepo;
 import lombok.RequiredArgsConstructor;
-import model.Comment;
-import model.Rating;
+import com.veggietalk.comment_service.model.Comment;
+import com.veggietalk.comment_service.model.Rating;
 import org.springframework.stereotype.Repository;
-import persistence.CommentRepo;
-import persistence.DBRepo.CommentDBRepo;
-import persistence.converter.CommentConverters;
-import persistence.model.CommentEntity;
+import com.veggietalk.comment_service.persistence.converter.CommentConverters;
+import com.veggietalk.comment_service.persistence.model.CommentEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository
@@ -20,7 +21,7 @@ public class CommentRepoImpl implements CommentRepo {
     private final CommentDBRepo commentDBRepo;
 
     @Override
-    public List<Comment> getPostComments(Long postId) throws IllegalArgumentException{
+    public List<Comment> getPostComments(UUID postId) throws IllegalArgumentException{
         List<CommentEntity> result = commentDBRepo.findAllByPostId(postId);
 
         if (!result.isEmpty()){
@@ -30,7 +31,7 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public List<Comment> getPostCommentsByRating(Long postId, Rating rating) throws IllegalArgumentException{
+    public List<Comment> getPostCommentsByRating(UUID postId, Rating rating) throws IllegalArgumentException{
 
         List<CommentEntity> result = commentDBRepo.findAllByPostIdAndRating(postId, rating);
 
@@ -52,7 +53,7 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(UUID commentId) {
         commentDBRepo.deleteById(commentId);
     }
 
@@ -63,7 +64,7 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public Comment findById(Long id) throws IllegalArgumentException{
+    public Comment findById(UUID id) throws IllegalArgumentException{
         Optional<CommentEntity> entity = commentDBRepo.findById(id);
 
         if(entity.isPresent()){

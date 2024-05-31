@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Builder
 @Getter
 @AllArgsConstructor
 public class AccountResponse {
-    private Long id;
+    private UUID id;
     private String email;
     private String bio;
 }

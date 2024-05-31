@@ -1,12 +1,14 @@
-package controller.DTO;
+package com.veggietalk.comment_service.controller.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
 public class DeleteRequest {
-    private Long commentId;
+    private UUID commentId;
     private String role;
-    private Long userId;
+    private UUID userId;
 }

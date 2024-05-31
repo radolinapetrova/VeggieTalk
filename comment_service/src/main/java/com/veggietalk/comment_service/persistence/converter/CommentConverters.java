@@ -1,8 +1,7 @@
-package persistence.converter;
+package com.veggietalk.comment_service.persistence.converter;
 
-import model.Comment;
-import model.Rating;
-import persistence.model.CommentEntity;
+import com.veggietalk.comment_service.model.Comment;
+import com.veggietalk.comment_service.persistence.model.CommentEntity;
 
 public class CommentConverters {
 

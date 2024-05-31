@@ -1,18 +1,16 @@
-package controller;
+package com.veggietalk.comment_service.controller;
 
-import controller.DTO.CommentRequest;
-import controller.DTO.CommentResponse;
-import controller.DTO.DeleteRequest;
-import controller.DTO.FilterCommentsRequest;
-import controller.converters.RequestConverters;
-import io.micrometer.core.util.internal.logging.InternalLogLevel;
+import com.veggietalk.comment_service.controller.DTO.DeleteRequest;
+import com.veggietalk.comment_service.controller.DTO.CommentRequest;
+import com.veggietalk.comment_service.controller.DTO.FilterCommentsRequest;
+import com.veggietalk.comment_service.controller.converters.RequestConverters;
 import lombok.RequiredArgsConstructor;
-import model.Comment;
+import com.veggietalk.comment_service.model.Comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.impl.CommentService;
+import com.veggietalk.comment_service.service.impl.CommentService;
 
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -47,7 +45,7 @@ public class CommentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Object> getPostComments(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Object> getPostComments(@PathVariable(value = "id") UUID id){
 
         try{
             return ResponseEntity.ok().body(service.getPostComments(id).stream().map(RequestConverters::CommentConverter).toList());

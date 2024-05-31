@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,12 +24,12 @@ public class AccountRepoImpl implements AccountRepo {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         repo.deleteById(id);
     }
 
     @Override
-    public Account findById(Long id) throws IllegalArgumentException{
+    public Account findById(UUID id) throws IllegalArgumentException{
         Optional<AccountEntity> entity = repo.findById(id);
         if (entity.isPresent()){
             return AccountConverters.AccountEntityConverter(entity.get());

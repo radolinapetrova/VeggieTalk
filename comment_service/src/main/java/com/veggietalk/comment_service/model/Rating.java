@@ -1,4 +1,4 @@
-package model;
+package com.veggietalk.comment_service.model;
 
 public enum Rating {
     NO_RATING,

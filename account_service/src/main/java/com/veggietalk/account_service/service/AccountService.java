@@ -4,15 +4,17 @@ import com.veggietalk.account_service.AccountServiceApplication;
 import com.veggietalk.account_service.model.Account;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public interface AccountService {
     Account saveAccount(Account account);
 
-    Account updateAccount (Account account, Long user);
+    Account updateAccount (Account account, UUID user);
 
-    void deleteAccount(Long id, Long userId);
+    void deleteAccount(UUID id, UUID userId);
 
-    Account findById(Long id) throws IllegalArgumentException;
+    Account findById(UUID id) throws IllegalArgumentException;
 
-    public void addFollow(Long idFollower, Long idFollowing) throws Exception;
+    public void addFollow(UUID idFollower, UUID idFollowing) throws Exception;
 }

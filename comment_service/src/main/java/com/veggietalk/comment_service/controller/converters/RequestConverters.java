@@ -1,8 +1,8 @@
-package controller.converters;
+package com.veggietalk.comment_service.controller.converters;
 
-import controller.DTO.CommentRequest;
-import controller.DTO.CommentResponse;
-import model.Comment;
+import com.veggietalk.comment_service.controller.DTO.CommentRequest;
+import com.veggietalk.comment_service.controller.DTO.CommentResponse;
+import com.veggietalk.comment_service.model.Comment;
 
 public class RequestConverters {
 

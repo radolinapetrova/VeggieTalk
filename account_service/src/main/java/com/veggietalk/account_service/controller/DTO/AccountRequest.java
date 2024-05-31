@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Builder
 @Getter
 @AllArgsConstructor
 public class AccountRequest {
     private String email;
-    private Long userId;
+    private UUID userId;
     private String bio;
-    private Long id;
+    private UUID id;
 }

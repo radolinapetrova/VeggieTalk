@@ -1,6 +1,8 @@
-package model;
+package com.veggietalk.comment_service.model;
 
 import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -8,9 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-    public Long id;
-    private Long userId;
-    private Long postId;
+    public UUID id;
+    private UUID userId;
+    private UUID postId;
     private String text;
     private Rating rating;
 }

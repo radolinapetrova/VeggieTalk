@@ -1,14 +1,15 @@
-package service;
+package com.veggietalk.comment_service.service;
 
 import lombok.AllArgsConstructor;
-import model.Comment;
-import model.Rating;
+import com.veggietalk.comment_service.model.Comment;
+import com.veggietalk.comment_service.model.Rating;
 import org.springframework.stereotype.Service;
-import persistence.CommentRepo;
-import service.impl.CommentService;
+import com.veggietalk.comment_service.persistence.CommentRepo;
+import com.veggietalk.comment_service.service.impl.CommentService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -17,13 +18,13 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepo commentRepo;
 
     @Override
-    public List<Comment> getPostComments(Long postId) throws IllegalArgumentException {
+    public List<Comment> getPostComments(UUID postId) throws IllegalArgumentException {
         return commentRepo.getPostComments(postId);
     }
 
     @Override
-    public List<Comment> getPostCommentsByRating(Long postId, Rating rating, Long userId) throws IllegalAccessException, IllegalArgumentException {
-        if (userId == 0){
+    public List<Comment> getPostCommentsByRating(UUID postId, Rating rating, UUID userId) throws IllegalAccessException, IllegalArgumentException {
+        if (Objects.equals(userId, null)){
             throw new IllegalAccessException("Create an account if you want to filter the comments");
         }
 
@@ -31,8 +32,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByRating(Rating rating, Long userId) throws IllegalAccessException, IllegalArgumentException {
-        if(Objects.equals(userId, 0L)){
+    public List<Comment> getCommentsByRating(Rating rating, UUID userId) throws IllegalAccessException, IllegalArgumentException {
+        if(Objects.equals(userId, null)){
             throw new IllegalAccessException("Create an account if you want to filter the comments");
         }
 
@@ -40,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long commentId, Long userId, String role) throws IllegalAccessException{
+    public void deleteComment(UUID commentId, UUID userId, String role) throws IllegalAccessException{
         Comment comment = commentRepo.findById(commentId);
 
         if(Objects.equals(comment.getUserId(), userId) || Objects.equals(role, "ADMIN")){
@@ -51,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment createComment(Comment comment) throws IllegalAccessException{
-        if(Objects.equals(comment.getUserId(), 0L)){
+        if(Objects.equals(comment.getUserId(), null)){
             throw new IllegalAccessException("You are not authorized to create a post");
         }
         return commentRepo.createComment(comment);

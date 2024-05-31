@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -11,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-    private Long id;
+    private UUID id;
     private String email;
     private String bio;
-    private Long userId;
+    private UUID userId;
 
     private List<Account> followers = new ArrayList<>();
     private List<Account> following = new ArrayList<>();

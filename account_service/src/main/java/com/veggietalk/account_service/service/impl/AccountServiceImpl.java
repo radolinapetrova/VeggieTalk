@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Account account, Long userId) throws IllegalArgumentException{
+    public Account updateAccount(Account account, UUID userId) throws IllegalArgumentException{
         if (!account.getId().equals(userId)){
             throw new IllegalArgumentException("You do not have the right to update the following account");
         }
@@ -36,12 +37,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findById(Long id){
+    public Account findById(UUID id){
         return accountRepo.findById(id);
     }
 
     @Override
-    public void deleteAccount(Long id, Long userId) throws IllegalArgumentException{
+    public void deleteAccount(UUID id, UUID userId) throws IllegalArgumentException{
         accountRepo.findById(id);
         if (!id.equals(userId)){
             throw new IllegalArgumentException("You do not have the right to delete this account");
@@ -50,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void addFollow(Long idFollower, Long idFollowing) throws Exception {
+    public void addFollow(UUID idFollower, UUID idFollowing) throws Exception {
         Account follower = accountRepo.findById(idFollower);
         Account following = accountRepo.findById(idFollowing);
 
