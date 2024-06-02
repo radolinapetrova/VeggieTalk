@@ -81,4 +81,30 @@ public class PostRepoImpl implements PostRepo {
         return postDBRepo.findAllRecipes().stream().map(PostConverters::PostEntityConverter).toList();
     }
 
+    @Override
+    public void deleteByAccountId(UUID accountId)throws IllegalArgumentException{
+        List<PostEntity> posts = findByAccount(accountId);
+        postDBRepo.deleteAll(posts);
+    }
+
+
+    @Override
+    public List<Post> findAllByAccountId (UUID accountId) throws IllegalArgumentException{
+        Optional<List<PostEntity>> entities = postDBRepo.findAllByAccountId(accountId);
+
+        if(entities.isPresent()){
+            return entities.get().stream().map(PostConverters::PostEntityConverter).toList();
+        }
+        throw new IllegalArgumentException("This account has no posts");
+    }
+
+    private List<PostEntity> findByAccount(UUID account){
+        Optional<List<PostEntity>> entities = postDBRepo.findAllByAccountId(account);
+
+        if(entities.isPresent()){
+            return entities.get();
+        }
+        throw new IllegalArgumentException("This account has no posts");
+    }
+
 }

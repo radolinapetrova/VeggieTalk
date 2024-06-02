@@ -69,5 +69,10 @@ public class PostServiceImpl implements PostService {
         return postRepo.findAllRecipes();
     }
 
+    @Override
+    public void deleteByAccountId(UUID accountId) throws IllegalArgumentException{
+        postRepo.deleteByAccountId(accountId);
+    }
+
 
 }

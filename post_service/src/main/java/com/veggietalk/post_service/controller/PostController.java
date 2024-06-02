@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -72,6 +74,12 @@ public class PostController {
     @GetMapping("recipes")
     public ResponseEntity<List<PostResponse>> getAllRecipes(){
         return ResponseEntity.ok().body(postService.findAllRecipes().stream().map(RequestConverters::PostConverter).toList());
+    }
+
+    @DeleteMapping("account/{id}")
+    public ResponseEntity<Object> deleteByAccount(@PathVariable(value = "id") UUID id){
+        postService.deleteByAccountId(id);
+        return ResponseEntity.ok().body("Lovely");
     }
 
 

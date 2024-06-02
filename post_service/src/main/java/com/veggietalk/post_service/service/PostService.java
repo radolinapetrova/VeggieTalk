@@ -21,4 +21,6 @@ public interface PostService {
     List<Post> findAllRecipesByCategory(Category category);
 
     List<Post> findAllRecipesByIngredients(List<String> ingredients);
+
+    void deleteByAccountId(UUID accountId) throws IllegalArgumentException;
 }

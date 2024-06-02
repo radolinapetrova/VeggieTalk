@@ -210,11 +210,14 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
 
-  rabbitmq:
-    image: rabbitmq:management
+  my-rabbit:
+    image: rabbitmq:3-management
     ports:
-      - "5672:5672"
       - "15672:15672"
+      - "5672:5672"
+    container_name: my-rabbit
+    restart: always
+
 
 
 

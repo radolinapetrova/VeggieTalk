@@ -28,5 +28,9 @@ public interface PostRepo {
 
     List<Post> findAllRecipes();
 
+    void deleteByAccountId(UUID accountId);
+
+    List<Post> findAllByAccountId(UUID accountId) throws IllegalArgumentException;
+
 
 }

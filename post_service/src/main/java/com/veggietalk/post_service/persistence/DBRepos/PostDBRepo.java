@@ -4,11 +4,13 @@ import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.persistence.model.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -26,5 +28,9 @@ public interface PostDBRepo extends JpaRepository<PostEntity, UUID> {
     @Query("SELECT p FROM PostEntity p INNER JOIN RecipeEntity r ON p.id = r.post.id")
     List<PostEntity> findAllRecipes();
 
-    PostEntity deleteByAccountId(UUID accountId);
+    @Modifying
+    @Query("DELETE FROM PostEntity p WHERE p.accountId = :accountId")
+    int deleteByAccountId(UUID accountId);
+
+    Optional<List<PostEntity>> findAllByAccountId(UUID accountID);
 }

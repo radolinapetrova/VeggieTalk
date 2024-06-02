@@ -16,5 +16,5 @@ public interface AccountService {
 
     Account findById(UUID id) throws IllegalArgumentException;
 
-    public void addFollow(UUID idFollower, UUID idFollowing) throws Exception;
+    void addFollow(UUID idFollower, UUID idFollowing) throws Exception;
 }
