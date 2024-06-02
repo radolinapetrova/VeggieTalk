@@ -39,9 +39,9 @@ public class PostController {
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PostResponse>> getAllPosts(){
-        return ResponseEntity.ok().body(postService.getAllPosts().stream().map(RequestConverters::PostConverter).toList());
+    @GetMapping("page/{page}")
+    public ResponseEntity<List<PostResponse>> getAllPosts(@PathVariable(value = "page") int page){
+        return ResponseEntity.ok().body(postService.getAllPosts(page).stream().map(RequestConverters::PostConverter).toList());
     }
 
 

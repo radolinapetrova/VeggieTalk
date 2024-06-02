@@ -11,6 +11,9 @@ import com.veggietalk.post_service.persistence.model.PostEntity;
 import com.veggietalk.post_service.persistence.model.RecipeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +44,9 @@ public class PostRepoImpl implements PostRepo {
 
 
     @Override
-    public List<Post> getAllPosts() {
-        return postDBRepo.findAll().stream().map(PostConverters::PostEntityConverter).toList();
+    public List<Post> getAllPosts(int pageNumber) {
+        Pageable firstPageable = PageRequest.of(pageNumber, 20);
+        return postDBRepo.findAll(firstPageable).stream().map(PostConverters::PostEntityConverter).toList();
     }
 
     @Override
@@ -87,16 +91,6 @@ public class PostRepoImpl implements PostRepo {
         postDBRepo.deleteAll(posts);
     }
 
-
-    @Override
-    public List<Post> findAllByAccountId (UUID accountId) throws IllegalArgumentException{
-        Optional<List<PostEntity>> entities = postDBRepo.findAllByAccountId(accountId);
-
-        if(entities.isPresent()){
-            return entities.get().stream().map(PostConverters::PostEntityConverter).toList();
-        }
-        throw new IllegalArgumentException("This account has no posts");
-    }
 
     private List<PostEntity> findByAccount(UUID account){
         Optional<List<PostEntity>> entities = postDBRepo.findAllByAccountId(account);

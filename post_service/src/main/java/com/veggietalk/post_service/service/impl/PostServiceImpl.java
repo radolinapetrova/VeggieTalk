@@ -40,8 +40,8 @@ public class PostServiceImpl implements PostService {
         postRepo.deletePost(id);
     }
 
-    public List<Post> getAllPosts() throws NoSuchElementException {
-        List<Post> posts = postRepo.getAllPosts();
+    public List<Post> getAllPosts(int pageNumber) throws NoSuchElementException {
+        List<Post> posts = postRepo.getAllPosts(pageNumber);
         if(!posts.isEmpty()){
             return posts;
         }

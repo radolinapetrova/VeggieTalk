@@ -13,7 +13,7 @@ public interface PostService {
 
     void deletePost(UUID id, UUID accountId, String role) throws IllegalArgumentException;
 
-    List<Post> getAllPosts() throws NoSuchElementException;
+    List<Post> getAllPosts(int pageNumber) throws NoSuchElementException;
 
     public List<Post> findAllRecipes();
 

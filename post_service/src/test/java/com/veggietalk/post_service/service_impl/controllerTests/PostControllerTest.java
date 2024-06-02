@@ -170,7 +170,7 @@ public class PostControllerTest {
         String expected = (new ObjectMapper()).writeValueAsString(result);
 
         //ACT
-        when(service.getAllPosts()).thenReturn(posts);
+        when(service.getAllPosts(0)).thenReturn(posts);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON);
 

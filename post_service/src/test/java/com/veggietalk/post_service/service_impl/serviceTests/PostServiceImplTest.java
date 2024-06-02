@@ -33,6 +33,7 @@ class PostServiceImplTest {
     LocalDate currentDate = LocalDate.now();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final int page = 0;
 
     //HAPPY FLOW
     @Test
@@ -103,13 +104,13 @@ class PostServiceImplTest {
                 Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).date(currentDate.format(formatter)).description("Descr2").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build(),
                 Post.builder().id(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).date(currentDate.format(formatter)).description("Descr3").accountId(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd")).build()
         );
-        when(postRepo.getAllPosts()).thenReturn(posts);
+        when(postRepo.getAllPosts(page)).thenReturn(posts);
 
         //ACT
-        List<Post> result = service.getAllPosts();
+        List<Post> result = service.getAllPosts(page);
 
         //ASSERT
-        verify(postRepo, times(1)).getAllPosts();
+        verify(postRepo, times(1)).getAllPosts(page);
         assertEquals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), result.getFirst().getId());
         assertEquals("Descr2", result.get(1).getDescription());
         assertEquals(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"), result.get(2).getAccountId());
@@ -120,13 +121,13 @@ class PostServiceImplTest {
     void testGetAllPosts_shouldThrowException_whenNoPostsExist(){
         //ARRANGE
         List<Post>posts = new ArrayList<>();
-        when(postRepo.getAllPosts()).thenReturn(posts);
+        when(postRepo.getAllPosts(page)).thenReturn(posts);
 
         //ACT
-        assertThrows(NoSuchElementException.class, () -> service.getAllPosts());
+        assertThrows(NoSuchElementException.class, () -> service.getAllPosts(page));
 
         //ASSERT
-        verify(postRepo, times(1)).getAllPosts();
+        verify(postRepo, times(1)).getAllPosts(page);
     }
 
 }

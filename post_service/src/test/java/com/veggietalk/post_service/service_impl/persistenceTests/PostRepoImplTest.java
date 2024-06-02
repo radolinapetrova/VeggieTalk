@@ -145,7 +145,7 @@ public class PostRepoImplTest {
         List<Post> posts = getDummyRecipes();
 
         //ACT
-        List<Post> results = repository.getAllPosts();
+        List<Post> results = repository.getAllPosts(0);
 
         //ASSERT
         assertEquals(results.size(), 12);

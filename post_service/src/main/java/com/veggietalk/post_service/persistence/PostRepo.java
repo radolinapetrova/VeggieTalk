@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface PostRepo {
     Post save(Post post);
 
-    List<Post> getAllPosts();
+    List<Post> getAllPosts(int pageNumber);
 
     void deletePost(UUID id);
     Post findById(UUID id) throws IllegalArgumentException;
@@ -29,8 +29,5 @@ public interface PostRepo {
     List<Post> findAllRecipes();
 
     void deleteByAccountId(UUID accountId);
-
-    List<Post> findAllByAccountId(UUID accountId) throws IllegalArgumentException;
-
 
 }
