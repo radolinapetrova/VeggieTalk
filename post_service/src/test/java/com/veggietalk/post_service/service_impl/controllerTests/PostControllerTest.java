@@ -171,7 +171,7 @@ public class PostControllerTest {
 
         //ACT
         when(service.getAllPosts(0)).thenReturn(posts);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/posts")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/posts/page/0")
                 .contentType(MediaType.APPLICATION_JSON);
 
         //ASSERT
