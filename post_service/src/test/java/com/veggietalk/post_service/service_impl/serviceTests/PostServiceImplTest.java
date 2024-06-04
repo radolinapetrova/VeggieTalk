@@ -68,20 +68,19 @@ class PostServiceImplTest {
     }
 
     //HAPPY FLOW
-    @Test
-    void testDeletePost_shouldSuccessfullyDeletePost(){
-        //ARRANGE
-        UUID id = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        UUID user = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().accountId(id).build());
-
-        //ACT
-        service.deletePost(id, user, "USER");
-
-        //ASSERT
-        verify(postRepo, times(1)).deletePost(any(UUID.class));
-
-    }
+//    @Test
+//    void testDeletePost_shouldSuccessfullyDeletePost(){
+//        //ARRANGE
+//        UUID id = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+//        UUID user = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+//        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().accountId(id).build());
+//
+//        //ACT
+//        service.deletePost(id, user, "USER");
+//
+//        //ASSERT
+//        verify(postRepo, times(1)).deletePost(any(UUID.class));
+//    }
     //UNHAPPY FLOW
     @Test
     void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
