@@ -179,13 +179,9 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.37.1
     container_name: prometheus
     restart: always
-#    extra_hosts:
-#      - host.docker.internal:host-gateway
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     volumes:
@@ -193,11 +189,11 @@ services:
     depends_on:
       - post_service
       - account_service
-      - comment_service
       - auth_service
+      - comment_service
 
   grafana:
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana-oss:8.5.2
     container_name: grafana
     restart: always
     ports:
