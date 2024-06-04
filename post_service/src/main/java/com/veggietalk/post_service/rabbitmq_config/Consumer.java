@@ -13,10 +13,7 @@ import java.util.UUID;
 
 @Component
 public class Consumer {
-
-
     private final PostService service;
-
     @Autowired
     public Consumer(PostService postService) {
         this.service = postService;
@@ -27,8 +24,7 @@ public class Consumer {
     @RabbitListener(queues = RabbitMqConfig.POST_QUEUE)
     public void receiveMessage(String accountId) {
         logger.info("Received message: {}", accountId);
-        // Add your processing logic here
-        System.out.println("Posts successfully deleted");
         service.deleteByAccountId(UUID.fromString(accountId));
+        System.out.println("Posts successfully deleted");
     }
 }

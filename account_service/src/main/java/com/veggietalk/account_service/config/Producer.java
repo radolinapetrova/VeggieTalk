@@ -6,14 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Producer {
-
     private final RabbitTemplate template;
-
     @Autowired
     public Producer(RabbitTemplate template) {
         this.template = template;
     }
-
     public void deleteAccount(String accountId){
         try {
             template.convertAndSend(RabbitMqConfig.COMMENT_EXCHANGE, RabbitMqConfig.ROUTING_KEY_COMMENT, accountId);

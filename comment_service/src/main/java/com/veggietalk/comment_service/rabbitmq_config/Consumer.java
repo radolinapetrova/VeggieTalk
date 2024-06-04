@@ -24,13 +24,13 @@ public class Consumer {
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-//    @RabbitListener(queues = RabbitMqConfig.POST_COMMENT_QUEUE)
-//    public void receivePostMessage(String postId) {
-//        logger.info("Received message: {}", postId);
-//        // Add your processing logic here
-//        service.deleteByPostId(UUID.fromString(postId));
-//        System.out.println("Comments successfully deleted");
-//    }
+    @RabbitListener(queues = RabbitMqConfig.POST_COMMENT_QUEUE)
+    public void receivePostMessage(String postId) {
+        logger.info("Received message: {}", postId);
+        // Add your processing logic here
+        service.deleteByPostId(UUID.fromString(postId));
+        System.out.println("Comments successfully deleted");
+    }
 
     @RabbitListener(queues = RabbitMqConfig.COMMENT_QUEUE)
     public void receiveAccMessage(String accountId){
