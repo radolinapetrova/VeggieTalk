@@ -1,8 +1,5 @@
-package com.veggietalk.post_service.rabbitmq_config;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+package com.veggietalk.comment_service.rabbitmq_config;
+
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
@@ -14,28 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    public static final String POST_COMMENT_EXCHANGE = "post-comment-exchange";
     public static final String POST_COMMENT_QUEUE = "post-comment-queue";
-    public static final String ROUTING_KEY_POST_COMMENT = "post-comment";
-
-    public static final String POST_QUEUE = "post-queue";
-
-    @Bean
-    public DirectExchange postCommentExchange() {
-        return new DirectExchange(POST_COMMENT_EXCHANGE);
-    }
-
-    @Bean
-    public Queue postCommentQueue() {
-        return new Queue(POST_COMMENT_QUEUE);
-    }
-
-    @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(postCommentQueue()).to(postCommentExchange()).with(ROUTING_KEY_POST_COMMENT);
-    }
-
-
+    public static final String COMMENT_QUEUE = "comment-queue";
 
     @Bean
     public MessageConverter jsonMessageConverter() {

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class AccountConverters {
     public static AccountEntity AccountConverter(Account account) {
         AccountEntity entity = AccountEntity.builder()
+                .userId(account.getUserId())
                 .email(account.getEmail())
                 .build();
 

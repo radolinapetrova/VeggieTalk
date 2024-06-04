@@ -28,9 +28,5 @@ public interface PostDBRepo extends JpaRepository<PostEntity, UUID> {
     @Query("SELECT p FROM PostEntity p INNER JOIN RecipeEntity r ON p.id = r.post.id")
     List<PostEntity> findAllRecipes();
 
-    @Modifying
-    @Query("DELETE FROM PostEntity p WHERE p.accountId = :accountId")
-    int deleteByAccountId(UUID accountId);
-
     Optional<List<PostEntity>> findAllByAccountId(UUID accountID);
 }

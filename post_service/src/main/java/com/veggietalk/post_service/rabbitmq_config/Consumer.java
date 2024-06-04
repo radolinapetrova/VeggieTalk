@@ -14,22 +14,6 @@ import java.util.UUID;
 @Component
 public class Consumer {
 
-//    private final PostService service;
-//
-//    @Autowired
-//    public Consumer(PostService postService) {
-//        this.service = postService;
-//    }
-
-//    @RabbitListener(queues = RabbitMqConfig.ACCOUNT_QUEUE)
-//    public void deleteAccount(String accountId) {
-//        try {
-////            this.service.deleteByAccountId(accountId);
-//            System.out.println("Posts successfully deleted");
-//        } catch (IllegalArgumentException e) {
-//            System.err.println("Error deleting posts for account: " + accountId + " - " + e.getMessage());
-//        }
-//    }
 
     private final PostService service;
 
@@ -40,7 +24,7 @@ public class Consumer {
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    @RabbitListener(queues = RabbitMqConfig.ACCOUNT_QUEUE)
+    @RabbitListener(queues = RabbitMqConfig.POST_QUEUE)
     public void receiveMessage(String accountId) {
         logger.info("Received message: {}", accountId);
         // Add your processing logic here

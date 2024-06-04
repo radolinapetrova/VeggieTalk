@@ -1,12 +1,13 @@
-package com.veggietalk.comment_service.service;
+package com.veggietalk.comment_service.service.impl;
 
+import com.veggietalk.comment_service.service.CommentService;
 import lombok.AllArgsConstructor;
 import com.veggietalk.comment_service.model.Comment;
 import com.veggietalk.comment_service.model.Rating;
 import org.springframework.stereotype.Service;
 import com.veggietalk.comment_service.persistence.CommentRepo;
-import com.veggietalk.comment_service.service.impl.CommentService;
 
+import java.util.IllegalFormatPrecisionException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,5 +57,15 @@ public class CommentServiceImpl implements CommentService {
             throw new IllegalAccessException("You are not authorized to create a post");
         }
         return commentRepo.createComment(comment);
+    }
+
+    @Override
+    public void deleteByAccountId(UUID account) throws IllegalFormatPrecisionException {
+        commentRepo.deleteALlByAccountId(account);
+    }
+
+    @Override
+    public void deleteByPostId(UUID postId) throws IllegalArgumentException{
+        commentRepo.deleteAllByPostId(postId);
     }
 }

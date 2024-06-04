@@ -6,14 +6,18 @@ import org.springframework.stereotype.Repository;
 import com.veggietalk.comment_service.persistence.model.CommentEntity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface CommentDBRepo extends JpaRepository<CommentEntity, UUID> {
 
-    public List<CommentEntity> findAllByPostId(UUID postId);
+    Optional<List<CommentEntity>> findAllByPostId(UUID postId);
 
-    public List<CommentEntity> findAllByPostIdAndRating(UUID postId, Rating rating);
+    Optional<List<CommentEntity>> findAllByPostIdAndRating(UUID postId, Rating rating);
 
-    public List<CommentEntity> findAllByRating(Rating rating);
+    Optional<List<CommentEntity>> findAllByRating(Rating rating);
+
+    Optional<List<CommentEntity>> findAllByAccountId(UUID accountId);
+
 }

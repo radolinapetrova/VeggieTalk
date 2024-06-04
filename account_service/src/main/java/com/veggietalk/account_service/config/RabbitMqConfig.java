@@ -14,23 +14,37 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
-    public static final String ACCOUNT_EXCHANGE = "account-exchange";
-    public static final String ACCOUNT_QUEUE = "account-queue";
-    public static final String ROUTING_KEY_ACCOUNT = "account";
+    public static final String POST_EXCHANGE = "post-exchange";
+    public static final String POST_QUEUE = "post-queue";
+    public static final String ROUTING_KEY_POST = "post";
+
+    public static final String COMMENT_EXCHANGE = "comment-exchange";
+    public static final String COMMENT_QUEUE = "comment-queue";
+    public static final String ROUTING_KEY_COMMENT = "comment";
 
     @Bean
-    public DirectExchange accountExchange() {
-        return new DirectExchange(ACCOUNT_EXCHANGE);
+    public DirectExchange postExchange() {
+        return new DirectExchange(POST_EXCHANGE);
+    }
+
+    @Bean DirectExchange accountExchange(){return new DirectExchange(COMMENT_EXCHANGE);}
+
+    @Bean
+    public Queue postQueue() {
+        return new Queue(POST_QUEUE);
     }
 
     @Bean
-    public Queue accountQueue() {
-        return new Queue(ACCOUNT_QUEUE);
+    public Queue accountQueue() {return new Queue(COMMENT_QUEUE);}
+
+    @Bean
+    public Binding postBinding() {
+        return BindingBuilder.bind(postQueue()).to(postExchange()).with(ROUTING_KEY_POST);
     }
 
     @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(accountQueue()).to(accountExchange()).with(ROUTING_KEY_ACCOUNT);
+    public Binding accountBinding(){
+        return BindingBuilder.bind(accountQueue()).to(accountExchange()).with(ROUTING_KEY_COMMENT);
     }
 
     @Bean

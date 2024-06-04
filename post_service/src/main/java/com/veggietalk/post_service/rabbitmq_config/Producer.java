@@ -1,4 +1,4 @@
-package com.veggietalk.account_service.config;
+package com.veggietalk.post_service.rabbitmq_config;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Producer {
-
     private final RabbitTemplate template;
 
     @Autowired
@@ -14,15 +13,14 @@ public class Producer {
         this.template = template;
     }
 
-    public void deleteAccount(String accountId){
+    public void deletePost(String accountId){
         try {
-            template.convertAndSend(RabbitMqConfig.COMMENT_EXCHANGE, RabbitMqConfig.ROUTING_KEY_COMMENT, accountId);
-            template.convertAndSend(RabbitMqConfig.POST_EXCHANGE, RabbitMqConfig.ROUTING_KEY_POST, accountId);
+            template.convertAndSend(RabbitMqConfig.POST_COMMENT_EXCHANGE, RabbitMqConfig.ROUTING_KEY_POST_COMMENT, accountId);
             System.out.println("Message sent: " + accountId);
         } catch (Exception e) {
             System.err.println("Failed to send message: " + e.getMessage());
             e.printStackTrace();
         }
     }
-}
 
+}

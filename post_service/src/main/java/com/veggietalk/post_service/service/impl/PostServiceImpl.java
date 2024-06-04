@@ -4,8 +4,10 @@ import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.persistence.PostRepo;
+import com.veggietalk.post_service.rabbitmq_config.Producer;
 import com.veggietalk.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,6 +21,9 @@ import java.util.*;
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
+
+    @Autowired
+    private Producer producer;
 
     LocalDate currentDate = LocalDate.now();
 
@@ -38,6 +43,7 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("You do not have the right to delete this post");
         }
         postRepo.deletePost(id);
+        producer.deletePost(accountId.toString());
     }
 
     public List<Post> getAllPosts(int pageNumber) throws NoSuchElementException {
@@ -72,6 +78,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteByAccountId(UUID accountId) throws IllegalArgumentException{
         postRepo.deleteByAccountId(accountId);
+        producer.deletePost(accountId.toString());
     }
 
 

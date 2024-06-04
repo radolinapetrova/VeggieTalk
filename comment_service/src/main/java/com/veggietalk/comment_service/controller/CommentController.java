@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import com.veggietalk.comment_service.model.Comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.veggietalk.comment_service.service.impl.CommentService;
+import com.veggietalk.comment_service.service.CommentService;
 
 import java.util.UUID;
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.veggietalk.comment_service.persistence.converter.CommentConverters;
 import com.veggietalk.comment_service.persistence.model.CommentEntity;
 
+import java.util.IllegalFormatPrecisionException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,10 +23,10 @@ public class CommentRepoImpl implements CommentRepo {
 
     @Override
     public List<Comment> getPostComments(UUID postId) throws IllegalArgumentException{
-        List<CommentEntity> result = commentDBRepo.findAllByPostId(postId);
+        Optional<List<CommentEntity>> result = commentDBRepo.findAllByPostId(postId);
 
-        if (!result.isEmpty()){
-            return result.stream().map(CommentConverters::CommentEntityConverter).toList();
+        if (result.isPresent()){
+            return result.get().stream().map(CommentConverters::CommentEntityConverter).toList();
         }
         throw new IllegalArgumentException("There are comments for this post");
     }
@@ -33,10 +34,10 @@ public class CommentRepoImpl implements CommentRepo {
     @Override
     public List<Comment> getPostCommentsByRating(UUID postId, Rating rating) throws IllegalArgumentException{
 
-        List<CommentEntity> result = commentDBRepo.findAllByPostIdAndRating(postId, rating);
+        Optional<List<CommentEntity>> result = commentDBRepo.findAllByPostIdAndRating(postId, rating);
 
-        if(!result.isEmpty()){
-            return result.stream().map(CommentConverters::CommentEntityConverter).toList();
+        if(result.isPresent()){
+            return result.get().stream().map(CommentConverters::CommentEntityConverter).toList();
         }
           throw new IllegalArgumentException("There are no comments with this rating for this post;") ;
     }
@@ -44,10 +45,10 @@ public class CommentRepoImpl implements CommentRepo {
     @Override
     public List<Comment> getCommentsByRating(Rating rating) throws IllegalArgumentException{
 
-        List<CommentEntity> result = commentDBRepo.findAllByRating(rating);
+        Optional<List<CommentEntity>> result = commentDBRepo.findAllByRating(rating);
 
-        if(!result.isEmpty()){
-            return result.stream().map(CommentConverters::CommentEntityConverter).toList();
+        if(result.isPresent()){
+            return result.get().stream().map(CommentConverters::CommentEntityConverter).toList();
         }
         throw new IllegalArgumentException("There are no comments with the selected rating");
     }
@@ -71,5 +72,33 @@ public class CommentRepoImpl implements CommentRepo {
             return CommentConverters.CommentEntityConverter(entity.get());
         }
         throw new IllegalArgumentException("No comment with the selected id exists");
+    }
+
+    @Override
+    public void deleteALlByAccountId(UUID accountId) throws IllegalArgumentException{
+        List<CommentEntity> comments = getAllByAccount(accountId);
+        commentDBRepo.deleteAll(comments);
+    }
+
+    @Override
+    public void deleteAllByPostId(UUID postId) throws IllegalFormatPrecisionException{
+        Optional<List<CommentEntity>> comments = commentDBRepo.findAllByPostId(postId);
+
+        if(comments.isPresent()){
+            commentDBRepo.deleteAll(comments.get());
+        }
+        else{
+            throw new IllegalArgumentException("There are no comments for this post");
+        }
+    }
+
+
+    private List<CommentEntity> getAllByAccount(UUID account) throws IllegalArgumentException{
+        Optional<List<CommentEntity>> comment = commentDBRepo.findAllByAccountId(account);
+
+        if (comment.isPresent()){
+            return comment.get();
+        }
+        throw new IllegalArgumentException("There are no comments created by the specified user");
     }
 }
