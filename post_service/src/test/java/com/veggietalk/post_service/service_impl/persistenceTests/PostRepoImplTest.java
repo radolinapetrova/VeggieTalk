@@ -139,6 +139,35 @@ public class PostRepoImplTest {
         assertThrows(IllegalArgumentException.class, () -> repository.findById(result.getId()));
     }
 
+
+    @Test
+    void testDeleteByAccountId(){
+        //ARRANGE
+        Post result = Post.builder().date("2002-12-27").description("Descr").accountId(UUID.fromString("789e4567-e89b-12d3-a456-426614165000")).build();
+
+        //ACT
+        Post post = repository.save(result);
+        repository.deleteByAccountId(UUID.fromString("789e4567-e89b-12d3-a456-426614165000"));
+
+        //ASSERT
+        assertThrows(IllegalArgumentException.class, () -> repository.findById(post.getId()));
+
+    }
+
+    @Test
+    void testDeleteShouldThrowException(){
+        //ARRANGE
+        Post result = Post.builder().date("2002-12-27").description("Descr").accountId(UUID.fromString("789e4567-e89b-12d3-a456-426614165000")).build();
+
+        //ACT
+        repository.save(result);
+
+        //ASSERT
+        assertThrows(IllegalArgumentException.class, () -> repository.deleteByAccountId(UUID.fromString("879e4567-e89b-12d3-a456-426614165000")));
+    }
+
+
+
     @Test
     void testGetAllPosts(){
         //ARRANGE

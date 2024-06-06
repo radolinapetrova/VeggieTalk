@@ -92,13 +92,15 @@ public class PostRepoImpl implements PostRepo {
     }
 
 
-    private List<PostEntity> findByAccount(UUID account){
+    private List<PostEntity> findByAccount(UUID account) {
         Optional<List<PostEntity>> entities = postDBRepo.findAllByAccountId(account);
 
-        if(entities.isPresent()){
+        if (entities.isPresent() && !entities.get().isEmpty()) {
             return entities.get();
+        } else {
+            throw new IllegalArgumentException("No posts found for the provided account ID");
         }
-        throw new IllegalArgumentException("This account has no posts");
     }
+
 
 }
