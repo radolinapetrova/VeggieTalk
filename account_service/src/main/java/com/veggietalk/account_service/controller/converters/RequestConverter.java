@@ -10,7 +10,6 @@ public class RequestConverter {
 
     public static AccountResponse accountConverter(Account account){
         AccountResponse response = AccountResponse.builder()
-                .email(account.getEmail())
                 .id(account.getId())
                 .bio(account.getBio())
                 .build();
@@ -26,7 +25,6 @@ public class RequestConverter {
 
     public static Account accountRequestConverter(AccountRequest request){
         Account account = Account.builder()
-                .email(request.getEmail())
                 .userId(request.getUserId())
                 .bio(request.getBio())
                 .build();

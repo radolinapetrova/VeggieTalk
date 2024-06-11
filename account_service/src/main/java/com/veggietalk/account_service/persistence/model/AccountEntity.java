@@ -23,11 +23,10 @@ public class AccountEntity {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
-    private String email;
     private String bio;
 
-    @Column(name = "user_id", columnDefinition = "UUID")
-    private UUID userId;
+    @Column(name = "user_id")
+    private String userId;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

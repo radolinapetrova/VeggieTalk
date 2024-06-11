@@ -13,9 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Account {
     private UUID id;
-    private String email;
     private String bio;
-    private UUID userId;
+    private String userId;
 
     private List<Account> followers = new ArrayList<>();
     private List<Account> following = new ArrayList<>();
@@ -54,7 +53,7 @@ public class Account {
         if (account != null) {
             if (followers != null && followers.contains(account)) {
                 followers.remove(account);
-                throw new Exception("Follower removed: " + account.getEmail());
+                throw new Exception("Follower removed");
             }
         }
     }
@@ -63,7 +62,7 @@ public class Account {
         if (account != null) {
             if (following != null && following.contains(account)) {
                 following.remove(account);
-                throw new Exception("Following removed: " + account.getEmail());
+                throw new Exception("Following removed" );
             }
         }
     }

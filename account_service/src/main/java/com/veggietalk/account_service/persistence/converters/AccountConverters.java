@@ -11,7 +11,6 @@ public class AccountConverters {
     public static AccountEntity AccountConverter(Account account) {
         AccountEntity entity = AccountEntity.builder()
                 .userId(account.getUserId())
-                .email(account.getEmail())
                 .build();
 
         if (account.getId() != null) {
@@ -26,7 +25,7 @@ public class AccountConverters {
 
         if (account.getFollowing() != null) {
             entity.setFollowing(account.getFollowing().stream()
-                    .map(acc -> AccountEntity.builder().id(acc.getId()).email(acc.getEmail()).build())
+                    .map(acc -> AccountEntity.builder().id(acc.getId()).build())
                     .collect(Collectors.toCollection(ArrayList::new)));
         } else {
             entity.setFollowing(new ArrayList<>());
@@ -34,7 +33,7 @@ public class AccountConverters {
 
         if (account.getFollowers() != null) {
             entity.setFollowers(account.getFollowers().stream()
-                    .map(acc -> AccountEntity.builder().id(acc.getId()).email(acc.getEmail()).build())
+                    .map(acc -> AccountEntity.builder().id(acc.getId()).build())
                     .collect(Collectors.toCollection(ArrayList::new)));
         } else {
             entity.setFollowers(new ArrayList<>());
@@ -45,14 +44,13 @@ public class AccountConverters {
 
     public static Account AccountEntityConverter(AccountEntity entity) {
         Account account = Account.builder()
-                .email(entity.getEmail())
                 .bio(entity.getBio())
                 .id(entity.getId())
                 .build();
 
         if (entity.getFollowers() != null) {
             account.setFollowers(entity.getFollowers().stream()
-                    .map(acc -> Account.builder().id(acc.getId()).email(acc.getEmail()).build())
+                    .map(acc -> Account.builder().id(acc.getId()).build())
                     .collect(Collectors.toCollection(ArrayList::new)));
         } else {
             account.setFollowers(new ArrayList<>());
@@ -60,7 +58,7 @@ public class AccountConverters {
 
         if (entity.getFollowing() != null) {
             account.setFollowing(entity.getFollowing().stream()
-                    .map(acc -> Account.builder().id(acc.getId()).email(acc.getEmail()).build())
+                    .map(acc -> Account.builder().id(acc.getId()).build())
                     .collect(Collectors.toCollection(ArrayList::new)));
         } else {
             account.setFollowing(new ArrayList<>());

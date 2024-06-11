@@ -102,34 +102,6 @@ services:
     depends_on:
       - postgres_account
 
-  postgres_auth:
-    container_name: postgres_auth
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: R@d!0252
-      POSTGRES_USER: postgres
-      POSTGRES_DB: user_info
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - //c/postgres_auth_container_data:/var/lib/postgresql/data
-    expose:
-      - "5434"
-    ports:
-      - "5434:5434"
-    command: -p 5434
-    restart: always
-
-  auth_service:
-    image: radolina/auth_service_img:latest
-    container_name: auth_service
-    ports:
-      - "8085:8084"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_auth:5434/user_info
-      SPRING_PROFILES_ACTIVATE: docker
-    depends_on:
-      - postgres_auth
-
   postgres_comment:
     container_name: postgres_comment
     image: postgres
@@ -189,7 +161,6 @@ services:
     depends_on:
       - post_service
       - account_service
-      - auth_service
       - comment_service
 
   grafana:

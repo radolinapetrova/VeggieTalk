@@ -11,7 +11,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="post_service" />
-        <module name="auth_service" />
         <module name="comment_service" />
         <module name="account_service" />
         <module name="discovery_server" />
@@ -20,6 +19,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth_service" target="21" />
       <module name="discovery-server" target="1.8" />
       <module name="rabbitmq" target="21" />
     </bytecodeTargetLevel>

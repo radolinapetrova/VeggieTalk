@@ -26,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Account account, UUID userId) throws IllegalArgumentException{
-        if (!account.getId().equals(userId)){
+    public Account updateAccount(Account account, String userId) throws IllegalArgumentException{
+        if (!account.getUserId().equals(userId)){
             throw new IllegalArgumentException("You do not have the right to update the following account");
         }
         return accountRepo.save(account);
@@ -39,13 +39,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(UUID id, UUID userId) throws IllegalArgumentException{
-        accountRepo.findById(id);
-        if (!id.equals(userId)){
+    public void deleteAccount(UUID id, String userId) throws IllegalArgumentException{
+        Account ac = accountRepo.findById(id);
+        if (ac.getUserId().equals(userId)){
             throw new IllegalArgumentException("You do not have the right to delete this account");
         }
         accountRepo.delete(id);
-        producer.deleteAccount(userId.toString());
+        producer.deleteAccount(userId);
     }
 
     @Override

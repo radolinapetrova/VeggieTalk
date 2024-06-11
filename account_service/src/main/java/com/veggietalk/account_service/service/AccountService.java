@@ -10,9 +10,9 @@ import java.util.UUID;
 public interface AccountService {
     Account saveAccount(Account account);
 
-    Account updateAccount (Account account, UUID user);
+    Account updateAccount (Account account, String user);
 
-    void deleteAccount(UUID id, UUID userId);
+    void deleteAccount(UUID id, String userId);
 
     Account findById(UUID id) throws IllegalArgumentException;
 

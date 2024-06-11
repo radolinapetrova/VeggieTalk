@@ -3,51 +3,44 @@ import axios from "axios";
 import "./Account.css";
 
 export default function Register() {
-    const [data, setData] = useState({
+    const [userData, setUserData] = useState({
+        username: "",
+        password: "",
         email: "",
-        userId: "",
-        bio: "",
-        id: ""
     });
+
     const [agreeGDPR, setAgreeGDPR] = useState(false);
     const [msg, setMsg] = useState("");
-    const [showModal, setShowModal] = useState(false);
 
     const HandleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Form submitted");
         if (!agreeGDPR) {
             setMsg("You must agree to the terms of GDPR to register.");
             return;
         }
         try {
-            // Simulate registration success
-            setMsg("");
-            setShowModal(true);
-            // Save to local storage
-            localStorage.setItem("createdAccount", true); // Set a flag indicating the user has created an account
-            // Optionally, you can set a timeout to close the modal after a few seconds
-            setTimeout(() => {
-                setShowModal(false);
-                // Redirect to homepage
-                window.location.href = "http://localhost:3000";
-            }, 3000); // Adjust the timeout as needed
+            console.log("Sending user data:", userData);
+            let response = await axios.post("http://127.0.0.1:5000/create_user", userData);
+            console.log("Response received:", response);
+            setMsg("Registration successful!");
         } catch (err) {
-            // Handle registration error
+            console.log("Error during registration:", err);
             setMsg("Registration failed. Please try again later.");
         }
     };
 
     return (
         <div>
-            <form className="register">
+            <form className="register" onSubmit={HandleSubmit}>
                 <div className="input">
                     <label>Email </label>
                     <input
                         type="text"
-                        value={data.email}
+                        value={userData.email}
                         name="email"
                         onChange={(e) =>
-                            setData((prevState) => ({
+                            setUserData((prevState) => ({
                                 ...prevState,
                                 email: e.target.value,
                             }))
@@ -59,12 +52,27 @@ export default function Register() {
                     <label>Password </label>
                     <input
                         type="password"
-                        value={data.password}
+                        value={userData.password}
                         name="password"
                         onChange={(e) =>
-                            setData((prevState) => ({
+                            setUserData((prevState) => ({
                                 ...prevState,
                                 password: e.target.value,
+                            }))
+                        }
+                        required
+                    />
+                </div>
+                <div className="input">
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        value={userData.username}
+                        name="username"
+                        onChange={(e) =>
+                            setUserData((prevState) => ({
+                                ...prevState,
+                                username: e.target.value,
                             }))
                         }
                         required
@@ -75,27 +83,16 @@ export default function Register() {
                         <input
                             type="checkbox"
                             checked={agreeGDPR}
-                            onChange={(e) =>
-                                setAgreeGDPR(e.target.checked)
-                            }
+                            onChange={(e) => setAgreeGDPR(e.target.checked)}
                         />
                         I agree to the terms of GDPR
                     </label>
                 </div>
-                <button className="button" name="registerButton" onClick={HandleSubmit}>
+                <button className="button" name="registerButton" type="submit">
                     Register
                 </button>
                 <p className="message">{msg}</p>
             </form>
-            {/* Success modal */}
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-                        <p>You have successfully created a new account.</p>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
