@@ -1,4 +1,4 @@
-.register > label{
+.register > label {
     background-color: grey;
     padding: 5px;
     border-radius: 2px;
@@ -11,16 +11,16 @@
     margin: 10px;
 }
 
-input{
+input {
     margin: 10px;
 }
 
-form > input{
+form > input {
     width: 180px;
     margin: 10px;
 }
 
-.register{
+.register {
     height: 350px;
     width: 200px;
     margin-left: auto;
@@ -31,7 +31,7 @@ form > input{
     margin: 20px;
 }
 
-.login{
+.login {
     height: 200px;
     width: 200px;
     margin-right: auto;
@@ -43,29 +43,32 @@ form > input{
     background-color: #151414;
 }
 
-.account{
+.account-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.authForm{
-    display: flex;
-    margin: auto;
-}
-
-.button{
+.button {
     color: black;
-
 }
 
-.message{
+.message {
     color: white;
 }
 
-.accountInfo{
+.toggle-message {
+    color: white;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.accountInfo {
     color: white;
     width: 200px;
     margin: auto;
-    background-color:  #151414;
+    background-color: #151414;
     padding: 20px;
     margin-top: 50px;
     display: block;

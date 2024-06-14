@@ -19,4 +19,5 @@ public class PostResponse {
     private DifficultyLevel level;
     private Category category;
     private List<String> ingredients;
+    private List<UUID> fileIds;
 }

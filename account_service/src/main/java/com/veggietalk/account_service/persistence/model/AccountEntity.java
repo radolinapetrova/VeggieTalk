@@ -25,8 +25,8 @@ public class AccountEntity {
     private UUID id;
     private String bio;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "username")
+    private String username;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

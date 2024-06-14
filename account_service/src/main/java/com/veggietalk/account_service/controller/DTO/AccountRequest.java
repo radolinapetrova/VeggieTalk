@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AccountRequest {
-    private String userId;
+    private String username;
     private String bio;
     private UUID id;
 }

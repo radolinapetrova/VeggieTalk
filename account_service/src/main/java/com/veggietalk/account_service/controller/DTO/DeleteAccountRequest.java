@@ -11,5 +11,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DeleteAccountRequest {
     private UUID id;
-    private String userId;
+    private String username;
 }

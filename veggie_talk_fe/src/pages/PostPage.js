@@ -1,9 +1,11 @@
-import GetPosts from "../posts/GetPosts";
+import CreatePost from "../posts/CreatePost";
+import App from "../posts/App"
+import CreatePostsFiles from "../posts/CreatePostsFiles";
 
 export default function PostPage(){
     return(
         <div>
-            <GetPosts/>
+            <CreatePostsFiles/>
         </div>
     )
 }

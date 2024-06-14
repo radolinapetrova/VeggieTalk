@@ -34,7 +34,9 @@ public class RequestConverters {
                 .id(post.getId())
                 .date(post.getDate())
                 .description(post.getDescription())
-                .accountId(post.getAccountId()).build();
+                .accountId(post.getAccountId())
+                .fileIds(post.getFilesIds()).build();
+
 
         if (post.getRecipe() != null){
             Recipe recipe = post.getRecipe();

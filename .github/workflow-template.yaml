@@ -91,6 +91,5 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/{{SERVICE_NAME}}_img:latest
       - name: Run Docker Compose
         run: |
-          cd {{SERVICE_NAME}}
           docker-compose up -d
           docker ps

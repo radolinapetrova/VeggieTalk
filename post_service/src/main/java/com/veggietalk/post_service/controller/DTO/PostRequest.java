@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class PostRequest {
     private UUID accountId;
     private String description;

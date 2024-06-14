@@ -1,5 +1,7 @@
 package com.veggietalk.post_service.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veggietalk.post_service.controller.DTO.DeletePostRequest;
 import com.veggietalk.post_service.controller.DTO.RecipeIngredientsRequest;
 import com.veggietalk.post_service.controller.converters.RequestConverters;
@@ -10,10 +12,13 @@ import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +42,19 @@ public class PostController {
                     .badRequest()
                     .body(Collections.singletonMap("Unsuccessful creation of post", e.getMessage()));
         }
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Post> createPost(
+            @RequestParam("postDTO") String postDTOStr,
+            @RequestParam MultipartFile file) throws IOException, JsonProcessingException {
+
+        // Convert postDTOStr (JSON String) to PostDTO object
+        ObjectMapper objectMapper = new ObjectMapper();
+        PostRequest postDTO = objectMapper.readValue(postDTOStr, PostRequest.class);
+
+        Post createdPost = postService.uploadPostWithFiles(RequestConverters.RequestConverter(postDTO), file);
+        return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
     @GetMapping("page/{page}")

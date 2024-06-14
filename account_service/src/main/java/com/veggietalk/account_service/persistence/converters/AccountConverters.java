@@ -4,13 +4,12 @@ import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.persistence.model.AccountEntity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccountConverters {
     public static AccountEntity AccountConverter(Account account) {
         AccountEntity entity = AccountEntity.builder()
-                .userId(account.getUserId())
+                .username(account.getUsername())
                 .build();
 
         if (account.getId() != null) {

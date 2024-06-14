@@ -3,7 +3,9 @@ package com.veggietalk.post_service.service;
 import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -15,7 +17,7 @@ public interface PostService {
 
     List<Post> getAllPosts(int pageNumber) throws NoSuchElementException;
 
-    public List<Post> findAllRecipes();
+    List<Post> findAllRecipes();
 
     List<Post> findAllRecipesByDifficulty(DifficultyLevel level);
     List<Post> findAllRecipesByCategory(Category category);
@@ -23,4 +25,7 @@ public interface PostService {
     List<Post> findAllRecipesByIngredients(List<String> ingredients);
 
     void deleteByAccountId(UUID accountId) throws IllegalArgumentException;
+
+    Post uploadPostWithFiles(Post post, MultipartFile file) throws IOException;
+
 }

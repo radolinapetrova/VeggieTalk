@@ -1,5 +1,7 @@
 package com.veggietalk.post_service.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
@@ -9,11 +11,14 @@ import com.veggietalk.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,12 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private Producer producer;
 
+    @Autowired
+    private AmazonS3 amazonS3;
+
+//    @Value("${aws.s3.bucketName}")
+    private String bucketName = "veggietalkbucket";
+
     LocalDate currentDate = LocalDate.now();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -34,8 +45,30 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("There must be a description given for the post!");
         }
         post.setDate(currentDate.format(formatter));
+        UUID uuid = UUID.randomUUID();
+        post.addFile(uuid);
+//        uploadFile(uuid.toString());
         return postRepo.save(post);
     }
+
+
+    @Override
+    public Post uploadPostWithFiles(Post post, MultipartFile file) throws IOException {
+
+        if (post.getDescription() == null || post.getDescription().isEmpty()){
+            throw new IllegalArgumentException("There must be a description given for the post!");
+        }
+        post.setDate(currentDate.format(formatter));
+        UUID uuid = UUID.randomUUID();
+        post.addFile(uuid);
+        ObjectMetadata metadata = new ObjectMetadata();
+        String contentType = file.getContentType();
+        metadata.setContentType(contentType);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uuid.toString(), file.getInputStream(), metadata);
+        amazonS3.putObject(putObjectRequest);
+        return postRepo.save(post);
+    }
+
 
     public void deletePost(UUID id, UUID accountId, String role) throws IllegalArgumentException{
         Post post = postRepo.findById(id);

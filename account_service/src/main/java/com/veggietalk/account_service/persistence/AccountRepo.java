@@ -14,4 +14,6 @@ public interface AccountRepo {
     void delete (UUID id);
 
     Account findById(UUID id);
+
+    Account findByUsername(String username) throws IllegalArgumentException;
 }

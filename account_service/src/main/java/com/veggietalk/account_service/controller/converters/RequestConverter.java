@@ -25,7 +25,7 @@ public class RequestConverter {
 
     public static Account accountRequestConverter(AccountRequest request){
         Account account = Account.builder()
-                .userId(request.getUserId())
+                .username(request.getUsername())
                 .bio(request.getBio())
                 .build();
         if (request.getId() != null ){

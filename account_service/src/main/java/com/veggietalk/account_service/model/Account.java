@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Account {
     private UUID id;
     private String bio;
-    private String userId;
+    private String username;
 
     private List<Account> followers = new ArrayList<>();
     private List<Account> following = new ArrayList<>();

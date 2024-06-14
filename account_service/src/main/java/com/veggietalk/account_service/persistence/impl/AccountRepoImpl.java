@@ -39,4 +39,14 @@ public class AccountRepoImpl implements AccountRepo {
         }
     }
 
+    @Override
+    public Account findByUsername(String username) throws IllegalArgumentException {
+        Optional<AccountEntity> entity = repo.findByUsername(username);
+
+        if(entity.isPresent()){
+            return AccountConverters.AccountEntityConverter(entity.get());
+        }
+        throw new IllegalArgumentException("No such username exists");
+    }
+
 }

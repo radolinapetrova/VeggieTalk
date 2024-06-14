@@ -1,0 +1,42 @@
+.posts-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.post-card {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.post-description {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.post-date {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    width: 100%; /* Set image width to 100% of its container */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 400px; /* Limit maximum width of image */
+    max-height: 300px; /* Limit maximum height of image */
+    border-radius: 4px;
+}

@@ -5,6 +5,7 @@ import com.veggietalk.account_service.controller.DTO.AccountResponse;
 import com.veggietalk.account_service.controller.DTO.DeleteAccountRequest;
 import com.veggietalk.account_service.controller.DTO.FollowRequest;
 import com.veggietalk.account_service.controller.converters.RequestConverter;
+import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,21 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping()
-    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest request){
-        return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.saveAccount(RequestConverter.accountRequestConverter(request))));
+    public ResponseEntity<Object> createAccount(@RequestBody AccountRequest request){
+        try{
+            Account acc = accountService.saveAccount(RequestConverter.accountRequestConverter(request));
+            return ResponseEntity.ok().body(RequestConverter.accountConverter(acc));
+        }
+        catch (IllegalArgumentException e){
+            return ResponseEntity.status(417).body("An account with the specified username already exists");
+        }
+
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteAccount(@RequestBody DeleteAccountRequest request){
         try{
-            accountService.deleteAccount(request.getId(), request.getUserId());
+            accountService.deleteAccount(request.getId(), request.getUsername());
         }
         catch (IllegalArgumentException e){
             return ResponseEntity.status(400).body(e.getMessage());
@@ -55,7 +63,7 @@ public class AccountController {
 
     @PutMapping
     public ResponseEntity<AccountResponse> updateAccount(@RequestBody AccountRequest request){
-        return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.updateAccount(RequestConverter.accountRequestConverter(request), request.getUserId())));
+        return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.updateAccount(RequestConverter.accountRequestConverter(request), request.getUsername())));
     }
 
 

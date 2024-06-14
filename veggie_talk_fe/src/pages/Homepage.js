@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import GetPosts from "../posts/GetPosts.js"
 
 export default function Homepage() {
     // Check if user has just created an account
@@ -14,7 +15,8 @@ export default function Homepage() {
                 From delicious recipes and nutrition tips to sustainable living insights and inspiring stories,
                 join us as we celebrate the power of plant-based living together.</p>
             {/* Conditional rendering based on whether the user has just created an account */}
-            {!hasCreatedAccount && <Link to={"/login"} className="title">Create an account</Link>}
+            {/*{!hasCreatedAccount && <Link to={"/login"} className="title">Create an account</Link>}*/}
+            <GetPosts/>
         </div>
     )
 }

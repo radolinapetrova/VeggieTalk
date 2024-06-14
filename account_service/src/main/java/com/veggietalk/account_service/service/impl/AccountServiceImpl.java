@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,13 +20,19 @@ public class AccountServiceImpl implements AccountService {
     private Producer producer;
 
     @Override
-    public Account saveAccount(Account account) {
-       return accountRepo.save(account);
+    public Account saveAccount(Account account) throws IllegalArgumentException{
+        try{
+            accountRepo.findByUsername(account.getUsername());
+        }
+        catch (IllegalArgumentException e){
+            return accountRepo.save(account);
+        }
+       throw new IllegalArgumentException("An account with the specified username already exists.");
     }
 
     @Override
-    public Account updateAccount(Account account, String userId) throws IllegalArgumentException{
-        if (!account.getUserId().equals(userId)){
+    public Account updateAccount(Account account, String username) throws IllegalArgumentException{
+        if (!account.getUsername().equals(username)){
             throw new IllegalArgumentException("You do not have the right to update the following account");
         }
         return accountRepo.save(account);
@@ -39,13 +44,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(UUID id, String userId) throws IllegalArgumentException{
+    public void deleteAccount(UUID id, String username) throws IllegalArgumentException{
         Account ac = accountRepo.findById(id);
-        if (ac.getUserId().equals(userId)){
+        if (ac.getUsername().equals(username)){
             throw new IllegalArgumentException("You do not have the right to delete this account");
         }
         accountRepo.delete(id);
-        producer.deleteAccount(userId);
+        producer.deleteAccount(username);
     }
 
     @Override
