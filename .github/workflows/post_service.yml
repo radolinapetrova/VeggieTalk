@@ -12,6 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install git-crypt
+        run: |
+          sudo apt-get update
+          sudo apt-get install git-crypt
+
       - name: Unlock git-crypt
         run: git-crypt unlock
         env:
