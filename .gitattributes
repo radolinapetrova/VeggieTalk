@@ -1,4 +1,0 @@
-account_service/src/main/resources/application.properties filter=git-crypt diff=git-crypt
-post_service/src/main/resources/application.properties filter=git-crypt diff=git-crypt
-auths_service/src/main/resources/application.properties filter=git-crypt diff=git-crypt
-comment_service/src/main/resources/application.properties filter=git-crypt diff=git-crypt
