@@ -11,18 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install git-crypt
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git-crypt
-
-      - name: Unlock git-crypt
-        run: git-crypt unlock symmetric_key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
