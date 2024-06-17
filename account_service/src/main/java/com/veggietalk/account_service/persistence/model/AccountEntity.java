@@ -28,7 +28,7 @@ public class AccountEntity {
     @Column(name = "username")
     private String username;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "follower_relationship",
             joinColumns = @JoinColumn(name = "following_id"),
@@ -36,7 +36,7 @@ public class AccountEntity {
     )
     private List<AccountEntity> followers = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "follower_relationship",
             joinColumns = @JoinColumn(name = "follower_id"),

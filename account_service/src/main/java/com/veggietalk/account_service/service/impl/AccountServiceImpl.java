@@ -44,6 +44,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void deleteByUser(String username) {
+        Account acc = accountRepo.findByUsername(username);
+        accountRepo.delete(acc.getId());
+        producer.deleteAccount(username);
+    }
+
+    @Override
     public void deleteAccount(UUID id, String username) throws IllegalArgumentException{
         Account ac = accountRepo.findById(id);
         if (ac.getUsername().equals(username)){

@@ -2,18 +2,14 @@ import AWS from "aws-sdk";
 import { useState } from "react";
 
 function App() {
-    // Create state to store file
     const [file, setFile] = useState(null);
 
-    // Function to upload file to s3
     const uploadFile = async () => {
-        // S3 Bucket Name
+
         const S3_BUCKET = "veggietalkbucket";
 
-        // S3 Region
         const REGION = "eu-north-1";
 
-        // S3 Credentials
         AWS.config.update({
             accessKeyId: "AKIATCKAQJ65ESF7BLFZ",
             secretAccessKey: "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",
@@ -23,15 +19,11 @@ function App() {
             region: REGION,
         });
 
-        // Files Parameters
-
         const params = {
             Bucket: S3_BUCKET,
             Key: file.name,
             Body: file,
         };
-
-        // Uploading file to s3
 
         var upload = s3
             .putObject(params)

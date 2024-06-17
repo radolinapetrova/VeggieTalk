@@ -86,9 +86,10 @@ public class PostRepoImpl implements PostRepo {
     }
 
     @Override
-    public void deleteByAccountId(UUID accountId)throws IllegalArgumentException{
+    public List<UUID> deleteByAccountId(UUID accountId)throws IllegalArgumentException{
         List<PostEntity> posts = findByAccount(accountId);
         postDBRepo.deleteAll(posts);
+        return posts.stream().map(PostEntity::getId).toList();
     }
 
 

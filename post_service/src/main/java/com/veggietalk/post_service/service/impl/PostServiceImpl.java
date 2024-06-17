@@ -110,8 +110,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deleteByAccountId(UUID accountId) throws IllegalArgumentException{
-        postRepo.deleteByAccountId(accountId);
-        producer.deletePost(accountId.toString());
+        List<UUID> postIds = postRepo.deleteByAccountId(accountId);
+        for (UUID postID: postIds){
+            producer.deletePost(postID.toString());
+        }
     }
 
 

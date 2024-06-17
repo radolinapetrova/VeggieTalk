@@ -34,7 +34,7 @@ class UserApp:
             result = self.service.create_user(user_cred)
             return jsonify(result)  # Ensure the result is JSON serializable
 
-        @users_app.route('/delete_user', methods=['POST'])
+        @users_app.route('/delete_user', methods=['DELETE'])
         def delete_user():
             data = request.json
             username = data.get('username')

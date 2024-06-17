@@ -15,5 +15,5 @@ public interface AccountRepo {
 
     Account findById(UUID id);
 
-    Account findByUsername(String username) throws IllegalArgumentException;
+    Account findByUsername(String username);
 }

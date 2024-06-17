@@ -13,6 +13,7 @@ public interface AccountService {
     Account updateAccount (Account account, String username);
 
     void deleteAccount(UUID id, String username);
+    void deleteByUser(String username) throws IllegalArgumentException;
 
     Account findById(UUID id) throws IllegalArgumentException;
 

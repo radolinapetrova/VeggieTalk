@@ -28,6 +28,6 @@ public interface PostRepo {
 
     List<Post> findAllRecipes();
 
-    void deleteByAccountId(UUID accountId);
+    List<UUID> deleteByAccountId(UUID accountId);
 
 }

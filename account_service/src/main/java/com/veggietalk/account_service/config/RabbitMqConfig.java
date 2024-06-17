@@ -22,6 +22,8 @@ public class RabbitMqConfig {
     public static final String COMMENT_QUEUE = "comment-queue";
     public static final String ROUTING_KEY_COMMENT = "comment";
 
+    public static final String ACCOUNT_QUEUE = "account_queue";
+
     @Bean
     public DirectExchange postExchange() {
         return new DirectExchange(POST_EXCHANGE);
