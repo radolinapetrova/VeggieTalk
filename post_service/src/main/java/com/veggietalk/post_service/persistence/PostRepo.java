@@ -30,4 +30,5 @@ public interface PostRepo {
 
     List<UUID> deleteByAccountId(UUID accountId);
 
+    List<Post> findByAccountId(UUID account);
 }

@@ -24,7 +24,12 @@ public class Consumer {
     @RabbitListener(queues = RabbitMqConfig.POST_QUEUE)
     public void receiveMessage(String accountId) {
         logger.info("Received message: {}", accountId);
-        service.deleteByAccountId(UUID.fromString(accountId));
-        System.out.println("Posts successfully deleted");
+        try{
+            service.deleteByAccountId(UUID.fromString(accountId));
+            System.out.println("Posts successfully deleted");
+        }
+        catch (Exception e){
+            System.out.println("Error");
+        }
     }
 }

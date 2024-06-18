@@ -1,7 +1,9 @@
+import UserProfile from "../user_management/UserProfile"
+
 export default function AccountPage(){
     return(
         <div>
-            <p>Account Page</p>
+            <UserProfile/>
         </div>
     )
 }

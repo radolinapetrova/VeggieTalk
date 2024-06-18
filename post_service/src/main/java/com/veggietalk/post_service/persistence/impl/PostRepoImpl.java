@@ -11,7 +11,6 @@ import com.veggietalk.post_service.persistence.model.PostEntity;
 import com.veggietalk.post_service.persistence.model.RecipeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -90,6 +89,16 @@ public class PostRepoImpl implements PostRepo {
         List<PostEntity> posts = findByAccount(accountId);
         postDBRepo.deleteAll(posts);
         return posts.stream().map(PostEntity::getId).toList();
+    }
+
+    @Override
+    public List<Post> findByAccountId(UUID account){
+        List<PostEntity> posts = findByAccount(account);
+
+        if (!posts.isEmpty()){
+            return posts.stream().map(PostConverters::PostEntityConverter).toList();
+        }
+        throw new IllegalArgumentException("There are no posts created by this account");
     }
 
 

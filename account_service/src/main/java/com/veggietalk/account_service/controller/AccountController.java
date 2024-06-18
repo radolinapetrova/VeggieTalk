@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.UUID;
 
 @RestController
@@ -36,18 +37,32 @@ public class AccountController {
     @DeleteMapping
     public ResponseEntity<String> deleteAccount(@RequestBody DeleteAccountRequest request){
         try{
-            accountService.deleteAccount(request.getId(), request.getUsername());
+            accountService.deleteAccount(request.getJwtToken(), request.getUsername());
         }
-        catch (IllegalArgumentException e){
+        catch (IllegalArgumentException | ParseException e){
             return ResponseEntity.status(400).body(e.getMessage());
         }
         return ResponseEntity.ok().body("Account deleted successfully");
+    }
+
+    @PostMapping("/username")
+    public ResponseEntity<Object> getByUsername(@RequestBody DeleteAccountRequest request){
+        Account response;
+        try{
+            response = accountService.findByUsername(request.getJwtToken());
+        }
+        catch (IllegalArgumentException | ParseException e){
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+        return ResponseEntity.ok().body(RequestConverter.accountConverter(response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable(value = "id") UUID id){
         return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.findById(id)));
     }
+
+
 
     @PostMapping("/follow")
     public ResponseEntity<String> addFollow(@RequestBody FollowRequest request) throws Exception{
@@ -65,6 +80,8 @@ public class AccountController {
     public ResponseEntity<AccountResponse> updateAccount(@RequestBody AccountRequest request){
         return ResponseEntity.ok().body(RequestConverter.accountConverter(accountService.updateAccount(RequestConverter.accountRequestConverter(request), request.getUsername())));
     }
+
+
 
 
 }

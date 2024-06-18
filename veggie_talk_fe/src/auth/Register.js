@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Account.css";
+import "../Account.css";
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from "./AuthProvider";
 
 export default function Account() {
+
+    const {setAuth, setClaims} = useAuth();
+    let decode = require('jwt-claims');
 
     const navigate = useNavigate();
 
@@ -42,6 +46,9 @@ export default function Account() {
             setMsg("Login successful!");
             sessionStorage.setItem('accessToken', res.data["access_token"]);
             sessionStorage.setItem('refreshToken', res.data["refresh_token"]);
+            const token = res.data["access_token"];
+            setClaims(decode(token));
+            setAuth(true);
             navigate('/');
 
         } catch (err) {

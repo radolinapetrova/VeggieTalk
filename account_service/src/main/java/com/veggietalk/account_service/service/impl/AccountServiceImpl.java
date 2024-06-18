@@ -1,13 +1,16 @@
 package com.veggietalk.account_service.service.impl;
 
+import com.nimbusds.jwt.JWTClaimsSet;
 import com.veggietalk.account_service.config.Producer;
 import com.veggietalk.account_service.model.Account;
 import com.veggietalk.account_service.persistence.AccountRepo;
 import com.veggietalk.account_service.service.AccountService;
+import com.veggietalk.account_service.service.JwtDecoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.UUID;
 
 @Service
@@ -47,17 +50,19 @@ public class AccountServiceImpl implements AccountService {
     public void deleteByUser(String username) {
         Account acc = accountRepo.findByUsername(username);
         accountRepo.delete(acc.getId());
-        producer.deleteAccount(username);
+        producer.deleteAccount(acc.getId().toString());
     }
 
     @Override
-    public void deleteAccount(UUID id, String username) throws IllegalArgumentException{
-        Account ac = accountRepo.findById(id);
-        if (ac.getUsername().equals(username)){
-            throw new IllegalArgumentException("You do not have the right to delete this account");
+    public void deleteAccount(String jwtToken, String username) throws IllegalArgumentException, ParseException {
+        Account ac = accountRepo.findByUsername(username);
+        JWTClaimsSet jwtClaims = JwtDecoder.decodeJwtToken(jwtToken);
+        if (jwtClaims != null && jwtClaims.getStringClaim("preferred_username").equals(username)){
+            accountRepo.delete(ac.getId());
+            producer.deleteAccount(username);
+            return;
         }
-        accountRepo.delete(id);
-        producer.deleteAccount(username);
+        throw new IllegalArgumentException("You do not have the right to delete this account");
     }
 
     @Override
@@ -67,5 +72,16 @@ public class AccountServiceImpl implements AccountService {
 
         following.addFollower(Account.builder().id(follower.getId()).build());
         accountRepo.save(following);
+    }
+
+    @Override
+    public Account findByUsername(String token) throws ParseException, IllegalArgumentException {
+        JWTClaimsSet jwtClaims = JwtDecoder.decodeJwtToken(token);
+
+        if (jwtClaims != null ){
+            String username = jwtClaims.getStringClaim("preferred_username");
+            return accountRepo.findByUsername(username);
+        }
+        throw new IllegalArgumentException("Don't be fucking rude");
     }
 }

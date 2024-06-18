@@ -45,6 +45,7 @@ public class AccountConverters {
         Account account = Account.builder()
                 .bio(entity.getBio())
                 .id(entity.getId())
+                .username(entity.getUsername())
                 .build();
 
         if (entity.getFollowers() != null) {

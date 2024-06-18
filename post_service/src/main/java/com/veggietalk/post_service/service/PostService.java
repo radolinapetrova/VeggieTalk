@@ -28,4 +28,6 @@ public interface PostService {
 
     Post uploadPostWithFiles(Post post, MultipartFile file) throws IOException;
 
+    List<Post> findByAccountId(UUID account);
+
 }

@@ -27,16 +27,24 @@ public class Consumer {
     @RabbitListener(queues = RabbitMqConfig.POST_COMMENT_QUEUE)
     public void receivePostMessage(String postId) {
         logger.info("Received message: {}", postId);
-        // Add your processing logic here
-        service.deleteByPostId(UUID.fromString(postId));
+        try{
+            service.deleteByPostId(UUID.fromString(postId));
+        }
+        catch (Exception e){
+            System.out.println("Error");
+        }
         System.out.println("Comments successfully deleted");
     }
 
     @RabbitListener(queues = RabbitMqConfig.COMMENT_QUEUE)
     public void receiveAccMessage(String accountId){
         logger.info("Received message: {}", accountId);
-        service.deleteByAccountId(UUID.fromString(accountId));
-        System.out.println("Comments successfully deleted");
+        try{
+            service.deleteByAccountId(UUID.fromString(accountId));
+        }
+        catch (Exception e){
+            System.out.println("Comments successfully deleted");
+        }
     }
 
 }

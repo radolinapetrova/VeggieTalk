@@ -38,7 +38,7 @@ class UserApp:
         def delete_user():
             data = request.json
             username = data.get('username')
-            auth_token = data.get('auth_token')
+            auth_token = data.get('jwtToken')
             result = self.service.delete_user(username, auth_token)
             return jsonify(result)
 

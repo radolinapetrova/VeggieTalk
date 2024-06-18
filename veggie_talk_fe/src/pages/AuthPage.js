@@ -1,4 +1,4 @@
-import Register from "../Register";
+import Register from "../auth/Register";
 
 export default function AuthPage(){
     return (

@@ -118,6 +118,7 @@ class UserService:
 
         message_data = {"username": f"{username}"}
         message = json.dumps(message_data)
+        print(f"message : f{message}")
         self.publish_message_to_rabbitmq(message=message)
 
     def login_user(self, username, password):

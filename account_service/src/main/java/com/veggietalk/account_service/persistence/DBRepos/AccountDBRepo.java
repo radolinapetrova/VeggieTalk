@@ -15,4 +15,5 @@ public interface AccountDBRepo extends JpaRepository<AccountEntity, UUID> {
     @Query("SELECT a from AccountEntity as a where a.username = :username")
     Optional<AccountEntity> findByUsername(@Param("username") String username);
 
+
 }

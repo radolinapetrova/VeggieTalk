@@ -11,6 +11,7 @@ public class RequestConverter {
     public static AccountResponse accountConverter(Account account){
         AccountResponse response = AccountResponse.builder()
                 .id(account.getId())
+                .username(account.getUsername())
                 .bio(account.getBio())
                 .build();
 

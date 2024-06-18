@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +71,11 @@ public class PostServiceImpl implements PostService {
         return postRepo.save(post);
     }
 
+    @Override
+    public List<Post> findByAccountId(UUID account) {
+        return postRepo.findByAccountId(account);
+    }
+
 
     public void deletePost(UUID id, UUID accountId, String role) throws IllegalArgumentException{
         Post post = postRepo.findById(id);
@@ -110,10 +117,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deleteByAccountId(UUID accountId) throws IllegalArgumentException{
+        List<Post> posts = this.findByAccountId(accountId);
+        List<UUID> allFileIds = posts.stream()
+                .flatMap(post -> post.getFilesIds().stream())
+                .toList();
+
+        for (UUID fileId : allFileIds){
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, fileId.toString());
+            amazonS3.deleteObject(deleteObjectRequest);
+        }
+
         List<UUID> postIds = postRepo.deleteByAccountId(accountId);
         for (UUID postID: postIds){
             producer.deletePost(postID.toString());
         }
+
     }
 
 
