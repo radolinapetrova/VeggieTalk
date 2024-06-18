@@ -48,7 +48,7 @@ public class PostControllerTest {
     @Test
     void testPostRequestConverter(){
         //ARRANGE
-        PostRequest request = new PostRequest(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Descr", List.of(""), Category.DINNER, DifficultyLevel.EASY);
+        PostRequest request = new PostRequest(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Descr", List.of("ingredient1", "ingredient2"), Category.DINNER, DifficultyLevel.EASY);
 
         //ACT
         Post result = RequestConverters.RequestConverter(request);
@@ -56,16 +56,29 @@ public class PostControllerTest {
         //ASSERT
         assertEquals(result.getDescription(), request.getDescription());
         assertEquals(result.getAccountId(), request.getAccountId());
+        assertEquals(result.getRecipe().getIngredients(), request.getIngredients());
+        assertEquals(result.getRecipe().getCategory(), request.getCategory());
+        assertEquals(result.getRecipe().getDifficultyLevel(), request.getLevel());
     }
 
     @Test
     void testPostResponseConverter(){
         //ARRANGE
-        Post post = new Post();
-        post.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
-        post.setDescription("Descr");
-        post.setAccountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
-        post.setDate("2002-12-27");
+        Recipe recipe = Recipe.recipeBuilder()
+                .ingredients(List.of("ingredient1", "ingredient2"))
+                .difficultyLevel(DifficultyLevel.EASY)
+                .category(Category.DINNER)
+                .postId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .build();
+
+        Post post = Post.builder()
+                .id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .description("Descr")
+                .accountId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .date("2002-12-27")
+                .recipe(recipe)
+                .filesIds(List.of(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")))
+                .build();
 
         //ACT
         PostResponse response = RequestConverters.PostConverter(post);
@@ -75,20 +88,50 @@ public class PostControllerTest {
         assertEquals(response.getId(), post.getId());
         assertEquals(response.getAccountId(), post.getAccountId());
         assertEquals(response.getDescription(), post.getDescription());
+        assertEquals(response.getLevel(), post.getRecipe().getDifficultyLevel());
+        assertEquals(response.getCategory(), post.getRecipe().getCategory());
+        assertEquals(response.getIngredients(), post.getRecipe().getIngredients());
+        assertEquals(response.getFileIds(), post.getFilesIds());
     }
-
-
 
     @Test
     void createPost_shouldSuccessfullyCreatePost() throws Exception {
         // ARRANGE
-        PostRequest request = PostRequest.builder().description("Descr").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build();
-        PostResponse response = PostResponse.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).date("2024-03-27").description(request.getDescription()).accountId(request.getAccountId()).build();
+        PostRequest request = PostRequest.builder()
+                .description("Descr")
+                .accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .ingredients(List.of("ingredient1", "ingredient2"))
+                .category(Category.DINNER)
+                .level(DifficultyLevel.EASY)
+                .build();
+
+        PostResponse response = PostResponse.builder()
+                .id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .date("2024-03-27")
+                .description(request.getDescription())
+                .accountId(request.getAccountId())
+                .level(request.getLevel())
+                .category(request.getCategory())
+                .ingredients(request.getIngredients())
+                .fileIds(List.of(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")))
+                .build();
+
         String content = new ObjectMapper().writeValueAsString(request);
         String expected = new ObjectMapper().writeValueAsString(response);
 
         // ACT
-        when(service.createPost(any(Post.class))).thenReturn(new Post(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "2024-03-27", request.getAccountId(), request.getDescription(), Recipe.recipeBuilder().build()));
+        when(service.createPost(any(Post.class))).thenReturn(Post.builder()
+                .id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .date("2024-03-27")
+                .accountId(request.getAccountId())
+                .description(request.getDescription())
+                .recipe(Recipe.recipeBuilder()
+                        .ingredients(request.getIngredients())
+                        .difficultyLevel(request.getLevel())
+                        .category(request.getCategory())
+                        .build())
+                .filesIds(List.of(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")))
+                .build());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
@@ -121,11 +164,13 @@ public class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-
     @Test
     void deletePost_shouldSuccessfullyDeletePost() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).accountId(UUID.fromString("123e4567-e89b-12d3-a456-426494174000")).build();
+        DeletePostRequest request = DeletePostRequest.builder()
+                .id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .accountId(UUID.fromString("123e4567-e89b-12d3-a456-426494174000"))
+                .build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -143,7 +188,11 @@ public class PostControllerTest {
     @Test
     void deletePost_shouldReturnErrorMessage_whenPostDoesNotExist() throws Exception{
         // ARRANGE
-        DeletePostRequest request = DeletePostRequest.builder().id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")).accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).role("USER").build();
+        DeletePostRequest request = DeletePostRequest.builder()
+                .id(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
+                .accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .role("USER")
+                .build();
         String content = new ObjectMapper().writeValueAsString(request);
 
         // ACT
@@ -163,9 +212,42 @@ public class PostControllerTest {
     void testGetAllPosts_shouldReturnAllPosts() throws Exception{
         //ARRANGE
         List<Post> posts = new ArrayList<>();
-        posts.add(Post.builder().id(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).description("Descr1").date("2002-12-27").accountId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")).build());
-        posts.add(Post.builder().id(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).description("Descr2").date("2002-12-27").accountId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")).build());
-        posts.add(Post.builder().id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).description("Descr3").date("2002-12-27").accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).build());
+        posts.add(Post.builder()
+                .id(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd"))
+                .description("Descr1")
+                .date("2002-12-27")
+                .accountId(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd"))
+                .recipe(Recipe.recipeBuilder()
+                        .ingredients(List.of("ingredient1"))
+                        .difficultyLevel(DifficultyLevel.EASY)
+                        .category(Category.DINNER)
+                        .build())
+                .filesIds(List.of(UUID.fromString("7e57d004-2b97-0e7a-b45f-5387367791cd")))
+                .build());
+        posts.add(Post.builder()
+                .id(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89"))
+                .description("Descr2")
+                .date("2002-12-27")
+                .accountId(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89"))
+                .recipe(Recipe.recipeBuilder()
+                        .ingredients(List.of("ingredient2"))
+                        .difficultyLevel(DifficultyLevel.MEDIUM)
+                        .category(Category.BREAKFAST)
+                        .build())
+                .filesIds(List.of(UUID.fromString("d94a41d5-fba4-4fc4-8000-20fd6c8c5f89")))
+                .build());
+        posts.add(Post.builder()
+                .id(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .description("Descr3")
+                .date("2002-12-27")
+                .accountId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                .recipe(Recipe.recipeBuilder()
+                        .ingredients(List.of("ingredient3"))
+                        .difficultyLevel(DifficultyLevel.HARD)
+                        .category(Category.LUNCH)
+                        .build())
+                .filesIds(List.of(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")))
+                .build());
         List<PostResponse> result = posts.stream().map(RequestConverters::PostConverter).toList();
         String expected = (new ObjectMapper()).writeValueAsString(result);
 
@@ -178,9 +260,8 @@ public class PostControllerTest {
         MockMvcBuilders.standaloneSetup(controller)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(expected));
     }
-
 }

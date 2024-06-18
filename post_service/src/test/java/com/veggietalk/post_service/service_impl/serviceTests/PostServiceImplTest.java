@@ -1,32 +1,29 @@
 package com.veggietalk.post_service.service_impl.serviceTests;
-
+import com.amazonaws.services.s3.AmazonS3;
 import com.veggietalk.post_service.model.Category;
 import com.veggietalk.post_service.model.DifficultyLevel;
 import com.veggietalk.post_service.model.Post;
 import com.veggietalk.post_service.model.Recipe;
 import com.veggietalk.post_service.persistence.PostRepo;
+import com.veggietalk.post_service.rabbitmq_config.Producer;
 import com.veggietalk.post_service.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
+
     @Mock
     private PostRepo postRepo;
 
@@ -34,7 +31,6 @@ class PostServiceImplTest {
     private PostServiceImpl service;
 
     LocalDate currentDate = LocalDate.now();
-
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final int page = 0;
 
@@ -70,25 +66,12 @@ class PostServiceImplTest {
         verify(postRepo, never()).save(any(Post.class));
     }
 
-    //HAPPY FLOW
-//    @Test
-//    void testDeletePost_shouldSuccessfullyDeletePost(){
-//        //ARRANGE
-//        UUID id = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-//        UUID user = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-//        when(postRepo.findById(any(UUID.class))).thenReturn(Post.builder().accountId(id).build());
-//
-//        //ACT
-//        service.deletePost(id, user, "USER");
-//
-//        //ASSERT
-//        verify(postRepo, times(1)).deletePost(any(UUID.class));
-//    }
+
     //UNHAPPY FLOW
     @Test
     void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
         //ARRANGE
-        doThrow(IllegalArgumentException.class).when(postRepo).findById(any(UUID.class));
+        when(postRepo.findById(any(UUID.class))).thenThrow(new IllegalArgumentException());
 
         //ACT
         assertThrows(IllegalArgumentException.class, () -> service.deletePost(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "USER"));
@@ -113,7 +96,7 @@ class PostServiceImplTest {
 
         //ASSERT
         verify(postRepo, times(1)).getAllPosts(page);
-        assertEquals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), result.getFirst().getId());
+        assertEquals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), result.get(0).getId());
         assertEquals("Descr2", result.get(1).getDescription());
         assertEquals(UUID.fromString("e3b0c442-98fc-1c14-9af4-8b2b2ef8b6cd"), result.get(2).getAccountId());
     }
@@ -122,7 +105,7 @@ class PostServiceImplTest {
     @Test
     void testGetAllPosts_shouldThrowException_whenNoPostsExist(){
         //ARRANGE
-        List<Post>posts = new ArrayList<>();
+        List<Post> posts = new ArrayList<>();
         when(postRepo.getAllPosts(page)).thenReturn(posts);
 
         //ACT
@@ -131,7 +114,6 @@ class PostServiceImplTest {
         //ASSERT
         verify(postRepo, times(1)).getAllPosts(page);
     }
-
 
     @Test
     void getAllRecipesByDifficulty(){
@@ -166,5 +148,4 @@ class PostServiceImplTest {
         verify(postRepo, times(1)).findAllRecipesByCategory(Category.DINNER);
         assertEquals(result.get(1).getRecipe().getCategory(), Category.DINNER);
     }
-
 }

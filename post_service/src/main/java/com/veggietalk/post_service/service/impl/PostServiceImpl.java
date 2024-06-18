@@ -49,7 +49,6 @@ public class PostServiceImpl implements PostService {
         post.setDate(currentDate.format(formatter));
         UUID uuid = UUID.randomUUID();
         post.addFile(uuid);
-//        uploadFile(uuid.toString());
         return postRepo.save(post);
     }
 
