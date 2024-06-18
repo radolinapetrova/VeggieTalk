@@ -152,6 +152,10 @@
             <artifactId>aws-java-sdk</artifactId>
             <version>1.12.99</version> <!-- Use the latest version -->
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
