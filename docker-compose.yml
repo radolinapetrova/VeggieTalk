@@ -3,6 +3,8 @@ services:
     ports:
       - 5431:5431
     container_name: postgres_post
+    networks:
+      - my_network
     image: postgres
     environment:
       POSTGRES_PASSWORD: R@d!0252
@@ -15,45 +17,53 @@ services:
   post_service:
     image: radolina/post_service_img:latest
     container_name: post_service
+    networks:
+      - my_network
     ports:
       - 8081:8081
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_post:5432/post_info
     depends_on:
       - postgres_post
-
-  postgres_account:
-    container_name: postgres_account
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: R@d!0252
-      POSTGRES_USER: postgres
-      POSTGRES_DB: account_info
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - //c/postgres_account_container_data:/var/lib/postgresql/data
-    expose:
-      - "5433"
-    ports:
-      - "5433:5433"
-    command: -p 5433
-    restart: always
-
-
-  account_service:
-    image: radolina/account_service_img:latest
-    container_name: account_service
-    ports:
-      - "8083:8083"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_account:5433/account_info
-      SPRING_PROFILES_ACTIVATE: docker
-    depends_on:
-      - postgres_account
+#
+#  postgres_account:
+#    container_name: postgres_account
+#    image: postgres
+#    networks:
+#      - my_network
+#    environment:
+#      POSTGRES_PASSWORD: R@d!0252
+#      POSTGRES_USER: postgres
+#      POSTGRES_DB: account_info
+#      PGDATA: /var/lib/postgresql/data
+#    volumes:
+#      - //c/postgres_account_container_data:/var/lib/postgresql/data
+#    expose:
+#      - "5433"
+#    ports:
+#      - "5433:5433"
+#    command: -p 5433
+#    restart: always
+#
+#
+#  account_service:
+#    image: radolina/account_service_img:latest
+#    container_name: account_service
+#    networks:
+#      - my_network
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_account:5433/account_info
+#      SPRING_PROFILES_ACTIVATE: docker
+#    depends_on:
+#      - postgres_account
 
   postgres_comment:
     container_name: postgres_comment
     image: postgres
+    networks:
+      - my_network
     environment:
       POSTGRES_PASSWORD: R@d!0252
       POSTGRES_USER: postgres
@@ -68,6 +78,8 @@ services:
   comment_service:
     image: radolina/comment_service_img:latest
     container_name: comment_service
+    networks:
+      - my_network
     ports:
       - 8082:8082
     environment:
@@ -79,6 +91,8 @@ services:
   discovery_server:
     image: radolina/discovery_server_img:latest
     container_name: discovery_server
+    networks:
+      - my_network
     ports:
       - 8761:8761
     environment:
@@ -87,6 +101,8 @@ services:
   api_gateway:
     image: radolina/api_gateway_img:latest
     container_name: api_gateway
+    networks:
+      - my_network
     ports:
       - 8181:8080
     expose:
@@ -98,33 +114,33 @@ services:
       - discovery_server
 
 
-
-  prometheus:
-    image: prom/prometheus:v2.37.1
-    container_name: prometheus
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on:
-      - post_service
-      - account_service
-      - comment_service
-
-  grafana:
-    image: grafana/grafana-oss:8.5.2
-    container_name: grafana
-    restart: always
-    ports:
-      - "3000:3000"
-    links:
-      - prometheus:prometheus
-    volumes:
-      - ./grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
+#
+#  prometheus:
+#    image: prom/prometheus:v2.37.1
+#    container_name: prometheus
+#    restart: always
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+#    depends_on:
+#      - post_service
+#      - account_service
+#      - comment_service
+#
+#  grafana:
+#    image: grafana/grafana-oss:8.5.2
+#    container_name: grafana
+#    restart: always
+#    ports:
+#      - "3000:3000"
+#    links:
+#      - prometheus:prometheus
+#    volumes:
+#      - ./grafana:/var/lib/grafana
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=password
 
   rabbit:
     image: rabbitmq:3-management
@@ -132,13 +148,29 @@ services:
       - "15672:15672"
       - "5672:5672"
     container_name: rabbit
+    networks:
+      - my_network
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_ID=post_service
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_URI=http://post_service:8081
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]=Path=/api/posts
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]=StripPrefix=1
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_ID=account_service
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_URI=http://account_service:8083
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]=Path=/api/account
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]=StripPrefix=1
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_ID=comment_service
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_URI=http://comment_service:8082
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]=Path=/api/comments
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]=StripPrefix=1
     restart: always
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.4
+    networks:
+      - my_network
     ports:
       - "8282:8080"
     environment:
@@ -152,6 +184,10 @@ services:
 volumes:
   keycloak_data:
   keycloak_config:
+
+networks:
+  my_network:
+    driver: bridge
 
 
 
