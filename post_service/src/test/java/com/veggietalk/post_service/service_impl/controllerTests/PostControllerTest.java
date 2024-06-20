@@ -48,7 +48,8 @@ public class PostControllerTest {
     @Test
     void testPostRequestConverter(){
         //ARRANGE
-        PostRequest request = new PostRequest(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Descr", List.of("ingredient1", "ingredient2"), Category.DINNER, DifficultyLevel.EASY);
+        PostRequest request = new PostRequest(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
+                "Descr", List.of("ingredient1", "ingredient2"), Category.DINNER, DifficultyLevel.EASY);
 
         //ACT
         Post result = RequestConverters.RequestConverter(request);

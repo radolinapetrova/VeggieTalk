@@ -69,12 +69,15 @@ class PostServiceImplTest {
 
     //UNHAPPY FLOW
     @Test
-    void testDeletePost_shouldThrowException_whenPostDoesNotExist(){
+    void testDeletePost_shouldThrowException_whenUserIsNotAuthorizedForTheAction(){
         //ARRANGE
         when(postRepo.findById(any(UUID.class))).thenThrow(new IllegalArgumentException());
 
         //ACT
-        assertThrows(IllegalArgumentException.class, () -> service.deletePost(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "USER"));
+        assertThrows(IllegalArgumentException.class, () -> service.deletePost
+                (UUID.fromString("321e4567-e89b-12d3-a456-426614174000"),
+                        UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
+                        "USER"));
 
         //ASSERT
         verify(postRepo, never()).deletePost(any(UUID.class));
