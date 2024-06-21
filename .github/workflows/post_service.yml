@@ -96,3 +96,29 @@ jobs:
           docker-compose up -d
           sleep 60
           docker ps
+          
+
+  deploy:
+    needs: docker
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: 'latest'
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials post-db-service --zone europe-west4 --project ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to GKE
+        run: |
+          kubectl apply -f post_service/k8s/deployment.yaml
+          kubectl apply -f post_service/k8s/service.yaml
+
