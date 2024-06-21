@@ -118,6 +118,7 @@ jobs:
 
       - name: Configure kubectl
         run: |
+          gcloud auth activate-service-account radolina@veggie-talk.iam.gserviceaccount.com --key-file=${{secrets.GCP_SA_KEY}}
           gcloud container clusters get-credentials post-db-service --zone europe-west4 --project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to GKE
