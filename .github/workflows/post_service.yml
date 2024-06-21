@@ -99,7 +99,7 @@ jobs:
           
 
   deploy:
-    needs: docker
+#    needs: docker
     name: Deploy to GKE
     runs-on: ubuntu-latest
     steps:
