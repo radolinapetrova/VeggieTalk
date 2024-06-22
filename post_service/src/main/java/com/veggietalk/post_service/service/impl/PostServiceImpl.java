@@ -9,6 +9,7 @@ import com.veggietalk.post_service.persistence.PostRepo;
 import com.veggietalk.post_service.rabbitmq_config.Producer;
 import com.veggietalk.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
@@ -82,7 +84,7 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("You do not have the right to delete this post");
         }
         postRepo.deletePost(id);
-        producer.deletePost(accountId.toString());
+        producer.deletePost(id.toString());
     }
 
     public List<Post> getAllPosts(int pageNumber) throws NoSuchElementException {
@@ -116,20 +118,33 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deleteByAccountId(UUID accountId) throws IllegalArgumentException{
-        List<Post> posts = this.findByAccountId(accountId);
-        List<UUID> allFileIds = posts.stream()
-                .flatMap(post -> post.getFilesIds().stream())
-                .toList();
 
-        for (UUID fileId : allFileIds){
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, fileId.toString());
-            amazonS3.deleteObject(deleteObjectRequest);
+        List<Post> posts = new ArrayList<>();
+
+        try{
+            posts = this.findByAccountId(accountId);
+        }
+        catch (IllegalArgumentException e){
+            log.info("No posts found");
         }
 
-        List<UUID> postIds = postRepo.deleteByAccountId(accountId);
-        for (UUID postID: postIds){
-            producer.deletePost(postID.toString());
+
+        if (!posts.isEmpty()){
+            List<UUID> allFileIds = posts.stream()
+                    .flatMap(post -> post.getFilesIds().stream())
+                    .toList();
+
+            for (UUID fileId : allFileIds){
+                DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, fileId.toString());
+                amazonS3.deleteObject(deleteObjectRequest);
+            }
+
+            List<UUID> postIds = postRepo.deleteByAccountId(accountId);
+            for (UUID postID: postIds){
+                producer.deletePost(postID.toString());
+            }
         }
+
 
     }
 
