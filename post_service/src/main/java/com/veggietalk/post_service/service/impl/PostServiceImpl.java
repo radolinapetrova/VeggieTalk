@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private AmazonS3 amazonS3;
 
-//    @Value("${aws.s3.bucketName}")
+
     private String bucketName = "veggietalkbucket";
 
     LocalDate currentDate = LocalDate.now();
