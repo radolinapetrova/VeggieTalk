@@ -7,122 +7,122 @@ on:
 
 
 jobs:
-#  build_post_service:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin'
-#          cache: maven
-#
-#      - name: Build with Maven
-#        run: mvn -B package --file post_service/pom.xml
-#
-#
-#  test_post_service:
-#    needs: build_post_service
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin'
-#          cache: maven
-#      - name: Test with Maven
-#        run: mvn test --file post_service/pom.xml
-#
-#  sonarcloud_post_service:
-#    needs: test_post_service
-#    name: Sonarcloud
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: 21
-#          distribution: 'temurin'
-#      - name: Cache SonarCloud packages
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/.sonar/cache
-#          key: ${{ runner.os }}-sonar
-#          restore-keys: ${{ runner.os }}-sonar
-#      - name: Cache Maven packages
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: ${{ runner.os }}-m2
-#      - name: Build and analyze
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
-#        run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
-#
-#  docker:
-#    needs: sonarcloud_post_service
-#    name: docker ig
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: 21
-#          distribution: 'temurin'
-#      - name: Build JAR file
-#        run: |
-#          cd post_service
-#          mvn clean install
-#      - name: Build Docker image
-#        run: |
-#          cd post_service
-#          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest .
-#      - name: Push Docker image to Docker Hub
-#        run: |
-#          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_PASSWORD }}
-#          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest
-#      - name: Run Docker Compose
-#        run: |
-#          docker-compose up -d
-#          sleep 60
-#          docker ps
-          
-
-  deploy:
-#    needs: docker
-    name: Deploy to GKE
+  build_post_service:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Auth to Google Cloud
-        uses: google-github-actions/auth@v1
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
-          credentials_json: ${{secrets.GCP_SA_KEY}}
-      - name: setup google cloud sdk
-        uses: google-github-actions/setup-gcloud@v1
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file post_service/pom.xml
+
+
+  test_post_service:
+    needs: build_post_service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
-          version: '367.0.0'
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Test with Maven
+        run: mvn test --file post_service/pom.xml
 
+  sonarcloud_post_service:
+    needs: test_post_service
+    name: Sonarcloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'temurin'
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_POST_SERVICE }}
+        run: cd post_service && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=radolinapetrova_VeggieTalk_post_service && mvn sonar:sonar -Pcoverage
 
-      - name: Configure kubectl
+  docker:
+    needs: sonarcloud_post_service
+    name: docker ig
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'temurin'
+      - name: Build JAR file
         run: |
-          gcloud auth activate-service-account radolina@veggie-talk.iam.gserviceaccount.com --key-file=${{secrets.GCP_SA_KEY}}
-          gcloud container clusters get-credentials post-db-service --zone europe-west4 --project ${{ secrets.GCP_PROJECT_ID }}
-
-      - name: Deploy to GKE
+          cd post_service
+          mvn clean install
+      - name: Build Docker image
         run: |
-          kubectl apply -f post_service/k8s/deployment.yaml
-          kubectl apply -f post_service/k8s/service.yaml
+          cd post_service
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest .
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_PASSWORD }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post_service_img:latest
+      - name: Run Docker Compose
+        run: |
+          docker-compose up -d
+          sleep 60
+          docker ps
+          
+
+#  deploy:
+##    needs: docker
+#    name: Deploy to GKE
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Auth to Google Cloud
+#        uses: google-github-actions/auth@v1
+#        with:
+#          credentials_json: ${{secrets.GCP_SA_KEY}}
+#      - name: setup google cloud sdk
+#        uses: google-github-actions/setup-gcloud@v1
+#        with:
+#          version: '367.0.0'
+#
+#
+#      - name: Configure kubectl
+#        run: |
+#          gcloud auth activate-service-account radolina@veggie-talk.iam.gserviceaccount.com --key-file=${{secrets.GCP_SA_KEY}}
+#          gcloud container clusters get-credentials post-db-service --zone europe-west4 --project ${{ secrets.GCP_PROJECT_ID }}
+#
+#      - name: Deploy to GKE
+#        run: |
+#          kubectl apply -f post_service/k8s/deployment.yaml
+#          kubectl apply -f post_service/k8s/service.yaml
 
