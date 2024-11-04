@@ -7,8 +7,8 @@ services:
       - my_network
     image: postgres
     environment:
-      POSTGRES_PASSWORD: R@d!0252
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_USERNAME}
+      POSTGRES_USER: ${POSTGRES_PASSWORD}
       POSTGRES_DB: post_info
     volumes:
       - //c/postgres_container_post_data:/var/lib/postgresql/data
@@ -32,8 +32,8 @@ services:
 #    networks:
 #      - my_network
 #    environment:
-#      POSTGRES_PASSWORD: R@d!0252
-#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: ${POSTGRES_USERNAME}
+#      POSTGRES_USER: ${POSTGRES_PASSWORD}
 #      POSTGRES_DB: account_info
 #      PGDATA: /var/lib/postgresql/data
 #    volumes:
@@ -65,8 +65,8 @@ services:
     networks:
       - my_network
     environment:
-      POSTGRES_PASSWORD: R@d!0252
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_USERNAME}
+      POSTGRES_USER: ${POSTGRES_PASSWORD}
       POSTGRES_DB: comment_info
       PGDATA: /var/lib/postgresql/data
     volumes:
@@ -139,8 +139,8 @@ services:
 #    volumes:
 #      - ./grafana:/var/lib/grafana
 #    environment:
-#      - GF_SECURITY_ADMIN_USER=admin
-#      - GF_SECURITY_ADMIN_PASSWORD=password
+#      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+#      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
 
   rabbit:
     image: rabbitmq:3-management
@@ -174,8 +174,8 @@ services:
     ports:
       - "8282:8080"
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_ADMIN=${KEYCLOAK_USERNAME}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_PASSWORD}
     volumes:
       - keycloak_data:/opt/keycloak/data
       - keycloak_config:/opt/keycloak/conf
